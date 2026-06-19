@@ -10,571 +10,301 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --yellow: #f5a623;
-      --yellow-dark: #d4891a;
-      --hero-bg: #1a1208;
-      --hero-bg2: #2a1e08;
-      --black: #111111;
+      --yellow: #f5a200;
+      --yellow-hover: #d48e00;
+      --dark: #0d0d0d;
       --white: #ffffff;
-      --offwhite: #f8f8f8;
-      --gray: #777777;
-      --light-gray: #eeeeee;
-      --text-dark: #1a1a1a;
-      --border-light: #e5e5e5;
+      --offwhite: #f5f5f5;
+      --text: #1a1a1a;
+      --gray: #666;
+      --border: #e0e0e0;
     }
 
     html { scroll-behavior: smooth; }
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--white);
-      color: var(--text-dark);
-      overflow-x: hidden;
-    }
+    body { font-family: 'Inter', sans-serif; background: #fff; color: var(--text); overflow-x: hidden; }
 
-    /* ─── NAV ─── */
+    /* ── NAV ── */
     nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 1000;
-      background: rgba(15,10,2,0.96);
-      backdrop-filter: blur(12px);
-      padding: 0 2.5rem;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+      background: #0d0d0d;
+      height: 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem;
     }
-
-    .nav-logo {
-      display: flex; align-items: center; gap: 0.5rem;
-      text-decoration: none;
-    }
-    .logo-circle {
-      width: 34px; height: 34px;
+    .logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+    .logo-icon {
+      width: 32px; height: 32px; border-radius: 50%;
       background: var(--yellow);
-      border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-weight: 900; font-size: 0.95rem; color: #111;
+      font-weight: 900; font-size: 0.9rem; color: #000;
     }
-    .logo-text { color: #fff; font-size: 1rem; font-weight: 800; letter-spacing: -0.01em; }
-    .logo-text small { display: block; font-size: 0.6rem; font-weight: 500; color: #aaa; letter-spacing: 0.12em; text-transform: uppercase; }
+    .logo-name { color: #fff; font-size: 0.95rem; font-weight: 800; line-height: 1; }
+    .logo-name span { display: block; font-size: 0.55rem; font-weight: 400; color: #aaa; letter-spacing: 0.15em; text-transform: uppercase; }
 
-    .nav-links { display: flex; gap: 0; list-style: none; }
+    .nav-links { display: flex; list-style: none; }
     .nav-links a {
-      color: #ccc; text-decoration: none; font-size: 0.82rem; font-weight: 500;
-      padding: 0.35rem 0.7rem; border-radius: 5px;
-      transition: color 0.2s, background 0.2s;
+      color: #ccc; text-decoration: none; font-size: 0.8rem; font-weight: 500;
+      padding: 0.3rem 0.65rem; transition: color 0.2s;
     }
     .nav-links a:hover { color: #fff; }
-    .nav-links a.active { color: var(--yellow); border-bottom: 2px solid var(--yellow); border-radius: 0; }
+    .nav-links a.active { color: var(--yellow); border-bottom: 2px solid var(--yellow); }
 
     .nav-phone {
-      display: flex; align-items: center; gap: 0.5rem;
-      background: var(--yellow);
-      color: #111; font-size: 0.78rem; font-weight: 700;
-      padding: 0.45rem 1rem; border-radius: 7px;
-      text-decoration: none;
+      display: flex; align-items: center; gap: 0.6rem;
+      background: var(--yellow); color: #000;
+      font-size: 0.75rem; font-weight: 700;
+      padding: 0.45rem 1rem; border-radius: 6px; text-decoration: none;
     }
 
-    /* ─── HERO ─── */
+    /* ── HERO ── */
     .hero {
-      padding-top: 60px;
-      min-height: 100vh;
-      background: linear-gradient(135deg, #1a1208 0%, #2e1f08 40%, #1a1208 100%);
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      overflow: hidden;
+      padding-top: 56px;
+      background: linear-gradient(160deg, #1c1100 0%, #2d1c00 45%, #1a1000 100%);
+      position: relative; overflow: hidden;
     }
-
-    /* Subtle texture dots */
     .hero::before {
       content: '';
-      position: absolute;
-      inset: 0;
-      background-image: radial-gradient(rgba(245,166,35,0.06) 1px, transparent 1px);
-      background-size: 32px 32px;
+      position: absolute; inset: 0;
+      background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 28px 28px;
       pointer-events: none;
     }
 
-    .hero-top {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      flex: 1;
-      min-height: calc(100vh - 60px - 110px);
-      position: relative;
+    .hero-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      min-height: 460px;
+      position: relative; z-index: 2;
     }
 
-    /* LEFT: text */
     .hero-left {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 3rem 2.5rem 2rem 3rem;
-      position: relative;
-      z-index: 2;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 3rem 2rem 2rem 2.5rem;
     }
-
-    .hero-eyebrow {
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: var(--yellow);
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      margin-bottom: 1.2rem;
+    .hero-label {
+      color: var(--yellow); font-size: 0.7rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 1rem;
     }
-
     .hero-h1 {
-      font-size: clamp(2rem, 3.2vw, 3rem);
-      font-weight: 900;
-      line-height: 1.1;
-      letter-spacing: -0.03em;
-      color: #fff;
-      margin-bottom: 0.3rem;
+      font-size: clamp(1.8rem, 2.8vw, 2.6rem);
+      font-weight: 900; color: #fff;
+      line-height: 1.15; letter-spacing: -0.03em; margin-bottom: 0.2rem;
     }
     .hero-h1 .yellow { color: var(--yellow); display: block; }
+    .hero-p { font-size: 0.82rem; color: #bbb; line-height: 1.7; margin-top: 0.9rem; max-width: 360px; }
 
-    .hero-sub {
-      font-size: 0.88rem;
-      color: #bbb;
-      line-height: 1.7;
-      max-width: 380px;
-      margin-top: 1rem;
-      margin-bottom: 1.8rem;
-    }
-
-    .hero-badges {
-      display: flex; gap: 0.75rem; flex-wrap: wrap;
-    }
-    .badge {
-      display: flex; align-items: center; gap: 0.4rem;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 100px;
-      padding: 0.35rem 0.8rem;
-      font-size: 0.75rem; color: #ccc; font-weight: 500;
-    }
-    .badge i { color: var(--yellow); font-size: 0.7rem; }
-
-    /* RIGHT: car image */
     .hero-right {
       position: relative;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      overflow: hidden;
+      display: flex; align-items: flex-end; justify-content: center; overflow: hidden;
     }
-
-    /* golden glow behind car */
-    .hero-right::before {
+    .hero-right::after {
       content: '';
-      position: absolute;
-      bottom: 0; left: 50%; transform: translateX(-50%);
-      width: 90%; height: 60%;
-      background: radial-gradient(ellipse at center bottom, rgba(245,166,35,0.25) 0%, transparent 70%);
-      pointer-events: none;
+      position: absolute; bottom: 0; left: 0; right: 0; height: 45%;
+      background: radial-gradient(ellipse at center bottom, rgba(245,162,0,0.28) 0%, transparent 70%);
+      pointer-events: none; z-index: 1;
     }
-
-    /* mountain/road background image for right panel */
-    .hero-right-bg {
-      position: absolute;
-      inset: 0;
-      background: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=900&auto=format&fit=crop') center/cover no-repeat;
-      opacity: 0.25;
-    }
-
     .hero-car {
-      position: relative;
-      z-index: 2;
-      width: 100%;
-      max-width: 620px;
-      object-fit: contain;
-      margin-bottom: -10px;
-      filter: drop-shadow(0 20px 60px rgba(0,0,0,0.8));
-      animation: floatCar 4s ease-in-out infinite;
+      position: relative; z-index: 2;
+      width: 100%; max-width: 620px;
+      object-fit: contain; margin-bottom: -4px;
+      filter: drop-shadow(0 24px 48px rgba(0,0,0,0.85));
     }
 
-    @keyframes floatCar {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-10px); }
-    }
-
-    /* ─── BOOKING CARD (white, below hero) ─── */
-    .booking-wrap {
-      background: linear-gradient(to bottom, #1a1208 0%, #1a1208 50%, #ffffff 50%);
+    /* ── BOOKING BAR ── */
+    .booking-bar-wrap {
+      background: linear-gradient(to bottom, #1c1100 0%, #1c1100 50%, #fff 50%);
       padding: 0 2rem;
-      position: relative;
-      z-index: 10;
     }
-
-    .booking-card {
-      max-width: 1100px;
-      margin: 0 auto;
-      background: #fff;
-      border-radius: 14px;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.18);
-      padding: 1.4rem 1.8rem;
-      display: flex;
-      align-items: flex-end;
-      gap: 1rem;
+    .booking-bar {
+      max-width: 1200px; margin: 0 auto;
+      background: #fff; border-radius: 12px;
+      box-shadow: 0 6px 32px rgba(0,0,0,0.14);
+      padding: 1.2rem 1.5rem;
+      display: flex; align-items: center; gap: 1rem;
     }
-
-    .booking-tabs-wrap { display: flex; flex-direction: column; gap: 0.6rem; flex-shrink: 0; }
-
-    .booking-tabs {
-      display: flex; gap: 0.5rem;
-    }
-
-    .tab-btn {
-      padding: 0.4rem 1rem;
-      border: 2px solid var(--border-light);
+    .trip-tabs { display: flex; gap: 0.5rem; flex-shrink: 0; }
+    .trip-tab {
+      padding: 0.38rem 1rem;
+      border: 2px solid #ddd; border-radius: 100px;
       background: transparent;
-      border-radius: 100px;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.8rem; font-weight: 600;
-      cursor: pointer; color: #555;
-      transition: all 0.2s;
+      font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 600;
+      color: #555; cursor: pointer; transition: all 0.2s;
     }
-    .tab-btn.active {
-      background: var(--yellow);
-      border-color: var(--yellow);
-      color: #111;
-    }
+    .trip-tab.active { background: var(--yellow); border-color: var(--yellow); color: #000; }
 
-    .booking-fields {
-      display: flex; align-items: flex-end; gap: 0.75rem; flex: 1;
-    }
+    .divider-v { width: 1px; height: 36px; background: #e0e0e0; flex-shrink: 0; }
 
+    .booking-fields { display: flex; align-items: center; flex: 1; }
     .bfield {
-      display: flex; flex-direction: column; gap: 0.3rem; flex: 1;
+      display: flex; flex-direction: column; gap: 0.15rem;
+      flex: 1; padding: 0 1rem;
+      border-right: 1px solid #e0e0e0;
     }
-
-    .bfield label {
-      font-size: 0.68rem; font-weight: 600; color: #999;
-      text-transform: uppercase; letter-spacing: 0.08em;
-    }
-
-    .bfield-input {
-      display: flex; align-items: center;
-      border: 1.5px solid var(--border-light);
-      border-radius: 8px;
-      padding: 0.6rem 0.8rem;
-      gap: 0.5rem;
-      transition: border-color 0.2s;
-    }
-    .bfield-input:focus-within { border-color: var(--yellow); }
-    .bfield-input i { color: #999; font-size: 0.8rem; flex-shrink: 0; }
-    .bfield-input i.dot-blue { color: #2196F3; }
-    .bfield-input i.dot-red { color: #e53935; }
-
-    .bfield-input input,
-    .bfield-input select {
+    .bfield:last-of-type { border-right: none; }
+    .bfield label { font-size: 0.62rem; font-weight: 600; color: #999; text-transform: uppercase; letter-spacing: 0.08em; }
+    .bfield-row { display: flex; align-items: center; gap: 0.4rem; }
+    .dot-blue { color: #1565C0; font-size: 0.55rem; }
+    .dot-red { color: #c62828; font-size: 0.55rem; }
+    .bfield-row input {
       border: none; outline: none;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.82rem; color: #333;
+      font-family: 'Inter', sans-serif; font-size: 0.82rem; color: #333;
       width: 100%; background: transparent;
-      appearance: none;
     }
-    .bfield-input input::placeholder { color: #bbb; }
+    .bfield-row input::placeholder { color: #bbb; }
 
     .search-btn {
-      padding: 0.7rem 1.8rem;
-      background: var(--yellow);
-      border: none; border-radius: 8px;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.9rem; font-weight: 800;
-      color: #111; cursor: pointer;
-      white-space: nowrap;
+      background: var(--yellow); color: #000; border: none; border-radius: 8px;
+      font-family: 'Inter', sans-serif; font-size: 0.88rem; font-weight: 800;
+      padding: 0.75rem 1.6rem; cursor: pointer; white-space: nowrap; flex-shrink: 0;
       transition: background 0.2s, transform 0.15s;
-      flex-shrink: 0;
     }
-    .search-btn:hover { background: var(--yellow-dark); transform: translateY(-1px); }
+    .search-btn:hover { background: var(--yellow-hover); transform: translateY(-1px); }
 
-    /* ─── WHY CHOOSE ─── */
-    .why-section {
-      background: #fff;
-      padding: 5rem 2rem 4rem;
-    }
+    /* ── SECTIONS ── */
+    .section { padding: 4.5rem 2rem; }
+    .section-inner { max-width: 1200px; margin: 0 auto; }
+    .sec-head { text-align: center; margin-bottom: 2.8rem; }
+    .sec-head h2 { font-size: clamp(1.3rem, 2vw, 1.8rem); font-weight: 900; letter-spacing: -0.02em; color: var(--text); }
+    .sec-line { width: 44px; height: 3px; background: var(--yellow); border-radius: 2px; margin: 0.6rem auto 0; }
 
-    .section-header { text-align: center; margin-bottom: 3rem; }
-
-    .section-header h2 {
-      font-size: clamp(1.5rem, 2.5vw, 2rem);
-      font-weight: 900; letter-spacing: -0.03em;
-      color: var(--text-dark); margin-bottom: 0.5rem;
-    }
-
-    .underline-bar {
-      width: 48px; height: 3px;
-      background: var(--yellow);
-      border-radius: 2px;
-      margin: 0.6rem auto 0;
-    }
-
-    .why-grid {
-      max-width: 1100px; margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1.5rem;
-    }
-
+    /* ── WHY CHOOSE ── */
+    .why-section { background: #fff; }
+    .why-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
     .why-card {
-      text-align: center;
-      padding: 2rem 1.2rem;
-      border: 1.5px solid var(--border-light);
-      border-radius: 14px;
-      transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+      text-align: center; padding: 2rem 1.2rem;
+      border: 1.5px solid var(--border); border-radius: 12px;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
     }
-    .why-card:hover {
-      border-color: var(--yellow);
-      box-shadow: 0 8px 30px rgba(245,166,35,0.12);
-      transform: translateY(-4px);
-    }
-
-    .why-icon {
-      width: 60px; height: 60px;
-      background: #fff8ee;
-      border-radius: 50%;
+    .why-card:hover { border-color: var(--yellow); box-shadow: 0 6px 24px rgba(245,162,0,0.1); transform: translateY(-3px); }
+    .why-icon-wrap {
+      width: 62px; height: 62px; border-radius: 50%;
+      background: #fff8e1; border: 1.5px solid rgba(245,162,0,0.25);
       display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 1.2rem;
-      font-size: 1.4rem; color: var(--yellow);
-      border: 1px solid rgba(245,166,35,0.2);
+      margin: 0 auto 1.1rem; font-size: 1.4rem; color: var(--yellow);
     }
+    .why-card h3 { font-size: 0.88rem; font-weight: 700; margin-bottom: 0.45rem; }
+    .why-card p { font-size: 0.76rem; color: var(--gray); line-height: 1.65; }
 
-    .why-card h3 { font-size: 0.92rem; font-weight: 700; color: var(--text-dark); margin-bottom: 0.5rem; }
-    .why-card p { font-size: 0.78rem; color: var(--gray); line-height: 1.6; }
-
-    /* ─── POPULAR ROUTES ─── */
-    .routes-section {
-      background: var(--offwhite);
-      padding: 5rem 2rem;
-    }
-
-    .routes-grid {
-      max-width: 1100px; margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1.25rem;
-    }
-
+    /* ── ROUTES ── */
+    .routes-section { background: var(--offwhite); }
+    .routes-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; }
     .route-card {
-      background: #fff;
-      border-radius: 14px;
-      overflow: hidden;
-      border: 1.5px solid var(--border-light);
-      transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
-      cursor: pointer;
+      background: #fff; border-radius: 12px;
+      border: 1.5px solid var(--border); overflow: hidden;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s; cursor: pointer;
     }
-    .route-card:hover {
-      border-color: var(--yellow);
-      box-shadow: 0 8px 30px rgba(245,166,35,0.12);
-      transform: translateY(-4px);
-    }
-
-    .route-img {
-      width: 100%; height: 130px;
-      object-fit: cover; display: block;
-    }
-
-    .route-body { padding: 1rem 1.1rem; }
-
-    .route-name {
-      font-size: 0.9rem; font-weight: 700; color: var(--text-dark);
-      margin-bottom: 0.5rem;
-      display: flex; align-items: center; gap: 0.4rem;
-    }
-    .route-name i { color: var(--yellow); font-size: 0.75rem; }
-
-    .route-meta {
-      display: flex; gap: 1rem; font-size: 0.72rem; color: var(--gray);
-      margin-bottom: 0.8rem;
-    }
+    .route-card:hover { border-color: var(--yellow); box-shadow: 0 6px 24px rgba(245,162,0,0.1); transform: translateY(-3px); }
+    .route-img { width: 100%; height: 120px; object-fit: cover; display: block; }
+    .route-body { padding: 0.9rem 1rem; }
+    .route-name { font-size: 0.88rem; font-weight: 700; display: flex; align-items: center; gap: 0.35rem; margin-bottom: 0.5rem; }
+    .route-name i { color: var(--yellow); font-size: 0.7rem; }
+    .route-meta { display: flex; gap: 0.8rem; font-size: 0.7rem; color: var(--gray); margin-bottom: 0.75rem; }
     .route-meta span { display: flex; align-items: center; gap: 0.3rem; }
-    .route-meta i { color: var(--yellow); }
+    .route-meta i { color: var(--yellow); font-size: 0.65rem; }
+    .route-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); padding-top: 0.7rem; }
+    .route-price { font-size: 0.95rem; font-weight: 800; color: var(--yellow); }
+    .route-price-lbl { font-size: 0.62rem; color: var(--gray); }
 
-    .route-footer {
-      display: flex; align-items: center; justify-content: space-between;
-      padding-top: 0.75rem;
-      border-top: 1px solid var(--border-light);
+    .btn-sm {
+      background: var(--yellow); color: #000; border: none;
+      font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 700;
+      padding: 0.3rem 0.7rem; border-radius: 5px; cursor: pointer; transition: background 0.2s;
     }
+    .btn-sm:hover { background: var(--yellow-hover); }
 
-    .route-price { font-size: 1rem; font-weight: 800; color: var(--yellow); }
-    .route-price-label { font-size: 0.65rem; color: var(--gray); }
-
-    .book-btn {
-      background: var(--yellow);
-      color: #111; border: none;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.72rem; font-weight: 700;
-      padding: 0.35rem 0.75rem;
-      border-radius: 6px; cursor: pointer;
-      transition: background 0.2s;
-    }
-    .book-btn:hover { background: var(--yellow-dark); }
-
-    /* ─── FLEET ─── */
-    .fleet-section { background: #fff; padding: 5rem 2rem; }
-
-    .fleet-grid {
-      max-width: 1100px; margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-    }
-
+    /* ── FLEET ── */
+    .fleet-section { background: #fff; }
+    .fleet-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
     .fleet-card {
-      border: 1.5px solid var(--border-light);
-      border-radius: 14px;
-      overflow: hidden;
-      transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+      border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
     }
-    .fleet-card:hover {
-      border-color: var(--yellow);
-      box-shadow: 0 8px 30px rgba(245,166,35,0.12);
-      transform: translateY(-4px);
+    .fleet-card:hover { border-color: var(--yellow); box-shadow: 0 6px 24px rgba(245,162,0,0.1); transform: translateY(-3px); }
+    .fleet-img-box {
+      background: linear-gradient(160deg, #1c1100 0%, #2d1c00 100%);
+      height: 175px; position: relative;
+      display: flex; align-items: center; justify-content: center; overflow: hidden;
     }
-
-    .fleet-img-wrap {
-      background: linear-gradient(135deg, #1a1208, #2e1f08);
-      height: 170px;
-      display: flex; align-items: center; justify-content: center;
-      overflow: hidden; position: relative;
-    }
-    .fleet-img-wrap::after {
+    .fleet-img-box::after {
       content: '';
-      position: absolute;
-      bottom: 0; left: 50%; transform: translateX(-50%);
-      width: 80%; height: 40%;
-      background: radial-gradient(ellipse, rgba(245,166,35,0.3) 0%, transparent 70%);
+      position: absolute; bottom: 0; left: 0; right: 0; height: 50%;
+      background: radial-gradient(ellipse at center bottom, rgba(245,162,0,0.22) 0%, transparent 70%);
     }
+    .fleet-car { width: 92%; object-fit: cover; height: 100%; position: relative; z-index: 1; }
+    .fleet-body { padding: 1.2rem 1.3rem; }
+    .fleet-tag { font-size: 0.62rem; font-weight: 700; color: var(--yellow); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.2rem; }
+    .fleet-name { font-size: 1rem; font-weight: 800; margin-bottom: 0.8rem; }
+    .fleet-chips { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1rem; }
+    .chip { background: #f5f5f5; border: 1px solid #e5e5e5; border-radius: 4px; padding: 0.18rem 0.5rem; font-size: 0.68rem; color: #444; }
+    .fleet-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); padding-top: 0.85rem; }
+    .fleet-price { font-size: 1rem; font-weight: 900; color: var(--yellow); }
+    .fleet-price-lbl { font-size: 0.62rem; color: var(--gray); }
 
-    .fleet-car-img {
-      width: 90%; object-fit: contain;
-      position: relative; z-index: 1;
-      filter: drop-shadow(0 10px 30px rgba(0,0,0,0.6));
+    /* ── APP STRIP ── */
+    .app-strip {
+      background: #111;
+      padding: 1.5rem 2rem;
     }
-
-    .fleet-body { padding: 1.3rem 1.4rem; }
-    .fleet-tag {
-      font-size: 0.65rem; font-weight: 700; color: var(--yellow);
-      text-transform: uppercase; letter-spacing: 0.1em;
-      margin-bottom: 0.3rem;
-    }
-    .fleet-name { font-size: 1.05rem; font-weight: 800; color: var(--text-dark); margin-bottom: 0.8rem; }
-
-    .fleet-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
-    .chip {
-      background: var(--offwhite);
-      border: 1px solid var(--border-light);
-      border-radius: 5px;
-      padding: 0.2rem 0.55rem;
-      font-size: 0.7rem; color: #555;
-    }
-
-    .fleet-footer {
-      display: flex; align-items: center; justify-content: space-between;
-      border-top: 1px solid var(--border-light);
-      padding-top: 0.9rem;
-    }
-
-    .fleet-price { font-size: 1.05rem; font-weight: 900; color: var(--yellow); }
-    .fleet-price-label { font-size: 0.65rem; color: var(--gray); }
-
-    /* ─── CTA ─── */
-    .cta-section {
-      background: linear-gradient(135deg, #1a1208 0%, #2e1f08 100%);
-      padding: 4.5rem 2rem;
-    }
-
-    .cta-inner {
-      max-width: 1100px; margin: 0 auto;
+    .app-strip-inner {
+      max-width: 1200px; margin: 0 auto;
       display: flex; align-items: center; justify-content: space-between; gap: 2rem;
     }
+    .app-left { display: flex; align-items: center; gap: 1.5rem; }
+    .app-phone-wrap i { color: var(--yellow); font-size: 1.2rem; }
+    .app-number { font-size: 1.4rem; font-weight: 900; color: #fff; line-height: 1; }
+    .app-number small { display: block; font-size: 0.65rem; font-weight: 400; color: #aaa; margin-bottom: 0.2rem; }
+    .app-url { font-size: 0.7rem; color: #888; margin-top: 0.2rem; }
 
-    .cta-text h2 {
-      font-size: clamp(1.5rem, 2.5vw, 2.1rem);
-      font-weight: 900; color: #fff;
-      letter-spacing: -0.03em; margin-bottom: 0.5rem;
+    .app-center h4 { color: var(--yellow); font-size: 0.82rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .app-center p { font-size: 0.72rem; color: #aaa; margin-bottom: 0.7rem; }
+    .app-badges { display: flex; gap: 0.6rem; }
+    .app-badge {
+      background: #222; border: 1px solid #333; border-radius: 6px;
+      padding: 0.35rem 0.8rem; display: flex; align-items: center; gap: 0.4rem;
+      font-size: 0.7rem; color: #ccc; text-decoration: none; transition: border-color 0.2s;
     }
-    .cta-text p { color: #bbb; font-size: 0.88rem; }
+    .app-badge:hover { border-color: var(--yellow); }
+    .app-badge i { font-size: 1rem; color: #fff; }
 
-    .cta-btns { display: flex; gap: 1rem; flex-shrink: 0; }
+    .app-right img { height: 80px; object-fit: contain; }
 
-    .btn-yellow {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      padding: 0.8rem 1.8rem;
-      background: var(--yellow); color: #111;
-      border: none; border-radius: 9px;
-      font-family: 'Inter', sans-serif; font-size: 0.88rem; font-weight: 800;
-      cursor: pointer; text-decoration: none;
-      transition: background 0.2s, transform 0.15s;
-    }
-    .btn-yellow:hover { background: var(--yellow-dark); transform: translateY(-1px); }
-
-    .btn-ghost {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      padding: 0.8rem 1.8rem;
-      background: transparent; color: var(--yellow);
-      border: 1.5px solid rgba(245,166,35,0.5); border-radius: 9px;
-      font-family: 'Inter', sans-serif; font-size: 0.88rem; font-weight: 700;
-      cursor: pointer; text-decoration: none;
-      transition: background 0.2s;
-    }
-    .btn-ghost:hover { background: rgba(245,166,35,0.08); }
-
-    /* ─── FOOTER ─── */
-    footer {
-      background: #0e0c08;
-      border-top: 1px solid rgba(255,255,255,0.06);
-      padding: 3rem 2rem 1.5rem;
-      color: #aaa;
-    }
-
+    /* ── FOOTER ── */
+    footer { background: #0a0a0a; border-top: 1px solid rgba(255,255,255,0.06); padding: 3rem 2rem 1.5rem; }
     .footer-grid {
-      max-width: 1100px; margin: 0 auto;
-      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 2rem; margin-bottom: 2rem;
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem; margin-bottom: 2rem;
     }
-
-    .footer-brand p { font-size: 0.82rem; color: #666; margin-top: 0.9rem; line-height: 1.7; max-width: 240px; }
-
-    .footer-col h4 {
-      font-size: 0.72rem; font-weight: 700; color: #ccc;
-      text-transform: uppercase; letter-spacing: 0.12em;
-      margin-bottom: 1rem;
-    }
+    .footer-brand p { font-size: 0.78rem; color: #555; margin-top: 0.85rem; line-height: 1.75; max-width: 230px; }
+    .footer-col h4 { font-size: 0.68rem; font-weight: 700; color: #bbb; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 0.9rem; }
     .footer-col ul { list-style: none; }
-    .footer-col ul li { margin-bottom: 0.5rem; }
-    .footer-col ul li a { text-decoration: none; color: #666; font-size: 0.82rem; transition: color 0.2s; }
-    .footer-col ul li a:hover { color: var(--yellow); }
-
+    .footer-col li { margin-bottom: 0.45rem; }
+    .footer-col a { color: #555; text-decoration: none; font-size: 0.78rem; transition: color 0.2s; }
+    .footer-col a:hover { color: var(--yellow); }
     .footer-bottom {
-      max-width: 1100px; margin: 0 auto;
-      padding-top: 1.5rem;
-      border-top: 1px solid rgba(255,255,255,0.06);
+      max-width: 1200px; margin: 0 auto;
+      border-top: 1px solid rgba(255,255,255,0.06); padding-top: 1.3rem;
       display: flex; align-items: center; justify-content: space-between;
-      font-size: 0.76rem; color: #555;
+      font-size: 0.72rem; color: #444;
     }
 
-    /* ─── RESPONSIVE ─── */
+    /* ── RESPONSIVE ── */
     @media (max-width: 960px) {
-      .hero-top { grid-template-columns: 1fr; }
-      .hero-right { min-height: 280px; }
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-right { min-height: 260px; }
       .why-grid { grid-template-columns: repeat(2, 1fr); }
       .routes-grid { grid-template-columns: repeat(2, 1fr); }
       .fleet-grid { grid-template-columns: 1fr; }
       .footer-grid { grid-template-columns: 1fr 1fr; }
       .nav-links { display: none; }
-      .booking-card { flex-direction: column; align-items: stretch; }
+      .booking-bar { flex-direction: column; align-items: stretch; }
       .booking-fields { flex-direction: column; }
-      .cta-inner { flex-direction: column; text-align: center; }
-      .cta-btns { justify-content: center; }
+      .bfield { border-right: none; border-bottom: 1px solid #e0e0e0; padding: 0.6rem 0; }
+      .app-strip-inner { flex-direction: column; text-align: center; }
+      .app-left { flex-direction: column; }
+      .app-badges { justify-content: center; }
     }
-
     @media (max-width: 520px) {
-      .why-grid { grid-template-columns: 1fr; }
-      .routes-grid { grid-template-columns: 1fr; }
+      .why-grid, .routes-grid { grid-template-columns: 1fr; }
       .footer-grid { grid-template-columns: 1fr; }
     }
   </style>
@@ -583,9 +313,9 @@
 
 <!-- NAV -->
 <nav>
-  <a href="index.html" class="nav-logo">
-    <div class="logo-circle">P</div>
-    <div class="logo-text">Premium <small>CAB SERVICES</small></div>
+  <a href="index.html" class="logo">
+    <div class="logo-icon">P</div>
+    <div class="logo-name">Premium <span>CAB SERVICES</span></div>
   </a>
   <ul class="nav-links">
     <li><a href="index.html">Home</a></li>
@@ -597,179 +327,156 @@
     <li><a href="#">Contact Us</a></li>
   </ul>
   <a href="tel:+919876543210" class="nav-phone">
-    <i class="fas fa-phone"></i> 24x7 Support &nbsp;+91 98765 43210
+    <i class="fas fa-phone"></i> 24x7 Customer Support &nbsp;+91 98765 43210
   </a>
 </nav>
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-top">
-
-    <!-- LEFT: text -->
+  <div class="hero-inner">
     <div class="hero-left">
-      <div class="hero-eyebrow">Outstation Cabs</div>
+      <div class="hero-label">Outstation Cabs</div>
       <h1 class="hero-h1">
         Travel Beyond Cities,
         <span class="yellow">Comfort Beyond Expectations</span>
       </h1>
-      <p class="hero-sub">One-way &amp; round-trip outstation cab services across India with professional drivers and transparent pricing.</p>
-      <div class="hero-badges">
-        <div class="badge"><i class="fas fa-check-circle"></i> Toll Included</div>
-        <div class="badge"><i class="fas fa-check-circle"></i> 24x7 Support</div>
-        <div class="badge"><i class="fas fa-check-circle"></i> No Hidden Charges</div>
-      </div>
+      <p class="hero-p">One-way &amp; round-trip outstation cab services across India with professional drivers and transparent pricing.</p>
     </div>
-
-    <!-- RIGHT: car image -->
     <div class="hero-right">
-      <div class="hero-right-bg"></div>
-      <img
-        class="hero-car"
-        src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?q=80&w=900&auto=format&fit=crop&bg=transparent"
-        alt="Toyota Innova Outstation Cab"
-      />
-    </div>
-  </div>
-
-  <!-- BOOKING CARD -->
-  <div class="booking-wrap">
-    <div class="booking-card">
-      <div class="booking-tabs-wrap">
-        <div class="booking-tabs">
-          <button class="tab-btn active" onclick="setTab(this)">One Way</button>
-          <button class="tab-btn" onclick="setTab(this)">Round Trip</button>
-        </div>
-      </div>
-      <div class="booking-fields">
-        <div class="bfield">
-          <label>Pickup Location</label>
-          <div class="bfield-input">
-            <i class="fas fa-circle dot-blue" style="font-size:0.6rem;color:#2196F3;"></i>
-            <input type="text" placeholder="Enter pickup location" />
-          </div>
-        </div>
-        <div class="bfield">
-          <label>Drop Location</label>
-          <div class="bfield-input">
-            <i class="fas fa-circle" style="font-size:0.6rem;color:#e53935;"></i>
-            <input type="text" placeholder="Enter drop location" />
-          </div>
-        </div>
-        <div class="bfield">
-          <label>Journey Date</label>
-          <div class="bfield-input">
-            <i class="fas fa-calendar-alt"></i>
-            <input type="date" value="2025-05-15" />
-          </div>
-        </div>
-      </div>
-      <button class="search-btn"><i class="fas fa-search"></i>&nbsp; Search Cabs</button>
+      <img class="hero-car" src="images/innova.jpg" alt="Toyota Innova Crysta" />
     </div>
   </div>
 </div>
 
-<!-- WHY CHOOSE OUTSTATION -->
-<section class="why-section">
-  <div class="section-header">
-    <h2>WHY CHOOSE OUTSTATION</h2>
-    <div class="underline-bar"></div>
+<!-- BOOKING BAR -->
+<div class="booking-bar-wrap">
+  <div class="booking-bar">
+    <div class="trip-tabs">
+      <button class="trip-tab active" onclick="setTab(this)">One Way</button>
+      <button class="trip-tab" onclick="setTab(this)">Round Trip</button>
+    </div>
+    <div class="divider-v"></div>
+    <div class="booking-fields">
+      <div class="bfield">
+        <label>Pickup Location</label>
+        <div class="bfield-row">
+          <i class="fas fa-circle dot-blue"></i>
+          <input type="text" placeholder="Enter pickup location" />
+        </div>
+      </div>
+      <div class="bfield">
+        <label>Drop Location</label>
+        <div class="bfield-row">
+          <i class="fas fa-circle dot-red"></i>
+          <input type="text" placeholder="Enter drop location" />
+        </div>
+      </div>
+      <div class="bfield">
+        <label>Journey Date</label>
+        <div class="bfield-row">
+          <i class="fas fa-calendar" style="color:#888;font-size:0.75rem;"></i>
+          <input type="date" value="2025-05-15" />
+        </div>
+      </div>
+    </div>
+    <button class="search-btn">Search Cabs</button>
   </div>
-  <div class="why-grid">
-    <div class="why-card">
-      <div class="why-icon"><i class="fas fa-exchange-alt"></i></div>
-      <h3>One Way &amp; Round Trip</h3>
-      <p>Flexible travel options as per your need. Book only what you require.</p>
+</div>
+
+<!-- WHY CHOOSE OUTSTATION -->
+<section class="section why-section">
+  <div class="section-inner">
+    <div class="sec-head">
+      <h2>WHY CHOOSE OUTSTATION</h2>
+      <div class="sec-line"></div>
     </div>
-    <div class="why-card">
-      <div class="why-icon"><i class="fas fa-receipt"></i></div>
-      <h3>Toll Included Options</h3>
-      <p>No hidden charges. Toll included in pricing for a worry-free journey.</p>
-    </div>
-    <div class="why-card">
-      <div class="why-icon"><i class="fas fa-user-tie"></i></div>
-      <h3>Experienced Drivers</h3>
-      <p>Verified, trained &amp; experienced drivers for safe outstation travel.</p>
-    </div>
-    <div class="why-card">
-      <div class="why-icon"><i class="fas fa-headset"></i></div>
-      <h3>24x7 Support</h3>
-      <p>We're here to assist you anytime, anywhere on your journey.</p>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon-wrap"><i class="fas fa-exchange-alt"></i></div>
+        <h3>One Way &amp; Round Trip</h3>
+        <p>Flexible travel options as per your need.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon-wrap"><i class="fas fa-file-invoice-dollar"></i></div>
+        <h3>Toll Included Options</h3>
+        <p>No hidden charges. Toll included in pricing.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon-wrap"><i class="fas fa-user-tie"></i></div>
+        <h3>Experienced Drivers</h3>
+        <p>Verified, trained &amp; experienced for safe travel.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon-wrap"><i class="fas fa-headset"></i></div>
+        <h3>24x7 Support</h3>
+        <p>We're here to assist you anytime, anywhere.</p>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- POPULAR ROUTES -->
-<section class="routes-section">
-  <div class="section-header">
-    <h2>POPULAR ROUTES</h2>
-    <div class="underline-bar"></div>
-  </div>
-  <div class="routes-grid">
-    <div class="route-card">
-      <img class="route-img" src="https://images.unsplash.com/photo-1599930113854-d6d7fd521f10?q=80&w=600&auto=format&fit=crop" alt="Mumbai to Pune" />
-      <div class="route-body">
-        <div class="route-name"><i class="fas fa-arrow-right"></i> Mumbai → Pune</div>
-        <div class="route-meta">
-          <span><i class="fas fa-car"></i> ~150 km</span>
-          <span><i class="fas fa-clock"></i> 3–4 hrs</span>
-        </div>
-        <div class="route-footer">
-          <div>
-            <div class="route-price-label">Starting from</div>
-            <div class="route-price">₹1,499</div>
+<section class="section routes-section">
+  <div class="section-inner">
+    <div class="sec-head">
+      <h2>POPULAR ROUTES</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="routes-grid">
+      <div class="route-card">
+        <img class="route-img" src="images/mumbai-pune.jpg" alt="Mumbai to Pune" />
+        <div class="route-body">
+          <div class="route-name"><i class="fas fa-arrow-right"></i> Mumbai → Pune</div>
+          <div class="route-meta">
+            <span><i class="fas fa-car"></i> ~150 km</span>
+            <span><i class="fas fa-clock"></i> 3-4 hrs</span>
           </div>
-          <button class="book-btn">Book Now</button>
+          <div class="route-footer">
+            <div><div class="route-price-lbl">Starting from</div><div class="route-price">₹1,499</div></div>
+            <button class="btn-sm">Book Now</button>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="route-card">
-      <img class="route-img" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=600&auto=format&fit=crop" alt="Mumbai to Nashik" />
-      <div class="route-body">
-        <div class="route-name"><i class="fas fa-arrow-right"></i> Mumbai → Nashik</div>
-        <div class="route-meta">
-          <span><i class="fas fa-car"></i> ~170 km</span>
-          <span><i class="fas fa-clock"></i> 4–5 hrs</span>
-        </div>
-        <div class="route-footer">
-          <div>
-            <div class="route-price-label">Starting from</div>
-            <div class="route-price">₹1,799</div>
+      <div class="route-card">
+        <img class="route-img" src="images/mumbai-nashik.jpg" alt="Mumbai to Nashik" />
+        <div class="route-body">
+          <div class="route-name"><i class="fas fa-arrow-right"></i> Mumbai → Nashik</div>
+          <div class="route-meta">
+            <span><i class="fas fa-car"></i> ~170 km</span>
+            <span><i class="fas fa-clock"></i> 4-5 hrs</span>
           </div>
-          <button class="book-btn">Book Now</button>
+          <div class="route-footer">
+            <div><div class="route-price-lbl">Starting from</div><div class="route-price">₹1,799</div></div>
+            <button class="btn-sm">Book Now</button>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="route-card">
-      <img class="route-img" src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?q=80&w=600&auto=format&fit=crop" alt="Mumbai to Goa" />
-      <div class="route-body">
-        <div class="route-name"><i class="fas fa-arrow-right"></i> Mumbai → Goa</div>
-        <div class="route-meta">
-          <span><i class="fas fa-car"></i> ~590 km</span>
-          <span><i class="fas fa-clock"></i> 10–11 hrs</span>
-        </div>
-        <div class="route-footer">
-          <div>
-            <div class="route-price-label">Starting from</div>
-            <div class="route-price">₹5,499</div>
+      <div class="route-card">
+        <img class="route-img" src="images/mumbai-goa.jpg" alt="Mumbai to Goa" />
+        <div class="route-body">
+          <div class="route-name"><i class="fas fa-arrow-right"></i> Mumbai → Goa</div>
+          <div class="route-meta">
+            <span><i class="fas fa-car"></i> ~590 km</span>
+            <span><i class="fas fa-clock"></i> 10-11 hrs</span>
           </div>
-          <button class="book-btn">Book Now</button>
+          <div class="route-footer">
+            <div><div class="route-price-lbl">Starting from</div><div class="route-price">₹5,499</div></div>
+            <button class="btn-sm">Book Now</button>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="route-card">
-      <img class="route-img" src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?q=80&w=600&auto=format&fit=crop" alt="Mumbai to Surat" />
-      <div class="route-body">
-        <div class="route-name"><i class="fas fa-arrow-right"></i> Mumbai → Surat</div>
-        <div class="route-meta">
-          <span><i class="fas fa-car"></i> ~280 km</span>
-          <span><i class="fas fa-clock"></i> 5–6 hrs</span>
-        </div>
-        <div class="route-footer">
-          <div>
-            <div class="route-price-label">Starting from</div>
-            <div class="route-price">₹2,799</div>
+      <div class="route-card">
+        <img class="route-img" src="images/mumbai-surat.jpg" alt="Mumbai to Surat" />
+        <div class="route-body">
+          <div class="route-name"><i class="fas fa-arrow-right"></i> Mumbai → Surat</div>
+          <div class="route-meta">
+            <span><i class="fas fa-car"></i> ~280 km</span>
+            <span><i class="fas fa-clock"></i> 5-6 hrs</span>
           </div>
-          <button class="book-btn">Book Now</button>
+          <div class="route-footer">
+            <div><div class="route-price-lbl">Starting from</div><div class="route-price">₹2,799</div></div>
+            <button class="btn-sm">Book Now</button>
+          </div>
         </div>
       </div>
     </div>
@@ -777,102 +484,102 @@
 </section>
 
 <!-- FLEET -->
-<section class="fleet-section">
-  <div class="section-header">
-    <h2>OUR FLEET</h2>
-    <div class="underline-bar"></div>
-  </div>
-  <div class="fleet-grid">
-    <div class="fleet-card">
-      <div class="fleet-img-wrap">
-        <img class="fleet-car-img" src="https://images.unsplash.com/photo-1550355291-bbee04a92027?q=80&w=700&auto=format&fit=crop" alt="Premium Sedan" />
-      </div>
-      <div class="fleet-body">
-        <div class="fleet-tag">Most Popular</div>
-        <div class="fleet-name">Premium Sedan</div>
-        <div class="fleet-chips">
-          <span class="chip">4 Seats</span>
-          <span class="chip">AC</span>
-          <span class="chip">GPS Tracked</span>
-          <span class="chip">Music System</span>
-        </div>
-        <div class="fleet-footer">
-          <div>
-            <div class="fleet-price-label">Starting from</div>
-            <div class="fleet-price">₹10/km</div>
-          </div>
-          <button class="book-btn">Book Now</button>
-        </div>
-      </div>
+<section class="section fleet-section">
+  <div class="section-inner">
+    <div class="sec-head">
+      <h2>OUR FLEET</h2>
+      <div class="sec-line"></div>
     </div>
-    <div class="fleet-card">
-      <div class="fleet-img-wrap">
-        <img class="fleet-car-img" src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=700&auto=format&fit=crop" alt="Luxury SUV" />
-      </div>
-      <div class="fleet-body">
-        <div class="fleet-tag">Premium</div>
-        <div class="fleet-name">Luxury SUV</div>
-        <div class="fleet-chips">
-          <span class="chip">7 Seats</span>
-          <span class="chip">AC</span>
-          <span class="chip">GPS Tracked</span>
-          <span class="chip">Extra Luggage</span>
+    <div class="fleet-grid">
+      <div class="fleet-card">
+        <div class="fleet-img-box">
+          <img class="fleet-car" src="images/sedan.jpg" alt="Premium Sedan" />
         </div>
-        <div class="fleet-footer">
-          <div>
-            <div class="fleet-price-label">Starting from</div>
-            <div class="fleet-price">₹14/km</div>
+        <div class="fleet-body">
+          <div class="fleet-tag">Most Popular</div>
+          <div class="fleet-name">Premium Sedan</div>
+          <div class="fleet-chips">
+            <span class="chip">4 Seats</span><span class="chip">AC</span>
+            <span class="chip">GPS Tracked</span><span class="chip">Music System</span>
           </div>
-          <button class="book-btn">Book Now</button>
-        </div>
-      </div>
-    </div>
-    <div class="fleet-card">
-      <div class="fleet-img-wrap">
-        <img class="fleet-car-img" src="https://images.unsplash.com/photo-1464219789935-c2d9d9aba644?q=80&w=700&auto=format&fit=crop" alt="Tempo Traveller" />
-      </div>
-      <div class="fleet-body">
-        <div class="fleet-tag">Group Travel</div>
-        <div class="fleet-name">Tempo Traveller</div>
-        <div class="fleet-chips">
-          <span class="chip">12 Seats</span>
-          <span class="chip">AC</span>
-          <span class="chip">GPS Tracked</span>
-          <span class="chip">Recliner Seats</span>
-        </div>
-        <div class="fleet-footer">
-          <div>
-            <div class="fleet-price-label">Starting from</div>
-            <div class="fleet-price">₹18/km</div>
+          <div class="fleet-footer">
+            <div><div class="fleet-price-lbl">Starting from</div><div class="fleet-price">₹10/km</div></div>
+            <button class="btn-sm">Book Now</button>
           </div>
-          <button class="book-btn">Book Now</button>
+        </div>
+      </div>
+      <div class="fleet-card">
+        <div class="fleet-img-box">
+          <img class="fleet-car" src="images/suv.jpg" alt="Luxury SUV" />
+        </div>
+        <div class="fleet-body">
+          <div class="fleet-tag">Premium</div>
+          <div class="fleet-name">Luxury SUV</div>
+          <div class="fleet-chips">
+            <span class="chip">7 Seats</span><span class="chip">AC</span>
+            <span class="chip">GPS Tracked</span><span class="chip">Extra Luggage</span>
+          </div>
+          <div class="fleet-footer">
+            <div><div class="fleet-price-lbl">Starting from</div><div class="fleet-price">₹14/km</div></div>
+            <button class="btn-sm">Book Now</button>
+          </div>
+        </div>
+      </div>
+      <div class="fleet-card">
+        <div class="fleet-img-box">
+          <img class="fleet-car" src="images/tempo.jpg" alt="Tempo Traveller" />
+        </div>
+        <div class="fleet-body">
+          <div class="fleet-tag">Group Travel</div>
+          <div class="fleet-name">Tempo Traveller</div>
+          <div class="fleet-chips">
+            <span class="chip">12 Seats</span><span class="chip">AC</span>
+            <span class="chip">GPS Tracked</span><span class="chip">Recliner Seats</span>
+          </div>
+          <div class="fleet-footer">
+            <div><div class="fleet-price-lbl">Starting from</div><div class="fleet-price">₹18/km</div></div>
+            <button class="btn-sm">Book Now</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CTA -->
-<section class="cta-section">
-  <div class="cta-inner">
-    <div class="cta-text">
-      <h2>Ready to Book Your Outstation Cab?</h2>
-      <p>Call us now or book online. Professional drivers, transparent pricing, 24x7 support.</p>
+<!-- APP STRIP (matches reference image 9) -->
+<div class="app-strip">
+  <div class="app-strip-inner">
+    <div class="app-left">
+      <div style="display:flex;align-items:center;gap:0.8rem;">
+        <i class="fas fa-phone-alt" style="color:var(--yellow);font-size:1.4rem;"></i>
+        <div>
+          <div style="font-size:0.65rem;color:#aaa;margin-bottom:0.15rem;">Call for Bookings</div>
+          <div class="app-number">097022 90804</div>
+          <div class="app-url">www.clickcabs.in</div>
+        </div>
+      </div>
     </div>
-    <div class="cta-btns">
-      <a href="tel:+919876543210" class="btn-yellow"><i class="fas fa-phone"></i> Call Now</a>
-      <a href="#" class="btn-ghost"><i class="fas fa-mobile-alt"></i> Download App</a>
+    <div class="app-center">
+      <h4>DOWNLOAD OUR APP</h4>
+      <p>Quick bookings, exclusive offers &amp; easy cancellations.</p>
+      <div class="app-badges">
+        <a href="#" class="app-badge"><i class="fab fa-google-play"></i> Google Play</a>
+        <a href="#" class="app-badge"><i class="fab fa-apple"></i> App Store</a>
+      </div>
+    </div>
+    <div class="app-right">
+      <img src="images/app-strip.jpg" alt="App Preview" />
     </div>
   </div>
-</section>
+</div>
 
 <!-- FOOTER -->
 <footer>
   <div class="footer-grid">
     <div class="footer-brand">
-      <a href="index.html" class="nav-logo">
-        <div class="logo-circle">P</div>
-        <div class="logo-text">Premium <small>CAB SERVICES</small></div>
+      <a href="index.html" class="logo">
+        <div class="logo-icon">P</div>
+        <div class="logo-name" style="color:#fff;">Premium <span>CAB SERVICES</span></div>
       </a>
       <p>Reliable, comfortable and affordable cab services across India with professional drivers.</p>
     </div>
@@ -915,7 +622,7 @@
 
 <script>
   function setTab(btn) {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.trip-tab').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
   }
 </script>
