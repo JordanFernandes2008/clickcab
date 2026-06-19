@@ -59,20 +59,19 @@
     /* ── HERO ── */
     .hero {
       padding-top: 56px;
-      background: linear-gradient(160deg, #1c1100 0%, #2d1c00 45%, #1a1000 100%);
+      background: url('images/innova.jpg') center/cover no-repeat;
       position: relative; overflow: hidden;
     }
     .hero::before {
       content: '';
       position: absolute; inset: 0;
-      background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
-      background-size: 28px 28px;
-      pointer-events: none;
+      background: linear-gradient(90deg, rgba(0,0,0,0.80) 0%, rgba(0,0,0,0.25) 100%);
+      pointer-events: none; z-index: 1;
     }
 
     .hero-inner {
       max-width: 1200px; margin: 0 auto;
-      display: grid; grid-template-columns: 1fr 1fr;
+      display: grid; grid-template-columns: 1fr;
       min-height: 460px;
       position: relative; z-index: 2;
     }
@@ -80,6 +79,7 @@
     .hero-left {
       display: flex; flex-direction: column; justify-content: center;
       padding: 3rem 2rem 2rem 2.5rem;
+      position: relative; z-index: 2;
     }
     .hero-label {
       color: var(--yellow); font-size: 0.7rem; font-weight: 700;
@@ -342,9 +342,7 @@
       </h1>
       <p class="hero-p">One-way &amp; round-trip outstation cab services across India with professional drivers and transparent pricing.</p>
     </div>
-    <div class="hero-right">
-      <img class="hero-car" src="images/innova.jpg" alt="Toyota Innova Crysta" />
-    </div>
+
   </div>
 </div>
 
