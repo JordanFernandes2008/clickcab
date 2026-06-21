@@ -57,7 +57,8 @@
     /* ── HERO (image bg, same shape as homepage's gradient hero) ── */
     .hero {
       padding-top: 60px;
-      min-height: 640px;
+      min-height: 560px;
+      padding-bottom: 80px;
       background: linear-gradient(rgba(10,7,2,0.55), rgba(10,7,2,0.75)), url('images/tour.jpg') center/cover no-repeat;
       display: flex;
       flex-direction: column;
@@ -76,17 +77,16 @@
 
     .hero-sub { font-size: 0.88rem; color: #ddd; line-height: 1.7; max-width: 460px; margin-top: 1rem; }
 
-    /* ── BOOKING BAR (overlaps bottom of hero, like the screenshot) ── */
+    /* ── BOOKING BAR (sits below hero, pulled up to overlap the bottom edge) ── */
+    .booking-bar-wrap { padding: 0 2rem; position: relative; z-index: 5; }
     .booking-bar {
       background: #fff;
       border-radius: 16px;
       box-shadow: 0 20px 50px rgba(0,0,0,0.25);
       padding: 1.6rem 2rem;
       max-width: 1300px;
-      margin: 0 auto;
+      margin: -70px auto 0;
       position: relative;
-      z-index: 3;
-      transform: translateY(50%);
       display: flex;
       align-items: end;
       gap: 1.2rem;
@@ -109,7 +109,7 @@
 
     /* ── SECTIONS ── */
     .section { background: #fff; padding: 5rem 2rem; }
-    .section.tours-section { padding-top: calc(5rem + 60px); }
+    .section.tours-section { padding-top: 3rem; }
     .section h2 { text-align: center; font-size: 2rem; font-weight: 900; margin-bottom: 0.5rem; }
     .underline { width: 48px; height: 3px; background: var(--yellow); border-radius: 2px; margin: 0.6rem auto 2rem; }
 
@@ -162,7 +162,7 @@
 
     @media (max-width: 960px) {
       .nav-links { display: none; }
-      .booking-bar { flex-wrap: wrap; transform: translateY(20px); }
+      .booking-bar { flex-wrap: wrap; margin-top: -40px; }
       .bfield { flex-basis: 45%; }
       .tours-grid { grid-template-columns: repeat(3, 1fr); }
       .features { grid-template-columns: 1fr 1fr; }
@@ -208,7 +208,9 @@
     </h1>
     <p class="hero-sub">Curated travel experiences with comfortable transportation and trusted drivers.</p>
   </div>
+</div>
 
+<div class="booking-bar-wrap">
   <div class="booking-bar">
     <div class="bfield">
       <label>Pickup Location</label>
