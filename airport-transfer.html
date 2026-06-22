@@ -10,6 +10,8 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
+      --blue: #01456c;
+      --blue-dark: #012e48;
       --yellow: #f5a200;
       --yellow-hover: #d48e00;
       --white: #ffffff;
@@ -25,7 +27,7 @@
     /* ── NAV ── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 999;
-      background: #0d0d0d;
+      background: var(--blue);
       height: 56px;
       display: flex; align-items: center; justify-content: space-between;
       padding: 0 2rem;
@@ -38,11 +40,11 @@
       font-weight: 900; font-size: 0.9rem; color: #000;
     }
     .logo-name { color: #fff; font-size: 0.95rem; font-weight: 800; line-height: 1; }
-    .logo-name span { display: block; font-size: 0.55rem; font-weight: 400; color: #aaa; letter-spacing: 0.15em; text-transform: uppercase; }
+    .logo-name span { display: block; font-size: 0.55rem; font-weight: 400; color: #bcd2de; letter-spacing: 0.15em; text-transform: uppercase; }
 
     .nav-links { display: flex; list-style: none; }
     .nav-links a {
-      color: #ccc; text-decoration: none; font-size: 0.8rem; font-weight: 500;
+      color: #d4e3eb; text-decoration: none; font-size: 0.8rem; font-weight: 500;
       padding: 0.3rem 0.65rem; transition: color 0.2s;
     }
     .nav-links a:hover { color: #fff; }
@@ -122,25 +124,60 @@
       margin-top: -40px;
     }
     .divider-v { width: 1px; height: 36px; background: #e0e0e0; flex-shrink: 0; }
-    .booking-fields { display: flex; align-items: center; flex: 1; }
-    .bfield {
-      display: flex; flex-direction: column; gap: 0.15rem;
-      flex: 1; padding: 0 1rem;
-      border-right: 1px solid #e0e0e0;
+
+    /* Uber/Rapido style trigger pill */
+    .ride-pill {
+      flex: 1; display: flex; align-items: center; gap: 0.9rem;
+      background: var(--offwhite); border: 1.5px solid var(--border);
+      border-radius: 100px; padding: 0.7rem 1.3rem; cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
     }
-    .bfield:last-of-type { border-right: none; }
-    .bfield label { font-size: 0.62rem; font-weight: 600; color: #999; text-transform: uppercase; letter-spacing: 0.08em; }
-    .bfield-row { display: flex; align-items: center; gap: 0.4rem; }
-    .dot-blue { color: #1565C0; font-size: 0.55rem; }
-    .dot-red { color: #c62828; font-size: 0.55rem; }
-    .bfield-row input,
-    .bfield-row select {
-      border: none; outline: none;
-      font-family: 'Inter', sans-serif; font-size: 0.82rem; color: #333;
-      width: 100%; background: transparent; appearance: none;
+    .ride-pill:hover { border-color: var(--blue); background: #eef4f7; }
+    .ride-pill-icon { width: 34px; height: 34px; border-radius: 50%; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; flex-shrink: 0; }
+    .ride-pill-text { flex: 1; text-align: left; }
+    .ride-pill-main { font-size: 0.84rem; font-weight: 700; color: var(--text); }
+    .ride-pill-sub { font-size: 0.7rem; color: var(--gray); margin-top: 0.1rem; }
+    .ride-pill-chevron { color: var(--gray); font-size: 0.8rem; }
+
+    /* Modal */
+    .ride-modal-overlay {
+      position: fixed; inset: 0; background: rgba(1,14,22,0.55);
+      display: none; align-items: center; justify-content: center;
+      z-index: 2000; padding: 1rem;
     }
-    .bfield-row input::placeholder { color: #bbb; }
-    .bfield-row select option { color: #333; }
+    .ride-modal-overlay.open { display: flex; }
+    .ride-modal {
+      background: #fff; border-radius: 18px; width: 100%; max-width: 420px;
+      padding: 1.6rem 1.5rem 1.4rem; box-shadow: 0 30px 80px rgba(0,0,0,0.35);
+      position: relative;
+    }
+    .ride-modal-close {
+      position: absolute; top: 1rem; right: 1rem; width: 32px; height: 32px;
+      border-radius: 50%; background: var(--offwhite); border: none;
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+      color: var(--text); font-size: 0.9rem;
+    }
+    .ride-modal h3 { font-size: 1.05rem; font-weight: 800; margin-bottom: 1.2rem; color: var(--blue); }
+    .ride-input-group { position: relative; margin-bottom: 0.9rem; }
+    .ride-line { position: absolute; left: 17px; top: 36px; bottom: 36px; width: 2px; background: var(--border); z-index: 0; }
+    .ride-row { display: flex; align-items: center; gap: 0.7rem; background: var(--offwhite); border: 1.5px solid var(--border); border-radius: 10px; padding: 0.75rem 0.9rem; position: relative; z-index: 1; margin-bottom: 0.6rem; }
+    .ride-row:focus-within { border-color: var(--blue); background: #fff; }
+    .ride-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+    .ride-dot.pickup { background: var(--blue); }
+    .ride-dot.drop { background: #c62828; }
+    .ride-row input { border: none; outline: none; background: transparent; font-family: 'Inter', sans-serif; font-size: 0.85rem; width: 100%; color: var(--text); }
+    .ride-row input::placeholder { color: #999; }
+    .ride-datetime { display: flex; gap: 0.6rem; margin-top: 0.9rem; }
+    .ride-dt-field { flex: 1; background: var(--offwhite); border: 1.5px solid var(--border); border-radius: 10px; padding: 0.65rem 0.8rem; }
+    .ride-dt-field label { display: block; font-size: 0.62rem; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.25rem; }
+    .ride-dt-field input { border: none; outline: none; background: transparent; font-family: 'Inter', sans-serif; font-size: 0.8rem; width: 100%; color: var(--text); }
+    .ride-confirm-btn {
+      width: 100%; margin-top: 1.2rem; background: var(--yellow); color: #000; border: none;
+      border-radius: 10px; font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 800;
+      padding: 0.85rem; cursor: pointer; transition: background 0.2s;
+    }
+    .ride-confirm-btn:hover { background: var(--yellow-hover); }
+
     .search-btn {
       background: var(--yellow); color: #000; border: none; border-radius: 8px;
       font-family: 'Inter', sans-serif; font-size: 0.88rem; font-weight: 800;
@@ -167,9 +204,9 @@
     .benefit-card:hover { border-color: var(--yellow); box-shadow: 0 6px 24px rgba(245,162,0,0.1); transform: translateY(-3px); }
     .benefit-icon {
       width: 56px; height: 56px; border-radius: 50%;
-      background: #fff8e1; border: 1.5px solid rgba(245,162,0,0.25);
+      background: #eaf2f6; border: 1.5px solid rgba(1,69,108,0.25);
       display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 1rem; font-size: 1.3rem; color: var(--yellow);
+      margin: 0 auto 1rem; font-size: 1.3rem; color: var(--blue);
     }
     .benefit-card h3 { font-size: 0.85rem; font-weight: 700; margin-bottom: 0.4rem; }
     .benefit-card p { font-size: 0.72rem; color: var(--gray); line-height: 1.6; }
@@ -205,9 +242,9 @@
     .why-card:hover { border-color: var(--yellow); box-shadow: 0 6px 24px rgba(245,162,0,0.1); transform: translateY(-3px); }
     .why-icon {
       width: 62px; height: 62px; border-radius: 50%;
-      background: #fff8e1; border: 1.5px solid rgba(245,162,0,0.25);
+      background: #eaf2f6; border: 1.5px solid rgba(1,69,108,0.25);
       display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 1.1rem; font-size: 1.4rem; color: var(--yellow);
+      margin: 0 auto 1.1rem; font-size: 1.4rem; color: var(--blue);
     }
     .why-card h3 { font-size: 0.88rem; font-weight: 700; margin-bottom: 0.45rem; }
     .why-card p { font-size: 0.76rem; color: var(--gray); line-height: 1.65; }
@@ -220,7 +257,7 @@
     .btn-sm:hover { background: var(--yellow-hover); }
 
     /* ── APP STRIP ── */
-    .app-strip { background: #111; padding: 1.5rem 2rem; }
+    .app-strip { background: var(--blue-dark); padding: 1.5rem 2rem; }
     .app-strip-inner {
       max-width: 1200px; margin: 0 auto;
       display: flex; align-items: center; justify-content: space-between; gap: 2rem;
@@ -240,7 +277,7 @@
     .app-right img { height: 80px; object-fit: contain; }
 
     /* ── FOOTER ── */
-    footer { background: #0a0a0a; border-top: 1px solid rgba(255,255,255,0.06); padding: 3rem 2rem 1.5rem; }
+    footer { background: var(--blue-dark); border-top: 1px solid rgba(255,255,255,0.08); padding: 3rem 2rem 1.5rem; }
     .footer-grid {
       max-width: 1200px; margin: 0 auto;
       display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem; margin-bottom: 2rem;
@@ -265,9 +302,9 @@
       .why-grid { grid-template-columns: repeat(2, 1fr); }
       .footer-grid { grid-template-columns: 1fr 1fr; }
       .nav-links { display: none; }
-      .booking-bar { flex-direction: column; align-items: stretch; }
-      .booking-fields { flex-direction: column; }
-      .bfield { border-right: none; border-bottom: 1px solid #e0e0e0; padding: 0.6rem 0; }
+      .booking-bar { flex-wrap: wrap; }
+      .ride-pill { flex-basis: 100%; order: 1; }
+      .search-btn { flex-basis: 100%; order: 2; }
       .app-strip-inner { flex-direction: column; text-align: center; }
       .app-badges { justify-content: center; }
       .hero-benefits { gap: 1rem; }
@@ -297,8 +334,8 @@
     <li><a href="tour-packages.html">Tour Packages</a></li>
     <li><a href="contact-us.html">Contact Us</a></li>
   </ul>
-  <a href="tel:+919876543210" class="nav-phone">
-    <i class="fas fa-phone"></i> 24x7 Customer Support &nbsp;+91 98765 43210
+  <a href="tel:+919702290804" class="nav-phone">
+    <i class="fas fa-phone"></i> 24x7 Customer Support &nbsp;+91 97022 90804
   </a>
 </nav>
 
@@ -341,47 +378,45 @@
 <!-- BOOKING BAR -->
 <div class="booking-bar-wrap">
   <div class="booking-bar">
-    <div class="booking-fields">
-      <div class="bfield">
-        <label>Pickup Location</label>
-        <div class="bfield-row">
-          <i class="fas fa-circle dot-blue"></i>
-          <input type="text" placeholder="Enter pickup location" />
-        </div>
+    <div class="ride-pill" onclick="openRideModal()">
+      <div class="ride-pill-icon"><i class="fas fa-plane"></i></div>
+      <div class="ride-pill-text">
+        <div class="ride-pill-main" id="ridePillMain">Set pickup &amp; airport</div>
+        <div class="ride-pill-sub" id="ridePillSub">Add pickup, drop, flight date &amp; time</div>
       </div>
-      <div class="bfield">
-        <label>Drop Location</label>
-        <div class="bfield-row">
-          <i class="fas fa-circle dot-red"></i>
-          <input type="text" placeholder="Enter airport or city" />
-        </div>
+      <i class="fas fa-chevron-right ride-pill-chevron"></i>
+    </div>
+    <button class="search-btn" onclick="openRideModal()">Search Cabs</button>
+  </div>
+</div>
+
+<!-- RIDE MODAL -->
+<div class="ride-modal-overlay" id="rideModalOverlay" onclick="closeRideModalOutside(event)">
+  <div class="ride-modal">
+    <button class="ride-modal-close" onclick="closeRideModal()"><i class="fas fa-times"></i></button>
+    <h3>Plan Your Airport Transfer</h3>
+    <div class="ride-input-group">
+      <div class="ride-line"></div>
+      <div class="ride-row">
+        <div class="ride-dot pickup"></div>
+        <input type="text" id="pickupInput" placeholder="Enter pickup location" />
       </div>
-      <div class="bfield">
-        <label>Flight Date</label>
-        <div class="bfield-row">
-          <i class="fas fa-calendar" style="color:#888;font-size:0.75rem;"></i>
-          <input type="date" value="2025-05-15" />
-        </div>
-      </div>
-      <div class="bfield">
-        <label>Time</label>
-        <div class="bfield-row">
-          <i class="fas fa-clock" style="color:#888;font-size:0.75rem;"></i>
-          <select>
-            <option>10:00 AM</option>
-            <option>11:00 AM</option>
-            <option>12:00 PM</option>
-            <option>01:00 PM</option>
-            <option>02:00 PM</option>
-            <option>03:00 PM</option>
-            <option>04:00 PM</option>
-            <option>05:00 PM</option>
-            <option>06:00 PM</option>
-          </select>
-        </div>
+      <div class="ride-row">
+        <div class="ride-dot drop"></div>
+        <input type="text" id="dropInput" placeholder="Enter airport or city" />
       </div>
     </div>
-    <button class="search-btn">Search Cabs</button>
+    <div class="ride-datetime">
+      <div class="ride-dt-field">
+        <label>Flight Date</label>
+        <input type="date" id="rideDateInput" value="2026-05-15" />
+      </div>
+      <div class="ride-dt-field">
+        <label>Time</label>
+        <input type="time" id="rideTimeInput" value="10:00" />
+      </div>
+    </div>
+    <button class="ride-confirm-btn" onclick="confirmRide()">Search Cabs</button>
   </div>
 </div>
 
@@ -541,7 +576,7 @@
         <li><a href="local-rental.html">Local Rentals</a></li>
         <li><a href="corporate.html">Corporate</a></li>
         <li><a href="tour-packages.html">Tour Packages</a></li>
-        <li><a href="contact-us.html">Contact Us</a></li>>
+        <li><a href="contact-us.html">Contact Us</a></li>
       </ul>
     </div>
     <div class="footer-col">
@@ -570,6 +605,25 @@
     <span>www.clickcabs.in</span>
   </div>
 </footer>
+
+<script>
+  function openRideModal() {
+    document.getElementById('rideModalOverlay').classList.add('open');
+  }
+  function closeRideModal() {
+    document.getElementById('rideModalOverlay').classList.remove('open');
+  }
+  function closeRideModalOutside(e) {
+    if (e.target.id === 'rideModalOverlay') closeRideModal();
+  }
+  function confirmRide() {
+    const pickup = document.getElementById('pickupInput').value || 'Pickup location';
+    const drop = document.getElementById('dropInput').value || 'Airport / city';
+    document.getElementById('ridePillMain').textContent = pickup + ' → ' + drop;
+    document.getElementById('ridePillSub').textContent = document.getElementById('rideDateInput').value + ' • ' + document.getElementById('rideTimeInput').value;
+    closeRideModal();
+  }
+</script>
 
 </body>
 </html>
