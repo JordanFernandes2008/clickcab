@@ -3,269 +3,479 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tour Packages - Click Cabs</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <title>Tour Packages - Premium Cab Services</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     :root {
-      --blue: #01456c; --blue-dark: #012f4a; --blue-mid: #015d8f;
-      --yellow: #f5a800; --yellow-dark: #d4900a;
-      --white: #ffffff; --light: #f4f8fb; --text: #1a2a38;
-      --muted: #6b8399; --border: #d4e6f1; --radius: 12px;
+      --blue: #01456c;
+      --blue-dark: #012e48;
+      --yellow: #f5a623;
+      --yellow-dark: #d4891a;
+      --hero-bg: #1a1208;
+      --white: #ffffff;
+      --offwhite: #f8f8f8;
+      --gray: #777777;
+      --text-dark: #1a1a1a;
+      --border-light: #e5e5e5;
     }
-    body { font-family: 'Inter', sans-serif; color: var(--text); background: var(--white); }
 
-    .navbar { background: var(--blue); position: sticky; top: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 68px; box-shadow: 0 2px 12px rgba(1,69,108,0.3); }
-    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .nav-logo-text { display: flex; flex-direction: column; line-height: 1.1; }
-    .nav-logo-text span:first-child { font-size: 17px; font-weight: 800; color: var(--white); }
-    .nav-logo-text span:last-child { font-size: 9px; color: var(--yellow); letter-spacing: 2px; text-transform: uppercase; }
-    .nav-links { display: flex; gap: 4px; }
-    .nav-links a { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 14px; font-weight: 500; padding: 6px 12px; border-radius: 6px; }
-    .nav-links a:hover, .nav-links a.active { color: var(--yellow); background: rgba(245,168,0,0.12); }
-    .nav-cta { background: var(--yellow); color: var(--blue-dark); font-weight: 700; font-size: 13px; padding: 9px 18px; border-radius: 8px; text-decoration: none; white-space: nowrap; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--white);
+      color: var(--text-dark);
+      overflow-x: hidden;
+    }
 
-    .page-hero { background: linear-gradient(135deg, var(--blue-dark), var(--blue)); padding: 60px 40px; position: relative; overflow: hidden; }
-    .page-hero::before { content: ''; position: absolute; inset: 0; background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1400&auto=format&fit=crop') center/cover; opacity: 0.1; }
-    .page-hero-inner { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
-    .page-hero-badge { display: inline-block; background: rgba(245,168,0,0.2); border: 1px solid rgba(245,168,0,0.4); color: var(--yellow); font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 20px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
-    .page-hero h1 { font-size: clamp(28px, 4vw, 46px); font-weight: 800; color: var(--white); margin-bottom: 12px; line-height: 1.2; }
-    .page-hero p { color: rgba(255,255,255,0.7); font-size: 16px; max-width: 560px; line-height: 1.6; margin-bottom: 28px; }
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: var(--blue);
+      padding: 0 2.5rem;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
 
-    .booking-card { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 14px; padding: 24px; max-width: 700px; }
-    .form-row { display: flex; gap: 12px; flex-wrap: wrap; }
-    .form-field { flex: 1; min-width: 150px; }
-    .form-field label { display: block; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.5); margin-bottom: 6px; }
-    .form-field input, .form-field select { width: 100%; background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 10px 14px; color: var(--white); font-family: inherit; font-size: 14px; outline: none; }
-    .form-field input::placeholder { color: rgba(255,255,255,0.4); }
-    .form-field select option { background: var(--blue-dark); }
-    .search-btn { background: var(--yellow); color: var(--blue-dark); font-weight: 800; font-size: 15px; padding: 12px 28px; border: none; border-radius: 8px; cursor: pointer; margin-top: 16px; }
+    .nav-logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+    .logo-circle { width: 34px; height: 34px; background: var(--yellow); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.95rem; color: #111; }
+    .logo-text { color: #fff; font-size: 1rem; font-weight: 800; letter-spacing: -0.01em; }
+    .logo-text small { display: block; font-size: 0.6rem; font-weight: 500; color: #bcd2de; letter-spacing: 0.12em; text-transform: uppercase; }
 
-    .section { padding: 72px 40px; max-width: 1200px; margin: 0 auto; }
-    .section-eyebrow { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--yellow); margin-bottom: 8px; }
-    .section-title { font-size: clamp(26px, 3vw, 36px); font-weight: 800; color: var(--text); margin-bottom: 8px; }
-    .section-title span { color: var(--blue); }
-    .divider { width: 44px; height: 3px; background: var(--yellow); border-radius: 2px; margin-bottom: 36px; }
+    .nav-links { display: flex; gap: 0; list-style: none; }
+    .nav-links a { color: #d4e3eb; text-decoration: none; font-size: 0.82rem; font-weight: 500; padding: 0.35rem 0.7rem; border-radius: 5px; transition: color 0.2s; }
+    .nav-links a:hover { color: #fff; }
+    .nav-links a.active { color: var(--yellow); border-bottom: 2px solid var(--yellow); }
 
-    /* TOUR CARDS — NO PRICE */
-    .tours-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
-    .tour-card { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; }
-    .tour-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(1,69,108,0.12); }
-    .tour-card img { width: 100%; height: 200px; object-fit: cover; }
-    .tour-card-body { padding: 18px; }
-    .tour-card-body h3 { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 10px; }
-    .tour-meta { display: flex; flex-direction: column; gap: 5px; margin-bottom: 16px; }
-    .tour-meta span { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
-    .tour-book { display: block; background: var(--blue); color: var(--white); text-align: center; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: 700; text-decoration: none; transition: background 0.2s; }
-    .tour-book:hover { background: var(--blue-mid); }
+    .nav-phone { display: flex; align-items: center; gap: 0.5rem; background: var(--yellow); color: #111; font-size: 0.78rem; font-weight: 700; padding: 0.45rem 1rem; border-radius: 7px; text-decoration: none; }
 
-    /* BENEFITS */
-    .benefits-bg { background: var(--light); padding: 72px 40px; }
-    .benefits-inner { max-width: 1200px; margin: 0 auto; }
-    .benefits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
-    .benefit-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; text-align: center; transition: transform 0.2s; }
-    .benefit-card:hover { transform: translateY(-4px); }
-    .benefit-icon { font-size: 32px; margin-bottom: 12px; }
-    .benefit-card h3 { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
-    .benefit-card p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+    /* ── HERO (image bg, same shape as homepage's gradient hero) ── */
+    .hero {
+      padding-top: 60px;
+      min-height: 640px;
+      background: linear-gradient(rgba(10,7,2,0.55), rgba(10,7,2,0.75)), url('images/tour.jpg') center/cover no-repeat;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
 
-    .cta-strip { background: var(--blue); padding: 40px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
-    .cta-strip-text h2 { font-size: 22px; font-weight: 800; color: var(--white); margin-bottom: 4px; }
-    .cta-strip-text p { color: rgba(255,255,255,0.65); font-size: 14px; }
-    .cta-phone { background: var(--yellow); color: var(--blue-dark); font-weight: 800; font-size: 15px; padding: 12px 24px; border-radius: 8px; text-decoration: none; }
+    .hero::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(rgba(245,166,35,0.06) 1px, transparent 1px); background-size: 32px 32px; pointer-events: none; }
 
-    footer { background: var(--blue-dark); padding: 56px 40px 24px; }
-    .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; padding-bottom: 36px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px; }
-    .footer-brand p { color: rgba(255,255,255,0.55); font-size: 14px; line-height: 1.6; margin-top: 12px; }
-    .footer-col h4 { font-size: 12px; font-weight: 700; color: var(--yellow); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
-    .footer-col a { display: block; color: rgba(255,255,255,0.6); font-size: 14px; text-decoration: none; margin-bottom: 8px; }
-    .footer-col a:hover { color: var(--yellow); }
-    .footer-bottom { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; }
-    .footer-bottom p, .footer-bottom a { color: rgba(255,255,255,0.4); font-size: 13px; text-decoration: none; }
+    .hero-inner { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 3rem 3rem 2rem; position: relative; z-index: 2; max-width: 1300px; margin: 0 auto; width: 100%; }
 
-    @media (max-width: 900px) {
-      .navbar { padding: 0 20px; } .nav-links { display: none; }
-      .page-hero { padding: 40px 20px; } .section { padding: 50px 20px; }
-      .footer-grid { grid-template-columns: 1fr 1fr; } .benefits-bg { padding: 50px 20px; }
+    .hero-eyebrow { font-size: 0.72rem; font-weight: 700; color: var(--yellow); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 1.2rem; }
+
+    .hero-h1 { font-size: clamp(2rem, 3.2vw, 3rem); font-weight: 900; line-height: 1.1; letter-spacing: -0.03em; color: #fff; margin-bottom: 0.3rem; }
+    .hero-h1 .yellow { color: var(--yellow); display: block; }
+
+    .hero-sub { font-size: 0.88rem; color: #ddd; line-height: 1.7; max-width: 460px; margin-top: 1rem; }
+
+    /* ── BOOKING BAR (overlaps bottom of hero, like the screenshot) ── */
+    .booking-bar {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+      padding: 1.4rem 1.6rem;
+      max-width: 1300px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+    .booking-bar-wrap { margin-top: -40px; padding: 0 2rem; position: relative; z-index: 3; }
+
+    /* Uber/Rapido style trigger pill */
+    .ride-pill {
+      flex: 1; display: flex; align-items: center; gap: 0.9rem;
+      background: var(--offwhite); border: 1.5px solid var(--border-light);
+      border-radius: 100px; padding: 0.7rem 1.3rem; cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .ride-pill:hover { border-color: var(--blue); background: #eef4f7; }
+    .ride-pill-icon { width: 34px; height: 34px; border-radius: 50%; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; flex-shrink: 0; }
+    .ride-pill-text { flex: 1; text-align: left; }
+    .ride-pill-main { font-size: 0.84rem; font-weight: 700; color: var(--text-dark); }
+    .ride-pill-sub { font-size: 0.7rem; color: var(--gray); margin-top: 0.1rem; }
+    .ride-pill-chevron { color: var(--gray); font-size: 0.8rem; }
+
+    /* Modal */
+    .ride-modal-overlay {
+      position: fixed; inset: 0; background: rgba(1,14,22,0.55);
+      display: none; align-items: center; justify-content: center;
+      z-index: 2000; padding: 1rem;
+    }
+    .ride-modal-overlay.open { display: flex; }
+    .ride-modal {
+      background: #fff; border-radius: 18px; width: 100%; max-width: 420px;
+      padding: 1.6rem 1.5rem 1.4rem; box-shadow: 0 30px 80px rgba(0,0,0,0.35);
+      position: relative;
+    }
+    .ride-modal-close {
+      position: absolute; top: 1rem; right: 1rem; width: 32px; height: 32px;
+      border-radius: 50%; background: var(--offwhite); border: none;
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+      color: var(--text-dark); font-size: 0.9rem;
+    }
+    .ride-modal h3 { font-size: 1.05rem; font-weight: 800; margin-bottom: 1.2rem; color: var(--blue); }
+    .ride-input-group { position: relative; margin-bottom: 0.9rem; }
+    .ride-row { display: flex; align-items: center; gap: 0.7rem; background: var(--offwhite); border: 1.5px solid var(--border-light); border-radius: 10px; padding: 0.75rem 0.9rem; position: relative; z-index: 1; margin-bottom: 0.6rem; }
+    .ride-row:focus-within { border-color: var(--blue); background: #fff; }
+    .ride-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+    .ride-dot.pickup { background: var(--blue); }
+    .ride-dot.drop { background: #c62828; }
+    .ride-row input { border: none; outline: none; background: transparent; font-family: 'Inter', sans-serif; font-size: 0.85rem; width: 100%; color: var(--text-dark); }
+    .ride-row input::placeholder { color: #999; }
+    .ride-datetime { display: flex; gap: 0.6rem; margin-top: 0.9rem; }
+    .ride-dt-field { flex: 1; background: var(--offwhite); border: 1.5px solid var(--border-light); border-radius: 10px; padding: 0.65rem 0.8rem; }
+    .ride-dt-field label { display: block; font-size: 0.62rem; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.25rem; }
+    .ride-dt-field input { border: none; outline: none; background: transparent; font-family: 'Inter', sans-serif; font-size: 0.8rem; width: 100%; color: var(--text-dark); }
+    .ride-vehicle-field { margin-top: 0.6rem; background: var(--offwhite); border: 1.5px solid var(--border-light); border-radius: 10px; padding: 0.65rem 0.8rem; }
+    .ride-vehicle-field label { display: block; font-size: 0.62rem; font-weight: 700; color: var(--gray); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.25rem; }
+    .ride-vehicle-field select { border: none; outline: none; background: transparent; font-family: 'Inter', sans-serif; font-size: 0.8rem; width: 100%; color: var(--text-dark); }
+    .ride-confirm-btn {
+      width: 100%; margin-top: 1.2rem; background: var(--yellow); color: #111; border: none;
+      border-radius: 10px; font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 800;
+      padding: 0.85rem; cursor: pointer; transition: background 0.2s;
+    }
+    .ride-confirm-btn:hover { background: var(--yellow-dark); }
+
+    .book-btn {
+      background: var(--yellow); color: #111; border: none; border-radius: 8px;
+      font-family: 'Inter', sans-serif; font-size: 0.88rem; font-weight: 800;
+      padding: 0.8rem 1.8rem; cursor: pointer; white-space: nowrap; flex-shrink: 0;
+      transition: background 0.2s;
+    }
+    .book-btn:hover { background: var(--yellow-dark); }
+
+    /* ── SECTIONS ── */
+    .section { background: #fff; padding: 5rem 2rem; }
+    .section.tours-section { padding-top: 4rem; }
+    .section h2 { text-align: center; font-size: 2rem; font-weight: 900; margin-bottom: 0.5rem; }
+    .underline { width: 48px; height: 3px; background: var(--yellow); border-radius: 2px; margin: 0.6rem auto 2rem; }
+
+    /* ── POPULAR TOURS ── */
+    .tours-grid { max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: repeat(6, 1fr); gap: 1rem; }
+    .tour-card { border: 1.5px solid var(--border-light); border-radius: 12px; overflow: hidden; background: #fff; transition: all 0.25s; }
+    .tour-card:hover { border-color: var(--yellow); box-shadow: 0 8px 30px rgba(245,166,35,0.12); transform: translateY(-4px); }
+    .tour-card img { width: 100%; height: 120px; object-fit: cover; display: block; }
+    .tour-card-body { padding: 0.9rem 1rem 1.1rem; }
+    .tour-card-body h3 { font-weight: 800; margin-bottom: 0.5rem; font-size: 0.85rem; }
+    .tour-meta { display: flex; align-items: flex-start; gap: 0.35rem; font-size: 0.68rem; color: var(--gray); margin-bottom: 0.35rem; line-height: 1.3; }
+    .tour-meta i { color: var(--yellow); width: 12px; margin-top: 0.15rem; flex-shrink: 0; }
+
+    /* ── TOUR BENEFITS ── */
+    .why-section { background: var(--offwhite); }
+    .features { max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.6rem; }
+    .feature-card { background: #fff; border: 1.5px solid var(--border-light); border-radius: 14px; padding: 2rem 1.2rem; text-align: center; transition: all 0.25s; }
+    .feature-card:hover { border-color: var(--yellow); box-shadow: 0 8px 30px rgba(245,166,35,0.12); transform: translateY(-4px); }
+    .feature-card i { font-size: 1.8rem; color: var(--blue); margin-bottom: 1rem; }
+    .feature-card h3 { font-weight: 800; margin-bottom: 0.5rem; font-size: 0.92rem; }
+    .feature-card p { color: var(--gray); font-size: 0.8rem; line-height: 1.6; }
+
+    /* ── APP STRIP ── */
+    .app-strip { background: var(--blue-dark); padding: 2.2rem 2rem; }
+    .app-strip-inner { max-width: 1300px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+    .app-call { display: flex; align-items: center; gap: 0.9rem; }
+    .app-call i { color: var(--yellow); font-size: 1.5rem; }
+    .app-call-label { font-size: 0.7rem; color: #aaa; margin-bottom: 0.15rem; }
+    .app-call-number { font-size: 1.6rem; font-weight: 900; color: #fff; line-height: 1; }
+    .app-call-url { font-size: 0.72rem; color: #888; margin-top: 0.25rem; }
+    .app-center h4 { color: var(--yellow); font-size: 0.84rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .app-center p { font-size: 0.74rem; color: #aaa; margin-bottom: 0.7rem; }
+    .app-badges { display: flex; gap: 0.6rem; }
+    .app-badge { background: #222; border: 1px solid #333; border-radius: 6px; padding: 0.4rem 0.85rem; display: flex; align-items: center; gap: 0.4rem; font-size: 0.72rem; color: #ccc; text-decoration: none; }
+    .app-badge i { font-size: 1rem; color: #fff; }
+    .app-right img { height: 100px; object-fit: contain; }
+
+    /* ── FOOTER ── */
+    footer { background: var(--blue-dark); border-top: 1px solid rgba(255,255,255,0.08); padding: 3rem 2rem 1.5rem; color: #aaa; }
+    .footer-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem; margin-bottom: 2rem; }
+    .footer-col h4 { font-size: 0.72rem; font-weight: 700; color: #ccc; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 1rem; }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.5rem; }
+    .footer-col ul li a { text-decoration: none; color: #666; font-size: 0.82rem; transition: color 0.2s; }
+    .footer-col ul li a:hover { color: var(--yellow); }
+    .footer-bottom { max-width: 1100px; margin: 0 auto; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: space-between; font-size: 0.76rem; color: #555; }
+
+    @media (max-width: 960px) {
+      .nav-links { display: none; }
+      .booking-bar { flex-wrap: wrap; }
+      .ride-pill { flex-basis: 100%; order: 1; }
+      .book-btn { flex-basis: 100%; order: 2; }
+      .tours-grid { grid-template-columns: repeat(3, 1fr); }
+      .features { grid-template-columns: 1fr 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .app-strip-inner { flex-direction: column; text-align: center; }
+      .app-badges { justify-content: center; }
+    }
+    @media (max-width: 600px) {
+      .tours-grid { grid-template-columns: repeat(2, 1fr); }
+      .features { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-<nav class="navbar">
+<nav>
   <a href="index.html" class="nav-logo">
-    <div style="width:40px;height:40px;background:var(--yellow);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;color:var(--blue-dark);">C</div>
-    <div class="nav-logo-text"><span>CLICK CABS</span><span>Your City, Your Ride</span></div>
+    <div class="logo-circle">P</div>
+    <div class="logo-text">Premium <small>CAB SERVICES</small></div>
   </a>
-  <div class="nav-links">
-    <a href="index.html">Home</a>
-    <a href="outstation.html">Outstation</a>
-    <a href="airport-transfer.html">Airport Transfers</a>
-    <a href="local-rental.html">Local Rentals</a>
-    <a href="corporate.html">Corporate</a>
-    <a href="tour-packages.html" class="active">Tour Packages</a>
-    <a href="contact-us.html">Contact Us</a>
-  </div>
-  <a href="tel:+919702290804" class="nav-cta">📞 24×7 Support &nbsp;+91 97022 90804</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="outstation.html">Outstation</a></li>
+    <li><a href="airport-transfer.html">Airport Transfers</a></li>
+    <li><a href="local-rental.html">Local Rentals</a></li>
+    <li><a href="corporate.html">Corporate</a></li>
+    <li><a href="tour-packages.html" class="active">Tour Packages</a></li>
+    <li><a href="contact-us.html">Contact Us</a></li>
+  </ul>
+  <a href="tel:+919702290804" class="nav-phone">
+    <i class="fas fa-phone"></i> 24x7 Support +91 97022 90804
+  </a>
 </nav>
 
-<section class="page-hero">
-  <div class="page-hero-inner">
-    <div class="page-hero-badge">Tour Packages</div>
-    <h1>Discover India<br>One Journey At A Time</h1>
-    <p>Curated travel experiences with comfortable transportation and trusted drivers.</p>
-    <div class="booking-card">
-      <div class="form-row">
-        <div class="form-field">
-          <label>Pickup Location</label>
-          <input type="text" placeholder="Enter your city" />
-        </div>
-        <div class="form-field">
-          <label>Destination</label>
-          <input type="text" placeholder="Where do you want to go?" />
-        </div>
-        <div class="form-field" style="max-width:160px;">
-          <label>Journey Date</label>
-          <input type="date" />
-        </div>
-        <div class="form-field" style="max-width:160px;">
-          <label>Travelers</label>
-          <select>
-            <option>1 Passenger</option><option>2 Passengers</option>
-            <option>3 Passengers</option><option>4 Passengers</option><option>5+ Passengers</option>
-          </select>
-        </div>
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Tour Packages</div>
+    <h1 class="hero-h1">
+      Discover India
+      <span class="yellow">One Journey At A Time</span>
+    </h1>
+    <p class="hero-sub">Curated travel experiences with comfortable transportation and trusted drivers.</p>
+  </div>
+</div>
+
+<div class="booking-bar-wrap">
+  <div class="booking-bar">
+    <div class="ride-pill" onclick="openRideModal()">
+      <div class="ride-pill-icon"><i class="fas fa-route"></i></div>
+      <div class="ride-pill-text">
+        <div class="ride-pill-main" id="ridePillMain">Where do you want to go?</div>
+        <div class="ride-pill-sub" id="ridePillSub">Set pickup, destination, date &amp; travelers</div>
       </div>
-      <button class="search-btn">🔍 Explore Tours</button>
+      <i class="fas fa-chevron-right ride-pill-chevron"></i>
+    </div>
+    <button class="book-btn" onclick="openRideModal()">Explore Tours</button>
+  </div>
+</div>
+
+<!-- RIDE MODAL -->
+<div class="ride-modal-overlay" id="rideModalOverlay" onclick="closeRideModalOutside(event)">
+  <div class="ride-modal">
+    <button class="ride-modal-close" onclick="closeRideModal()"><i class="fas fa-times"></i></button>
+    <h3>Plan Your Tour</h3>
+    <div class="ride-input-group">
+      <div class="ride-row">
+        <div class="ride-dot pickup"></div>
+        <input type="text" id="pickupInput" placeholder="Enter pickup location" />
+      </div>
+      <div class="ride-row">
+        <div class="ride-dot drop"></div>
+        <input type="text" id="dropInput" placeholder="Enter destination" />
+      </div>
+    </div>
+    <div class="ride-datetime">
+      <div class="ride-dt-field">
+        <label>Journey Date</label>
+        <input type="date" id="rideDateInput" value="2026-05-15" />
+      </div>
+    </div>
+    <div class="ride-vehicle-field">
+      <label>Travelers</label>
+      <select id="travelersInput">
+        <option>1 Passenger</option>
+        <option>2 Passengers</option>
+        <option>3 Passengers</option>
+        <option>4 Passengers</option>
+        <option>5+ Passengers</option>
+      </select>
+    </div>
+    <button class="ride-confirm-btn" onclick="confirmRide()">Explore Tours</button>
+  </div>
+</div>
+
+<section class="section tours-section">
+  <h2>Popular Tours</h2>
+  <div class="underline"></div>
+  <div class="tours-grid">
+    <div class="tour-card">
+      <img src="images/goa-tour.jpg" alt="Goa Tour" />
+      <div class="tour-card-body">
+        <h3>Goa Tour</h3>
+        <div class="tour-meta"><i class="fas fa-clock"></i> 3 Nights / 4 Days</div>
+        <div class="tour-meta"><i class="fas fa-map-marker-alt"></i> Beach, Sightseeing &amp; Water Activities</div>
+      </div>
+    </div>
+    <div class="tour-card">
+      <img src="images/mahableshwar-tour.jpg" alt="Mahabaleshwar Tour" />
+      <div class="tour-card-body">
+        <h3>Mahabaleshwar Tour</h3>
+        <div class="tour-meta"><i class="fas fa-clock"></i> 2 Nights / 3 Days</div>
+        <div class="tour-meta"><i class="fas fa-map-marker-alt"></i> Hills, Points &amp; Strawberry Farms</div>
+      </div>
+    </div>
+    <div class="tour-card">
+      <img src="images/lonavla-tour.jpg" alt="Lonavala Tour" />
+      <div class="tour-card-body">
+        <h3>Lonavala Tour</h3>
+        <div class="tour-meta"><i class="fas fa-clock"></i> 1 Night / 2 Days</div>
+        <div class="tour-meta"><i class="fas fa-map-marker-alt"></i> Adventure, Camps &amp; Sightseeing</div>
+      </div>
+    </div>
+    <div class="tour-card">
+      <img src="images/shirdi-tour.jpg" alt="Shirdi Tour" />
+      <div class="tour-card-body">
+        <h3>Shirdi Tour</h3>
+        <div class="tour-meta"><i class="fas fa-clock"></i> 1 Night / 2 Days</div>
+        <div class="tour-meta"><i class="fas fa-map-marker-alt"></i> Temple Visit &amp; Local Sightseeing</div>
+      </div>
+    </div>
+    <div class="tour-card">
+      <img src="images/rajesthan-tour.jpg" alt="Rajasthan Tour" />
+      <div class="tour-card-body">
+        <h3>Rajasthan Tour</h3>
+        <div class="tour-meta"><i class="fas fa-clock"></i> 4 Nights / 5 Days</div>
+        <div class="tour-meta"><i class="fas fa-map-marker-alt"></i> Heritage, Forts &amp; Cultural Experience</div>
+      </div>
+    </div>
+    <div class="tour-card">
+      <img src="images/kerla-tour.jpg" alt="Kerala Tour" />
+      <div class="tour-card-body">
+        <h3>Kerala Tour</h3>
+        <div class="tour-meta"><i class="fas fa-clock"></i> 3 Nights / 4 Days</div>
+        <div class="tour-meta"><i class="fas fa-map-marker-alt"></i> Backwaters, Hills &amp; Nature</div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- POPULAR TOURS — NO PRICES -->
-<div class="section">
-  <div class="section-eyebrow">Popular Tours</div>
-  <h2 class="section-title">Explore Our <span>Most Loved Destinations</span></h2>
-  <div class="divider"></div>
-  <div class="tours-grid">
-    <div class="tour-card">
-      <img src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?q=80&w=600&auto=format&fit=crop" alt="Goa Tour" />
-      <div class="tour-card-body">
-        <h3>Goa Tour</h3>
-        <div class="tour-meta">
-          <span>🕐 3 Nights / 4 Days</span>
-          <span>📍 Beach, Sightseeing & Water Activities</span>
-        </div>
-        <a href="tel:+919702290804" class="tour-book">Enquire Now</a>
-      </div>
+<section class="section why-section">
+  <h2>Tour Benefits</h2>
+  <div class="underline"></div>
+  <div class="features">
+    <div class="feature-card">
+      <i class="fas fa-map-location-dot"></i>
+      <h3>Custom Itineraries</h3>
+      <p>Tailor-made itineraries to match your interests and schedule.</p>
     </div>
-    <div class="tour-card">
-      <img src="https://images.unsplash.com/photo-1629877521896-4c8ea9e8f8f1?q=80&w=600&auto=format&fit=crop" alt="Mahabaleshwar Tour" />
-      <div class="tour-card-body">
-        <h3>Mahabaleshwar Tour</h3>
-        <div class="tour-meta">
-          <span>🕐 2 Nights / 3 Days</span>
-          <span>📍 Hills, Points & Strawberry Farms</span>
-        </div>
-        <a href="tel:+919702290804" class="tour-book">Enquire Now</a>
-      </div>
+    <div class="feature-card">
+      <i class="fas fa-user-tie"></i>
+      <h3>Professional Drivers</h3>
+      <p>Experienced, polite and verified drivers for a safe journey.</p>
     </div>
-    <div class="tour-card">
-      <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=600&auto=format&fit=crop" alt="Lonavala Tour" />
-      <div class="tour-card-body">
-        <h3>Lonavala Tour</h3>
-        <div class="tour-meta">
-          <span>🕐 1 Night / 2 Days</span>
-          <span>📍 Adventure, Camps & Sightseeing</span>
-        </div>
-        <a href="tel:+919702290804" class="tour-book">Enquire Now</a>
-      </div>
+    <div class="feature-card">
+      <i class="fas fa-car-side"></i>
+      <h3>Comfortable Vehicles</h3>
+      <p>Well-maintained, spacious and hygienic vehicles.</p>
     </div>
-    <div class="tour-card">
-      <img src="https://images.unsplash.com/photo-1544931170-5a955e4d84de?q=80&w=600&auto=format&fit=crop" alt="Shirdi Tour" />
-      <div class="tour-card-body">
-        <h3>Shirdi Tour</h3>
-        <div class="tour-meta">
-          <span>🕐 1 Night / 2 Days</span>
-          <span>📍 Temple Visit & Local Sightseeing</span>
-        </div>
-        <a href="tel:+919702290804" class="tour-book">Enquire Now</a>
-      </div>
+    <div class="feature-card">
+      <i class="fas fa-tags"></i>
+      <h3>Affordable Packages</h3>
+      <p>Best value for money with transparent, no hidden charges.</p>
     </div>
-    <div class="tour-card">
-      <img src="https://images.unsplash.com/photo-1477587458883-47145ed94245?q=80&w=600&auto=format&fit=crop" alt="Rajasthan Tour" />
-      <div class="tour-card-body">
-        <h3>Rajasthan Tour</h3>
-        <div class="tour-meta">
-          <span>🕐 4 Nights / 5 Days</span>
-          <span>📍 Heritage, Forts & Cultural Experience</span>
-        </div>
-        <a href="tel:+919702290804" class="tour-book">Enquire Now</a>
-      </div>
-    </div>
-    <div class="tour-card">
-      <img src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?q=80&w=600&auto=format&fit=crop" alt="Kerala Tour" />
-      <div class="tour-card-body">
-        <h3>Kerala Tour</h3>
-        <div class="tour-meta">
-          <span>🕐 3 Nights / 4 Days</span>
-          <span>📍 Backwaters, Hills & Nature</span>
-        </div>
-        <a href="tel:+919702290804" class="tour-book">Enquire Now</a>
-      </div>
+    <div class="feature-card">
+      <i class="fas fa-users"></i>
+      <h3>Family-Friendly Travel</h3>
+      <p>Perfect for families, groups and solo travelers.</p>
     </div>
   </div>
-</div>
+</section>
 
-<!-- TOUR BENEFITS -->
-<div class="benefits-bg">
-  <div class="benefits-inner">
-    <div class="section-eyebrow">Tour Benefits</div>
-    <h2 class="section-title">Why Book a Tour <span>With Click Cabs?</span></h2>
-    <div class="divider"></div>
-    <div class="benefits-grid">
-      <div class="benefit-card"><div class="benefit-icon">🗺️</div><h3>Custom Itineraries</h3><p>Tailor-made plans to match your interests and schedule.</p></div>
-      <div class="benefit-card"><div class="benefit-icon">👤</div><h3>Professional Drivers</h3><p>Experienced, polite and verified drivers for a safe journey.</p></div>
-      <div class="benefit-card"><div class="benefit-icon">🚗</div><h3>Comfortable Vehicles</h3><p>Well-maintained, spacious and hygienic vehicles.</p></div>
-      <div class="benefit-card"><div class="benefit-icon">💰</div><h3>Affordable Packages</h3><p>Best value for money with transparent pricing.</p></div>
-      <div class="benefit-card"><div class="benefit-icon">👨‍👩‍👧‍👦</div><h3>Family-Friendly Travel</h3><p>Perfect for families, groups and solo travelers.</p></div>
+<div class="app-strip">
+  <div class="app-strip-inner">
+    <div class="app-call">
+      <i class="fas fa-phone-alt"></i>
+      <div>
+        <div class="app-call-label">Call for Bookings</div>
+        <div class="app-call-number">097022 90804</div>
+        <div class="app-call-url">www.clickcabs.in</div>
+      </div>
+    </div>
+    <div class="app-center">
+      <h4>DOWNLOAD OUR APP</h4>
+      <p>Quick bookings, exclusive offers &amp; easy cancellations.</p>
+      <div class="app-badges">
+        <a href="#" class="app-badge"><i class="fab fa-google-play"></i> Google Play</a>
+        <a href="#" class="app-badge"><i class="fab fa-apple"></i> App Store</a>
+      </div>
     </div>
   </div>
-</div>
-
-<div class="cta-strip">
-  <div class="cta-strip-text">
-    <h2>Plan Your Dream Trip Today</h2>
-    <p>Call us to get a custom quote for your tour package.</p>
-  </div>
-  <a href="tel:+919702290804" class="cta-phone">📞 +91 97022 90804</a>
 </div>
 
 <footer>
   <div class="footer-grid">
     <div class="footer-brand">
-      <div style="display:flex;align-items:center;gap:10px;">
-        <div style="width:38px;height:38px;background:var(--yellow);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:var(--blue-dark);">C</div>
-        <div style="display:flex;flex-direction:column;line-height:1.1;">
-          <span style="font-size:15px;font-weight:800;color:var(--white);">CLICK CABS</span>
-          <span style="font-size:9px;color:var(--yellow);letter-spacing:1.5px;text-transform:uppercase;">Your City, Your Ride</span>
-        </div>
-      </div>
-      <p>Reliable, comfortable and affordable cab services across India with professional drivers.</p>
+      <a href="index.html" class="nav-logo">
+        <div class="logo-circle">P</div>
+        <div class="logo-text">Premium <small>CAB SERVICES</small></div>
+      </a>
+      <p style="font-size: 0.82rem; color: #666; margin-top: 0.9rem; line-height: 1.7; max-width: 240px;">Reliable, comfortable and affordable cab services across India with professional drivers.</p>
     </div>
-    <div class="footer-col"><h4>Our Services</h4><a href="outstation.html">Outstation Cabs</a><a href="airport-transfer.html">Airport Transfers</a><a href="local-rental.html">Local Rentals</a><a href="corporate.html">Corporate Travel</a><a href="tour-packages.html">Tour Packages</a></div>
-    <div class="footer-col"><h4>Company</h4><a href="#">About Us</a><a href="#">Our Fleet</a><a href="#">Careers</a><a href="#">Blog</a></div>
-    <div class="footer-col"><h4>Support</h4><a href="#">Help Center</a><a href="#">Terms & Conditions</a><a href="#">Privacy Policy</a><a href="#">FAQ</a></div>
+    <div class="footer-col">
+      <h4>Our Services</h4>
+      <ul>
+        <li><a href="outstation.html">Outstation Cabs</a></li>
+        <li><a href="airport-transfer.html">Airport Transfers</a></li>
+        <li><a href="local-rental.html">Local Rentals</a></li>
+        <li><a href="corporate.html">Corporate</a></li>
+        <li><a href="tour-packages.html">Tour Packages</a></li>
+        <li><a href="contact-us.html">Contact Us</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Our Fleet</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Blog</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="#">Help Center</a></li>
+        <li><a href="#">Terms &amp; Conditions</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">FAQ</a></li>
+      </ul>
+    </div>
   </div>
   <div class="footer-bottom">
-    <p>© 2026 Click Cabs. All Rights Reserved. www.clickcabs.in</p>
-    <a href="tel:+919702290804">+91 97022 90804</a>
+    <span>© 2026 Premium Cab Services. All Rights Reserved.</span>
+    <span>www.clickcabs.in</span>
   </div>
 </footer>
+
 <script>
-  const today = new Date().toISOString().split('T')[0];
-  document.querySelectorAll('input[type="date"]').forEach(el => el.value = today);
-  document.querySelectorAll('.search-btn').forEach(btn => btn.onclick = () => alert('Booking system coming soon! Call +91 97022 90804 to book your tour.'));
+  function openRideModal() {
+    document.getElementById('rideModalOverlay').classList.add('open');
+  }
+  function closeRideModal() {
+    document.getElementById('rideModalOverlay').classList.remove('open');
+  }
+  function closeRideModalOutside(e) {
+    if (e.target.id === 'rideModalOverlay') closeRideModal();
+  }
+  function confirmRide() {
+    const pickup = document.getElementById('pickupInput').value || 'Pickup location';
+    const drop = document.getElementById('dropInput').value || 'Destination';
+    document.getElementById('ridePillMain').textContent = pickup + ' → ' + drop;
+    document.getElementById('ridePillSub').textContent = document.getElementById('rideDateInput').value + ' • ' + document.getElementById('travelersInput').value;
+    closeRideModal();
+  }
 </script>
+
 </body>
 </html>
