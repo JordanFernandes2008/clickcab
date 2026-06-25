@@ -428,7 +428,7 @@
         By signing up you agree to Click Cabs'
         <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
       </p>
-      <button class="submit-btn" onclick="handleSignup()">Create Vendor Account</button>
+      <button class="submit-btn" id="signupBtn">Create Vendor Account</button>
       <p class="login-link">Already registered? <a href="vendor-login.html">Log in here</a></p>
     </div>
 
@@ -461,8 +461,7 @@
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  window.handleSignup = async function() {
-    // Validation
+  async function handleSignup() {
     const required = ['title','firstName','lastName','email','phone','designation',
                       'password','confirmPassword','companyName','companyType',
                       'turnover','established','monthlyRides','cabCount','cities',
@@ -486,16 +485,14 @@
     if (pwd !== cpwd) { alert('Passwords do not match.'); return; }
     if (pwd.length < 8) { alert('Password must be at least 8 characters.'); return; }
 
-    const btn = document.querySelector('.submit-btn');
+    const btn = document.getElementById('signupBtn');
     btn.textContent = 'Creating account…';
     btn.disabled = true;
 
     try {
-      // 1. Create auth account
       const userCredential = await createUserWithEmailAndPassword(auth, email, pwd);
       const uid = userCredential.user.uid;
 
-      // 2. Save vendor data to Firestore
       await setDoc(doc(db, "vendors", uid), {
         title: document.getElementById('title').value,
         firstName: document.getElementById('firstName').value.trim(),
@@ -521,7 +518,6 @@
         status: "pending"
       });
 
-      // 3. Show success toast and redirect
       const toast = document.getElementById('toast');
       toast.style.display = 'block';
       setTimeout(() => { window.location.href = 'vendor-login.html'; }, 2200);
@@ -538,6 +534,9 @@
       }
     }
   }
+
+  // Wire button inside module
+  document.getElementById('signupBtn').addEventListener('click', handleSignup);
 </script>
 
 </body>
