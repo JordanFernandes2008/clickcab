@@ -441,9 +441,28 @@
   Account created! Redirecting to login…
 </div>
 
-<script>
-  function handleSignup() {
-    // Basic validation
+<!-- Firebase SDKs -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCoITUbvm1c0-Ud9VN_jVOZg99dg42jPgY",
+    authDomain: "clickcabs-772bd.firebaseapp.com",
+    projectId: "clickcabs-772bd",
+    storageBucket: "clickcabs-772bd.firebasestorage.app",
+    messagingSenderId: "861153834886",
+    appId: "1:861153834886:web:eae295a297c47120c31e07",
+    measurementId: "G-0Z06RPDWJR"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  window.handleSignup = async function() {
+    // Validation
     const required = ['title','firstName','lastName','email','phone','designation',
                       'password','confirmPassword','companyName','companyType',
                       'turnover','established','monthlyRides','cabCount','cities',
@@ -460,24 +479,64 @@
       }
     }
 
+    const email = document.getElementById('email').value.trim();
     const pwd = document.getElementById('password').value;
     const cpwd = document.getElementById('confirmPassword').value;
-    if (pwd !== cpwd) {
-      alert('Passwords do not match.');
-      return;
-    }
 
-    if (pwd.length < 8) {
-      alert('Password must be at least 8 characters.');
-      return;
-    }
+    if (pwd !== cpwd) { alert('Passwords do not match.'); return; }
+    if (pwd.length < 8) { alert('Password must be at least 8 characters.'); return; }
 
-    // Show toast and redirect (replace with Firebase later)
-    const toast = document.getElementById('toast');
-    toast.style.display = 'block';
-    setTimeout(() => {
-      window.location.href = 'vendor-login.html';
-    }, 2200);
+    const btn = document.querySelector('.submit-btn');
+    btn.textContent = 'Creating account…';
+    btn.disabled = true;
+
+    try {
+      // 1. Create auth account
+      const userCredential = await createUserWithEmailAndPassword(auth, email, pwd);
+      const uid = userCredential.user.uid;
+
+      // 2. Save vendor data to Firestore
+      await setDoc(doc(db, "vendors", uid), {
+        title: document.getElementById('title').value,
+        firstName: document.getElementById('firstName').value.trim(),
+        lastName: document.getElementById('lastName').value.trim(),
+        email: email,
+        phone: document.getElementById('phone').value.trim(),
+        designation: document.getElementById('designation').value.trim(),
+        companyName: document.getElementById('companyName').value.trim(),
+        companyType: document.getElementById('companyType').value,
+        website: document.getElementById('website').value.trim(),
+        annualTurnover: document.getElementById('turnover').value,
+        yearEstablished: document.getElementById('established').value.trim(),
+        monthlyRides: document.getElementById('monthlyRides').value.trim(),
+        numberOfCabs: document.getElementById('cabCount').value.trim(),
+        citiesOfOperation: document.getElementById('cities').value.trim(),
+        addressLine1: document.getElementById('addr1').value.trim(),
+        addressLine2: document.getElementById('addr2').value.trim(),
+        city: document.getElementById('city').value.trim(),
+        state: document.getElementById('state').value.trim(),
+        pinCode: document.getElementById('pin').value.trim(),
+        country: document.getElementById('country').value.trim(),
+        createdAt: new Date().toISOString(),
+        status: "pending"
+      });
+
+      // 3. Show success toast and redirect
+      const toast = document.getElementById('toast');
+      toast.style.display = 'block';
+      setTimeout(() => { window.location.href = 'vendor-login.html'; }, 2200);
+
+    } catch (error) {
+      btn.textContent = 'Create Vendor Account';
+      btn.disabled = false;
+      if (error.code === 'auth/email-already-in-use') {
+        alert('This email is already registered. Please log in instead.');
+      } else if (error.code === 'auth/invalid-email') {
+        alert('Please enter a valid email address.');
+      } else {
+        alert('Error: ' + error.message);
+      }
+    }
   }
 </script>
 
