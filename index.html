@@ -20,6 +20,26 @@
       --gray: #666;
       --border: #e0e0e0;
     }
+    cat > /home/claude/index_guard_snippet.html << 'SNIPPET'
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  const firebaseConfig = {
+    apiKey: "AIzaSyCoITUbvm1c0-Ud9VN_jVOZg99dg42jPgY",
+    authDomain: "clickcabs-772bd.firebaseapp.com",
+    projectId: "clickcabs-772bd",
+    storageBucket: "clickcabs-772bd.firebasestorage.app",
+    messagingSenderId: "861153834886",
+    appId: "1:861153834886:web:eae295a297c47120c31e07"
+  };
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  onAuthStateChanged(auth, (user) => {
+    if (!user) window.location.replace("vendor-login.html");
+  });
+</script>
+SNIPPET
+echo "done"
 
     html { scroll-behavior: smooth; }
     body { font-family: 'Inter', sans-serif; background: #fff; color: var(--text); overflow-x: hidden; }
