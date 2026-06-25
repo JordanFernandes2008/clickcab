@@ -358,8 +358,25 @@
   </div>
 </div>
 
-<script>
-  function handleLogin() {
+<!-- Firebase SDKs -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCoITUbvm1c0-Ud9VN_jVOZg99dg42jPgY",
+    authDomain: "clickcabs-772bd.firebaseapp.com",
+    projectId: "clickcabs-772bd",
+    storageBucket: "clickcabs-772bd.firebasestorage.app",
+    messagingSenderId: "861153834886",
+    appId: "1:861153834886:web:eae295a297c47120c31e07",
+    measurementId: "G-0Z06RPDWJR"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  window.handleLogin = async function() {
     const email = document.getElementById('loginEmail').value.trim();
     const password = document.getElementById('loginPassword').value.trim();
     const errorMsg = document.getElementById('errorMsg');
@@ -372,13 +389,24 @@
       return;
     }
 
-    // Placeholder — replace with Firebase Auth later
-    // For now: demo credentials work so client can test the flow
-    if (email === 'vendor@clickcabs.in' && password === 'clickcabs123') {
-      window.location.href = 'index.html'; // replace with vendor-dashboard.html once built
-    } else {
+    const btn = document.querySelector('.login-btn');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:8px;"></i>Logging in…';
+    btn.disabled = true;
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      window.location.href = 'index.html';
+    } catch (error) {
+      btn.innerHTML = '<i class="fas fa-sign-in-alt" style="margin-right:8px;"></i>Log In';
+      btn.disabled = false;
       errorMsg.style.display = 'flex';
-      errorMsg.querySelector('span').textContent = 'Invalid email or password. Please try again.';
+      if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+        errorMsg.querySelector('span').textContent = 'Invalid email or password. Please try again.';
+      } else if (error.code === 'auth/too-many-requests') {
+        errorMsg.querySelector('span').textContent = 'Too many attempts. Please wait a moment and try again.';
+      } else {
+        errorMsg.querySelector('span').textContent = 'Error: ' + error.message;
+      }
     }
   }
 
