@@ -335,7 +335,7 @@
         <a href="#">Forgot password?</a>
       </div>
 
-      <button class="login-btn" onclick="handleLogin()">
+      <button class="login-btn" id="loginBtn">
         <i class="fas fa-sign-in-alt" style="margin-right:8px;"></i>
         Log In
       </button>
@@ -376,10 +376,11 @@
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
-  window.handleLogin = async function() {
+  async function handleLogin() {
     const email = document.getElementById('loginEmail').value.trim();
     const password = document.getElementById('loginPassword').value.trim();
     const errorMsg = document.getElementById('errorMsg');
+    const btn = document.getElementById('loginBtn');
 
     errorMsg.style.display = 'none';
 
@@ -389,7 +390,6 @@
       return;
     }
 
-    const btn = document.querySelector('.login-btn');
     btn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:8px;"></i>Logging in…';
     btn.disabled = true;
 
@@ -410,7 +410,8 @@
     }
   }
 
-  // Allow Enter key to submit
+  // Wire button and Enter key inside module
+  document.getElementById('loginBtn').addEventListener('click', handleLogin);
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Enter') handleLogin();
   });
