@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vendor Sign Up – Click Cabs</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --blue: #01456c;
+      --yellow: #f5a800;
+      --light-bg: #f4f7fa;
+      --border: #dde3ea;
+      --text: #1a2b3c;
+      --muted: #6b7c8d;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--light-bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── NAVBAR ── */
+    nav {
+      background: var(--blue);
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 65px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .nav-logo img {
+      height: 42px;
+      width: 42px;
+      object-fit: contain;
+      border-radius: 6px;
+      background: #fff;
+      padding: 3px;
+    }
+
+    .nav-logo-text {
+      color: #fff;
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-logo-text span { color: var(--yellow); }
+
+    .nav-login-btn {
+      background: var(--yellow);
+      color: var(--blue);
+      font-weight: 700;
+      padding: 8px 22px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: opacity 0.2s;
+    }
+
+    .nav-login-btn:hover { opacity: 0.88; }
+
+    /* ── HERO BANNER ── */
+    .hero {
+      background: linear-gradient(135deg, var(--blue) 60%, #025a8e 100%);
+      color: #fff;
+      text-align: center;
+      padding: 44px 20px 38px;
+    }
+
+    .hero-logo {
+      width: 72px;
+      height: 72px;
+      object-fit: contain;
+      border-radius: 50%;
+      background: #fff;
+      padding: 6px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .hero h1 span { color: var(--yellow); }
+
+    .hero p {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.82);
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* ── FORM CARD ── */
+    .form-wrapper {
+      max-width: 860px;
+      margin: 40px auto 60px;
+      padding: 0 20px;
+    }
+
+    .form-card {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 4px 24px rgba(1,69,108,0.10);
+      overflow: hidden;
+    }
+
+    /* ── SECTION HEADERS ── */
+    .section-header {
+      background: var(--blue);
+      color: #fff;
+      padding: 14px 32px;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-header i { color: var(--yellow); font-size: 1.05rem; }
+
+    /* ── FORM BODY ── */
+    .section-body {
+      padding: 28px 32px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-body:last-of-type { border-bottom: none; }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px 28px;
+    }
+
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group.full { grid-column: 1 / -1; }
+
+    label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    label .req { color: #e03d3d; margin-left: 2px; }
+
+    input, select, textarea {
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 11px 14px;
+      font-size: 0.95rem;
+      color: var(--text);
+      background: #fff;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+      width: 100%;
+      font-family: inherit;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(1,69,108,0.10);
+    }
+
+    select { appearance: none; cursor: pointer; }
+    textarea { resize: vertical; min-height: 80px; }
+
+    /* ── SUBMIT ── */
+    .form-footer {
+      padding: 24px 32px 32px;
+      text-align: center;
+      background: #fafcff;
+    }
+
+    .note {
+      font-size: 0.83rem;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .note a { color: var(--blue); text-decoration: underline; }
+
+    .submit-btn {
+      background: var(--yellow);
+      color: var(--blue);
+      font-weight: 800;
+      font-size: 1.05rem;
+      padding: 14px 52px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      letter-spacing: 0.3px;
+    }
+
+    .submit-btn:hover {
+      background: #e09900;
+      transform: translateY(-1px);
+    }
+
+    .login-link {
+      margin-top: 16px;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    .login-link a {
+      color: var(--blue);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .login-link a:hover { text-decoration: underline; }
+
+    /* ── SUCCESS TOAST ── */
+    .toast {
+      display: none;
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #1a7f4b;
+      color: #fff;
+      padding: 14px 22px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+      z-index: 999;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 620px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .section-body { padding: 20px 18px; }
+      .form-footer { padding: 20px 18px 28px; }
+      .hero h1 { font-size: 1.5rem; }
+      nav { padding: 0 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="images/logo.jpg" alt="Click Cabs Logo" />
+    <span class="nav-logo-text">Click<span>Cabs</span></span>
+  </a>
+  <a href="vendor-login.html" class="nav-login-btn">Vendor Login</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <img src="images/logo.jpg" alt="Click Cabs" class="hero-logo" />
+  <h1>Cab Vendor <span>Sign Up</span></h1>
+  <p>Register your fleet with Click Cabs and start receiving bookings from across India.</p>
+</div>
+
+<!-- FORM -->
+<div class="form-wrapper">
+  <div class="form-card">
+
+    <!-- YOUR DETAILS -->
+    <div class="section-header">
+      <i class="fas fa-user"></i> Your Details
+    </div>
+    <div class="section-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Title <span class="req">*</span></label>
+          <select id="title" required>
+            <option value="" disabled selected>Select</option>
+            <option>Mr.</option>
+            <option>Ms.</option>
+            <option>Mrs.</option>
+            <option>Dr.</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>First Name <span class="req">*</span></label>
+          <input type="text" id="firstName" placeholder="John" required />
+        </div>
+        <div class="form-group">
+          <label>Last Name <span class="req">*</span></label>
+          <input type="text" id="lastName" placeholder="Fernandes" required />
+        </div>
+        <div class="form-group">
+          <label>Official Email ID <span class="req">*</span></label>
+          <input type="email" id="email" placeholder="you@company.com" required />
+        </div>
+        <div class="form-group">
+          <label>Contact Number <span class="req">*</span></label>
+          <input type="tel" id="phone" placeholder="+91 98765 43210" required />
+        </div>
+        <div class="form-group">
+          <label>Your Designation <span class="req">*</span></label>
+          <input type="text" id="designation" placeholder="Owner / Manager" required />
+        </div>
+        <div class="form-group">
+          <label>Password <span class="req">*</span></label>
+          <input type="password" id="password" placeholder="Create a password" required />
+        </div>
+        <div class="form-group">
+          <label>Confirm Password <span class="req">*</span></label>
+          <input type="password" id="confirmPassword" placeholder="Repeat password" required />
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPANY DETAILS -->
+    <div class="section-header">
+      <i class="fas fa-building"></i> Company Details
+    </div>
+    <div class="section-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Company Name <span class="req">*</span></label>
+          <input type="text" id="companyName" placeholder="Your company name" required />
+        </div>
+        <div class="form-group">
+          <label>Company Type <span class="req">*</span></label>
+          <select id="companyType" required>
+            <option value="" disabled selected>Select type</option>
+            <option>Cab Aggregator</option>
+            <option>Fleet Owner</option>
+            <option>Travel Agency</option>
+            <option>Corporate Transport</option>
+            <option>Tour Operator</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Company Website</label>
+          <input type="url" id="website" placeholder="https://yourcompany.com" />
+        </div>
+        <div class="form-group">
+          <label>Annual Turnover <span class="req">*</span></label>
+          <select id="turnover" required>
+            <option value="" disabled selected>Select range</option>
+            <option>Below ₹10 Lakhs</option>
+            <option>₹10 – 50 Lakhs</option>
+            <option>₹50 Lakhs – 1 Crore</option>
+            <option>Above ₹1 Crore</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Year of Establishment <span class="req">*</span></label>
+          <input type="number" id="established" placeholder="e.g. 2015" min="1900" max="2025" required />
+        </div>
+        <div class="form-group">
+          <label>Total Monthly Rides <span class="req">*</span></label>
+          <input type="number" id="monthlyRides" placeholder="e.g. 500" required />
+        </div>
+        <div class="form-group">
+          <label>Number of Cabs <span class="req">*</span></label>
+          <input type="number" id="cabCount" placeholder="e.g. 20" required />
+        </div>
+        <div class="form-group">
+          <label>Cities of Operation <span class="req">*</span></label>
+          <input type="text" id="cities" placeholder="Mumbai, Pune, Delhi…" required />
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPANY ADDRESS -->
+    <div class="section-header">
+      <i class="fas fa-map-marker-alt"></i> Company Address
+    </div>
+    <div class="section-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Address Line 1 <span class="req">*</span></label>
+          <input type="text" id="addr1" placeholder="Street / Building" required />
+        </div>
+        <div class="form-group">
+          <label>Address Line 2</label>
+          <input type="text" id="addr2" placeholder="Area / Landmark (optional)" />
+        </div>
+        <div class="form-group">
+          <label>City <span class="req">*</span></label>
+          <input type="text" id="city" placeholder="Mumbai" required />
+        </div>
+        <div class="form-group">
+          <label>State <span class="req">*</span></label>
+          <input type="text" id="state" placeholder="Maharashtra" required />
+        </div>
+        <div class="form-group">
+          <label>PIN Code <span class="req">*</span></label>
+          <input type="text" id="pin" placeholder="400001" maxlength="6" required />
+        </div>
+        <div class="form-group">
+          <label>Country <span class="req">*</span></label>
+          <input type="text" id="country" value="India" required />
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="form-footer">
+      <p class="note">
+        By signing up you agree to Click Cabs'
+        <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+      </p>
+      <button class="submit-btn" onclick="handleSignup()">Create Vendor Account</button>
+      <p class="login-link">Already registered? <a href="vendor-login.html">Log in here</a></p>
+    </div>
+
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <i class="fas fa-check-circle" style="margin-right:8px;"></i>
+  Account created! Redirecting to login…
+</div>
+
+<script>
+  function handleSignup() {
+    // Basic validation
+    const required = ['title','firstName','lastName','email','phone','designation',
+                      'password','confirmPassword','companyName','companyType',
+                      'turnover','established','monthlyRides','cabCount','cities',
+                      'addr1','city','state','pin','country'];
+
+    for (let id of required) {
+      const el = document.getElementById(id);
+      if (!el.value.trim()) {
+        el.focus();
+        el.style.borderColor = '#e03d3d';
+        setTimeout(() => el.style.borderColor = '', 2000);
+        alert('Please fill in all required fields.');
+        return;
+      }
+    }
+
+    const pwd = document.getElementById('password').value;
+    const cpwd = document.getElementById('confirmPassword').value;
+    if (pwd !== cpwd) {
+      alert('Passwords do not match.');
+      return;
+    }
+
+    if (pwd.length < 8) {
+      alert('Password must be at least 8 characters.');
+      return;
+    }
+
+    // Show toast and redirect (replace with Firebase later)
+    const toast = document.getElementById('toast');
+    toast.style.display = 'block';
+    setTimeout(() => {
+      window.location.href = 'vendor-login.html';
+    }, 2200);
+  }
+</script>
+
+</body>
+</html>
