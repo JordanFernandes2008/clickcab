@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard – Click Cabs</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --blue: #01456c; --yellow: #f5a800; --border: #dde3ea; --text: #1a2b3c; --muted: #6b7c8d; --bg: #f4f7fa; }
+    body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* TOPBAR */
+    .topbar {
+      background: var(--blue); height: 60px; padding: 0 28px;
+      display: flex; align-items: center; justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2); position: sticky; top: 0; z-index: 100;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 12px; }
+    .topbar-left img { height: 36px; width: 36px; border-radius: 6px; background: #fff; padding: 3px; object-fit: contain; }
+    .topbar-title { color: #fff; font-weight: 800; font-size: 1.1rem; }
+    .topbar-title span { color: var(--yellow); }
+    .admin-chip {
+      background: rgba(245,168,0,0.15); border: 1px solid var(--yellow);
+      color: var(--yellow); font-size: 0.68rem; font-weight: 700;
+      padding: 3px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .topbar-right { display: flex; align-items: center; gap: 14px; }
+    .admin-name { color: rgba(255,255,255,0.8); font-size: 0.85rem; }
+    .logout-btn {
+      background: rgba(255,255,255,0.1); color: #fff;
+      border: 1px solid rgba(255,255,255,0.2); border-radius: 6px;
+      padding: 6px 14px; font-size: 0.8rem; cursor: pointer;
+      font-family: inherit; transition: background 0.2s;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .logout-btn:hover { background: rgba(255,255,255,0.2); }
+
+    /* CONTENT */
+    .content { max-width: 1100px; margin: 0 auto; padding: 28px 20px; }
+
+    /* STATS ROW */
+    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+    .stat-card {
+      background: #fff; border-radius: 12px; padding: 20px 22px;
+      box-shadow: 0 2px 12px rgba(1,69,108,0.07);
+      display: flex; align-items: center; gap: 16px;
+    }
+    .stat-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; flex-shrink: 0;
+    }
+    .stat-icon.blue { background: #e8f1f8; color: var(--blue); }
+    .stat-icon.yellow { background: #fff8e6; color: #d48e00; }
+    .stat-icon.green { background: #e8f7ef; color: #1a7f4b; }
+    .stat-icon.red { background: #fdf0f0; color: #c0392b; }
+    .stat-num { font-size: 1.7rem; font-weight: 900; color: var(--text); line-height: 1; }
+    .stat-label { font-size: 0.75rem; color: var(--muted); margin-top: 3px; font-weight: 600; }
+
+    /* FILTERS */
+    .filters-bar {
+      background: #fff; border-radius: 10px; padding: 14px 20px;
+      display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(1,69,108,0.06); flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: 7px 16px; border-radius: 20px; font-size: 0.82rem;
+      font-weight: 700; cursor: pointer; border: 1.5px solid var(--border);
+      background: #fff; color: var(--muted); font-family: inherit;
+      transition: all 0.2s;
+    }
+    .filter-btn.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+    .filter-btn:hover:not(.active) { border-color: var(--blue); color: var(--blue); }
+    .search-input-wrap { position: relative; margin-left: auto; }
+    .search-input-wrap i { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 0.85rem; }
+    .search-input {
+      border: 1.5px solid var(--border); border-radius: 8px;
+      padding: 8px 14px 8px 34px; font-size: 0.85rem;
+      font-family: inherit; outline: none; width: 220px;
+      transition: border-color 0.2s;
+    }
+    .search-input:focus { border-color: var(--blue); }
+
+    /* TABLE */
+    .table-wrap { background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(1,69,108,0.07); overflow: hidden; }
+    .table-header {
+      padding: 16px 24px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .table-header h3 { font-size: 0.95rem; font-weight: 800; }
+    .table-header span { font-size: 0.8rem; color: var(--muted); }
+
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+      background: #f8fafc; padding: 12px 16px; text-align: left;
+      font-size: 0.72rem; font-weight: 700; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--border);
+    }
+    tbody tr { border-bottom: 1px solid #f0f4f8; transition: background 0.15s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #f8fafc; }
+    td { padding: 14px 16px; font-size: 0.85rem; vertical-align: middle; }
+    .vendor-name { font-weight: 700; color: var(--text); }
+    .vendor-sub { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+
+    /* BADGES */
+    .badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 10px; border-radius: 20px;
+      font-size: 0.72rem; font-weight: 700; white-space: nowrap;
+    }
+    .badge.pending { background: #fff8e6; color: #d48e00; }
+    .badge.approved { background: #e8f7ef; color: #1a7f4b; }
+    .badge.rejected { background: #fdf0f0; color: #c0392b; }
+
+    /* ACTION BUTTONS */
+    .action-btns { display: flex; gap: 8px; }
+    .btn-view {
+      padding: 6px 14px; border-radius: 6px; font-size: 0.78rem;
+      font-weight: 700; cursor: pointer; border: none; font-family: inherit;
+      background: #e8f1f8; color: var(--blue); transition: background 0.2s;
+    }
+    .btn-view:hover { background: #d0e4f4; }
+
+    /* EMPTY STATE */
+    .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
+    .empty-state i { font-size: 2.5rem; margin-bottom: 14px; display: block; }
+    .empty-state p { font-size: 0.9rem; }
+
+    /* LOADING */
+    .loading { text-align: center; padding: 60px; color: var(--muted); }
+    .loading i { font-size: 1.8rem; margin-bottom: 12px; display: block; color: var(--blue); }
+
+    /* MODAL */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.55); z-index: 200;
+      align-items: center; justify-content: center; padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #fff; border-radius: 16px;
+      max-width: 680px; width: 100%; max-height: 90vh;
+      overflow-y: auto; box-shadow: 0 24px 60px rgba(0,0,0,0.25);
+    }
+    .modal-header {
+      background: var(--blue); padding: 20px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0;
+    }
+    .modal-header h3 { color: #fff; font-size: 1rem; font-weight: 800; }
+    .modal-close {
+      background: rgba(255,255,255,0.15); border: none;
+      color: #fff; width: 32px; height: 32px; border-radius: 50%;
+      cursor: pointer; font-size: 1rem; display: flex;
+      align-items: center; justify-content: center;
+    }
+    .modal-body { padding: 24px; }
+
+    .detail-section { margin-bottom: 22px; }
+    .detail-section h4 {
+      font-size: 0.72rem; font-weight: 700; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.5px;
+      margin-bottom: 12px; padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .detail-item label { font-size: 0.72rem; color: var(--muted); font-weight: 600; display: block; margin-bottom: 2px; }
+    .detail-item span { font-size: 0.88rem; color: var(--text); font-weight: 600; }
+
+    .modal-actions { display: flex; gap: 12px; padding: 0 24px 24px; }
+    .btn-approve {
+      flex: 1; background: #1a7f4b; color: #fff;
+      border: none; border-radius: 8px; padding: 12px;
+      font-size: 0.92rem; font-weight: 800; cursor: pointer;
+      font-family: inherit; transition: background 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-approve:hover { background: #156b3e; }
+    .btn-reject {
+      flex: 1; background: #fdf0f0; color: #c0392b;
+      border: 1.5px solid #f5c6c6; border-radius: 8px; padding: 12px;
+      font-size: 0.92rem; font-weight: 800; cursor: pointer;
+      font-family: inherit; transition: background 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-reject:hover { background: #fbe0e0; }
+
+    /* REJECT REASON */
+    .reject-box {
+      display: none; margin: 0 24px 16px; padding: 16px;
+      background: #fff8f8; border: 1.5px solid #f5c6c6; border-radius: 10px;
+    }
+    .reject-box label { font-size: 0.8rem; font-weight: 700; color: #c0392b; display: block; margin-bottom: 8px; }
+    .reject-box textarea {
+      width: 100%; border: 1.5px solid #f5c6c6; border-radius: 8px;
+      padding: 10px 12px; font-family: inherit; font-size: 0.88rem;
+      resize: none; min-height: 80px; outline: none;
+    }
+    .reject-box textarea:focus { border-color: #c0392b; }
+    .confirm-reject-btn {
+      margin-top: 10px; background: #c0392b; color: #fff;
+      border: none; border-radius: 6px; padding: 9px 20px;
+      font-size: 0.85rem; font-weight: 700; cursor: pointer;
+      font-family: inherit;
+    }
+    .confirm-reject-btn:hover { background: #a93226; }
+
+    @media (max-width: 768px) {
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .detail-grid { grid-template-columns: 1fr; }
+      .filters-bar { gap: 8px; }
+      .search-input-wrap { margin-left: 0; width: 100%; }
+      .search-input { width: 100%; }
+      table { font-size: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <img src="images/logo.jpg" alt="Click Cabs" />
+    <span class="topbar-title">Click<span>Cabs</span></span>
+    <span class="admin-chip"><i class="fas fa-shield-alt"></i> Admin</span>
+  </div>
+  <div class="topbar-right">
+    <span class="admin-name" id="adminName">Loading…</span>
+    <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon blue"><i class="fas fa-users"></i></div>
+      <div><div class="stat-num" id="statTotal">–</div><div class="stat-label">Total Applications</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon yellow"><i class="fas fa-clock"></i></div>
+      <div><div class="stat-num" id="statPending">–</div><div class="stat-label">Pending Review</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon green"><i class="fas fa-check-circle"></i></div>
+      <div><div class="stat-num" id="statApproved">–</div><div class="stat-label">Approved</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon red"><i class="fas fa-times-circle"></i></div>
+      <div><div class="stat-num" id="statRejected">–</div><div class="stat-label">Rejected</div></div>
+    </div>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="filters-bar">
+    <button class="filter-btn active" onclick="filterVendors('all', this)">All</button>
+    <button class="filter-btn" onclick="filterVendors('pending', this)">Pending</button>
+    <button class="filter-btn" onclick="filterVendors('approved', this)">Approved</button>
+    <button class="filter-btn" onclick="filterVendors('rejected', this)">Rejected</button>
+    <div class="search-input-wrap">
+      <i class="fas fa-search"></i>
+      <input type="text" class="search-input" id="searchInput" placeholder="Search by name, city, vehicle…" oninput="searchVendors()" />
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-wrap">
+    <div class="table-header">
+      <h3>Vendor Applications</h3>
+      <span id="tableCount">Loading…</span>
+    </div>
+    <div id="tableContent">
+      <div class="loading"><i class="fas fa-spinner fa-spin"></i><p>Loading applications…</p></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- VENDOR DETAIL MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modalTitle">Vendor Details</h3>
+      <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="reject-box" id="rejectBox">
+      <label><i class="fas fa-exclamation-triangle"></i> Reason for Rejection</label>
+      <textarea id="rejectReason" placeholder="Please provide a reason so the vendor understands what went wrong…"></textarea>
+      <button class="confirm-reject-btn" id="confirmRejectBtn">Confirm Rejection</button>
+    </div>
+    <div class="modal-actions" id="modalActions"></div>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, collection, getDocs, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCoITUbvm1c0-Ud9VN_jVOZg99dg42jPgY",
+    authDomain: "clickcabs-772bd.firebaseapp.com",
+    projectId: "clickcabs-772bd",
+    storageBucket: "clickcabs-772bd.firebasestorage.app",
+    messagingSenderId: "861153834886",
+    appId: "1:861153834886:web:eae295a297c47120c31e07"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  let allVendors = [];
+  let currentFilter = 'all';
+  let currentVendorId = null;
+
+  // Auth guard — must be admin
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) { window.location.href = 'admin-login.html'; return; }
+    const adminDoc = await getDoc(doc(db, "admins", user.uid));
+    if (!adminDoc.exists()) { await signOut(auth); window.location.href = 'admin-login.html'; return; }
+    document.getElementById('adminName').textContent = user.email;
+    loadVendors();
+  });
+
+  // LOGOUT
+  document.getElementById('logoutBtn').addEventListener('click', async () => {
+    await signOut(auth);
+    window.location.href = 'admin-login.html';
+  });
+
+  // LOAD ALL VENDORS
+  async function loadVendors() {
+    const snapshot = await getDocs(collection(db, "vendors"));
+    allVendors = [];
+    snapshot.forEach(d => allVendors.push({ id: d.id, ...d.data() }));
+    allVendors.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    updateStats();
+    renderTable(allVendors);
+  }
+
+  function updateStats() {
+    const total = allVendors.length;
+    const pending = allVendors.filter(v => v.status === 'pending').length;
+    const approved = allVendors.filter(v => v.status === 'approved').length;
+    const rejected = allVendors.filter(v => v.status === 'rejected').length;
+    document.getElementById('statTotal').textContent = total;
+    document.getElementById('statPending').textContent = pending;
+    document.getElementById('statApproved').textContent = approved;
+    document.getElementById('statRejected').textContent = rejected;
+  }
+
+  function renderTable(vendors) {
+    document.getElementById('tableCount').textContent = vendors.length + ' record(s)';
+    if (vendors.length === 0) {
+      document.getElementById('tableContent').innerHTML = `
+        <div class="empty-state">
+          <i class="fas fa-inbox"></i>
+          <p>No vendor applications found.</p>
+        </div>`;
+      return;
+    }
+
+    const rows = vendors.map(v => `
+      <tr>
+        <td>
+          <div class="vendor-name">${v.firstName || ''} ${v.lastName || ''}</div>
+          <div class="vendor-sub">${v.email || ''}</div>
+        </td>
+        <td>${v.phone || '–'}</td>
+        <td>
+          <div>${v.vehicleModel || '–'}</div>
+          <div class="vendor-sub">${v.registrationNumber || ''}</div>
+        </td>
+        <td>${v.operatingCity || '–'}</td>
+        <td><span class="badge ${v.status || 'pending'}">
+          <i class="fas fa-${v.status === 'approved' ? 'check' : v.status === 'rejected' ? 'times' : 'clock'}"></i>
+          ${(v.status || 'pending').charAt(0).toUpperCase() + (v.status || 'pending').slice(1)}
+        </span></td>
+        <td>${v.createdAt ? new Date(v.createdAt).toLocaleDateString('en-IN') : '–'}</td>
+        <td>
+          <div class="action-btns">
+            <button class="btn-view" onclick="openModal('${v.id}')">
+              <i class="fas fa-eye"></i> View
+            </button>
+          </div>
+        </td>
+      </tr>`).join('');
+
+    document.getElementById('tableContent').innerHTML = `
+      <table>
+        <thead>
+          <tr>
+            <th>Vendor</th>
+            <th>Phone</th>
+            <th>Vehicle</th>
+            <th>City</th>
+            <th>Status</th>
+            <th>Applied On</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>`;
+  }
+
+  // FILTER
+  window.filterVendors = function(status, btn) {
+    currentFilter = status;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  };
+
+  window.searchVendors = function() { applyFilters(); };
+
+  function applyFilters() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    let filtered = currentFilter === 'all' ? allVendors : allVendors.filter(v => v.status === currentFilter);
+    if (q) {
+      filtered = filtered.filter(v =>
+        (v.firstName + ' ' + v.lastName).toLowerCase().includes(q) ||
+        (v.email || '').toLowerCase().includes(q) ||
+        (v.operatingCity || '').toLowerCase().includes(q) ||
+        (v.vehicleModel || '').toLowerCase().includes(q) ||
+        (v.registrationNumber || '').toLowerCase().includes(q)
+      );
+    }
+    renderTable(filtered);
+  }
+
+  // MODAL
+  window.openModal = async function(vendorId) {
+    currentVendorId = vendorId;
+    const vendor = allVendors.find(v => v.id === vendorId);
+    if (!vendor) return;
+
+    document.getElementById('modalTitle').textContent = `${vendor.firstName} ${vendor.lastName} — Application`;
+    document.getElementById('rejectBox').style.display = 'none';
+    document.getElementById('rejectReason').value = '';
+
+    document.getElementById('modalBody').innerHTML = `
+      <div class="detail-section">
+        <h4>Personal Details</h4>
+        <div class="detail-grid">
+          <div class="detail-item"><label>Full Name</label><span>${vendor.firstName} ${vendor.lastName}</span></div>
+          <div class="detail-item"><label>Phone</label><span>${vendor.phone || '–'}</span></div>
+          <div class="detail-item"><label>Email</label><span>${vendor.email || '–'}</span></div>
+          <div class="detail-item"><label>Operating City</label><span>${vendor.operatingCity || '–'}</span></div>
+          <div class="detail-item"><label>Driver Type</label><span>${vendor.driverType || '–'}</span></div>
+          <div class="detail-item"><label>Applied On</label><span>${vendor.createdAt ? new Date(vendor.createdAt).toLocaleString('en-IN') : '–'}</span></div>
+        </div>
+      </div>
+      <div class="detail-section">
+        <h4>Vehicle Details</h4>
+        <div class="detail-grid">
+          <div class="detail-item"><label>Vehicle Type</label><span>${vendor.vehicleType || '–'}</span></div>
+          <div class="detail-item"><label>Make & Model</label><span>${vendor.vehicleModel || '–'}</span></div>
+          <div class="detail-item"><label>Year</label><span>${vendor.vehicleYear || '–'}</span></div>
+          <div class="detail-item"><label>Reg. Number</label><span>${vendor.registrationNumber || '–'}</span></div>
+          <div class="detail-item"><label>Seating</label><span>${vendor.seatingCapacity || '–'}</span></div>
+          <div class="detail-item"><label>Fuel Type</label><span>${vendor.fuelType || '–'}</span></div>
+          <div class="detail-item"><label>AC</label><span>${vendor.acAvailable === 'yes' ? 'Yes' : 'No'}</span></div>
+          <div class="detail-item"><label>No. of Vehicles</label><span>${vendor.numberOfVehicles || '–'}</span></div>
+        </div>
+      </div>
+      <div class="detail-section">
+        <h4>ID & Documents</h4>
+        <div class="detail-grid">
+          <div class="detail-item"><label>Aadhaar</label><span>${vendor.aadhaarNumber || '–'}</span></div>
+          <div class="detail-item"><label>PAN</label><span>${vendor.panNumber || '–'}</span></div>
+          <div class="detail-item"><label>DL Number</label><span>${vendor.dlNumber || '–'}</span></div>
+          <div class="detail-item"><label>DL Expiry</label><span>${vendor.dlExpiry || '–'}</span></div>
+        </div>
+      </div>
+      <div class="detail-section">
+        <h4>Address</h4>
+        <div class="detail-grid">
+          <div class="detail-item"><label>Address</label><span>${vendor.addressLine1 || '–'}${vendor.addressLine2 ? ', ' + vendor.addressLine2 : ''}</span></div>
+          <div class="detail-item"><label>City / State</label><span>${vendor.city || '–'}, ${vendor.state || '–'}</span></div>
+          <div class="detail-item"><label>PIN Code</label><span>${vendor.pinCode || '–'}</span></div>
+          <div class="detail-item"><label>Country</label><span>${vendor.country || '–'}</span></div>
+        </div>
+      </div>
+      ${vendor.rejectionReason ? `<div class="detail-section">
+        <h4>Rejection Reason</h4>
+        <p style="font-size:0.88rem;color:#c0392b;background:#fff8f8;padding:12px;border-radius:8px;">${vendor.rejectionReason}</p>
+      </div>` : ''}
+      <div class="detail-section" style="margin-bottom:0;">
+        <h4>Current Status</h4>
+        <span class="badge ${vendor.status || 'pending'}" style="font-size:0.82rem;padding:6px 14px;">
+          ${(vendor.status || 'pending').toUpperCase()}
+        </span>
+      </div>`;
+
+    // Show action buttons only if pending
+    const actions = document.getElementById('modalActions');
+    if (vendor.status === 'pending') {
+      actions.innerHTML = `
+        <button class="btn-approve" id="approveBtn"><i class="fas fa-check"></i> Approve Vendor</button>
+        <button class="btn-reject" id="rejectBtn"><i class="fas fa-times"></i> Reject</button>`;
+      document.getElementById('approveBtn').addEventListener('click', () => approveVendor(vendorId));
+      document.getElementById('rejectBtn').addEventListener('click', () => {
+        document.getElementById('rejectBox').style.display = 'block';
+      });
+      document.getElementById('confirmRejectBtn').onclick = () => rejectVendor(vendorId);
+    } else {
+      actions.innerHTML = '';
+    }
+
+    document.getElementById('modalOverlay').classList.add('open');
+  };
+
+  window.closeModal = function() {
+    document.getElementById('modalOverlay').classList.remove('open');
+    currentVendorId = null;
+  };
+
+  // APPROVE
+  async function approveVendor(vendorId) {
+    const btn = document.getElementById('approveBtn');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Approving…';
+    btn.disabled = true;
+    await updateDoc(doc(db, "vendors", vendorId), { status: 'approved', approvedAt: new Date().toISOString() });
+    const v = allVendors.find(v => v.id === vendorId);
+    if (v) { v.status = 'approved'; v.approvedAt = new Date().toISOString(); }
+    updateStats();
+    applyFilters();
+    closeModal();
+  }
+
+  // REJECT
+  async function rejectVendor(vendorId) {
+    const reason = document.getElementById('rejectReason').value.trim();
+    if (!reason) { alert('Please enter a rejection reason.'); return; }
+    const btn = document.getElementById('confirmRejectBtn');
+    btn.textContent = 'Processing…';
+    btn.disabled = true;
+    await updateDoc(doc(db, "vendors", vendorId), {
+      status: 'rejected',
+      rejectionReason: reason,
+      rejectedAt: new Date().toISOString()
+    });
+    const v = allVendors.find(v => v.id === vendorId);
+    if (v) { v.status = 'rejected'; v.rejectionReason = reason; }
+    updateStats();
+    applyFilters();
+    closeModal();
+  }
+
+  // Close modal on overlay click
+  document.getElementById('modalOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+</script>
+
+</body>
+</html>
