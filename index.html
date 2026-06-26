@@ -64,7 +64,7 @@
       cursor: pointer;
       transition: all 0.3s ease;
       position: relative;
-      overflow-y: auto;
+      overflow: visible;
       backdrop-filter: blur(10px);
     }
 
@@ -73,6 +73,8 @@
       position: absolute; inset: 0;
       opacity: 0;
       transition: opacity 0.3s;
+      pointer-events: none;
+      border-radius: 20px;
     }
 
     .choice-card.user-card::before { background: radial-gradient(ellipse at top, rgba(1,69,108,0.3), transparent); }
