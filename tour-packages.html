@@ -87,11 +87,11 @@
       margin: 0 auto;
       position: relative;
       z-index: 3;
+      transform: translateY(50%);
       display: flex;
       align-items: center;
       gap: 1.2rem;
     }
-    .booking-bar-wrap { margin-top: -40px; padding: 0 2rem; position: relative; z-index: 3; }
 
     /* Uber/Rapido style trigger pill */
     .ride-pill {
@@ -158,7 +158,7 @@
 
     /* ── SECTIONS ── */
     .section { background: #fff; padding: 5rem 2rem; }
-    .section.tours-section { padding-top: 4rem; }
+    .section.tours-section { padding-top: calc(5rem + 60px); }
     .section h2 { text-align: center; font-size: 2rem; font-weight: 900; margin-bottom: 0.5rem; }
     .underline { width: 48px; height: 3px; background: var(--yellow); border-radius: 2px; margin: 0.6rem auto 2rem; }
 
@@ -208,7 +208,7 @@
 
     @media (max-width: 960px) {
       .nav-links { display: none; }
-      .booking-bar { flex-wrap: wrap; }
+      .booking-bar { flex-wrap: wrap; transform: translateY(20px); }
       .ride-pill { flex-basis: 100%; order: 1; }
       .book-btn { flex-basis: 100%; order: 2; }
       .tours-grid { grid-template-columns: repeat(3, 1fr); }
@@ -227,12 +227,12 @@
 <body>
 
 <nav>
-<a href="home.html" class="logo">
-    <div class="logo-icon">P</div>
-    <div class="logo-name">ClickCabs <span>PREMIUM CAB SERVICES</span></div>
+  <a href="index.html" class="nav-logo">
+    <div class="logo-circle">P</div>
+    <div class="logo-text">Premium <small>CAB SERVICES</small></div>
   </a>
   <ul class="nav-links">
-    <li><a href="home.html">Home</a></li>
+    <li><a href="index.html">Home</a></li>
     <li><a href="outstation.html">Outstation</a></li>
     <li><a href="airport-transfer.html">Airport Transfers</a></li>
     <li><a href="local-rental.html">Local Rentals</a></li>
@@ -254,9 +254,7 @@
     </h1>
     <p class="hero-sub">Curated travel experiences with comfortable transportation and trusted drivers.</p>
   </div>
-</div>
 
-<div class="booking-bar-wrap">
   <div class="booking-bar">
     <div class="ride-pill" onclick="openRideModal()">
       <div class="ride-pill-icon"><i class="fas fa-route"></i></div>
@@ -416,7 +414,7 @@
 <footer>
   <div class="footer-grid">
     <div class="footer-brand">
-      <a href="home.html" class="nav-logo">
+      <a href="index.html" class="nav-logo">
         <div class="logo-circle">P</div>
         <div class="logo-text">Premium <small>CAB SERVICES</small></div>
       </a>
