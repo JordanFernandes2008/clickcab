@@ -20,26 +20,6 @@
       --gray: #666;
       --border: #e0e0e0;
     }
-    cat > /home/claude/index_guard_snippet.html << 'SNIPPET'
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-  const firebaseConfig = {
-    apiKey: "AIzaSyCoITUbvm1c0-Ud9VN_jVOZg99dg42jPgY",
-    authDomain: "clickcabs-772bd.firebaseapp.com",
-    projectId: "clickcabs-772bd",
-    storageBucket: "clickcabs-772bd.firebasestorage.app",
-    messagingSenderId: "861153834886",
-    appId: "1:861153834886:web:eae295a297c47120c31e07"
-  };
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  onAuthStateChanged(auth, (user) => {
-    if (!user) window.location.replace("vendor-login.html");
-  });
-</script>
-SNIPPET
-echo "done"
 
     html { scroll-behavior: smooth; }
     body { font-family: 'Inter', sans-serif; background: #fff; color: var(--text); overflow-x: hidden; }
@@ -543,6 +523,7 @@ echo "done"
           <button class="widget-tab active" onclick="switchTab(this,'outstation')">Outstation</button>
           <button class="widget-tab" onclick="switchTab(this,'airport')">Airport</button>
           <button class="widget-tab" onclick="switchTab(this,'local')">Local</button>
+          <button class="widget-tab" onclick="switchTab(this,'oneway')">One Way</button>
         </div>
 
         <!-- Outstation tab -->
@@ -680,6 +661,49 @@ echo "done"
             </div>
           </div>
           <button class="search-btn" onclick="window.location.href='local-rental.html'"><i class="fas fa-search"></i> Search Cabs</button>
+        </div>
+
+        <!-- One Way tab -->
+        <div id="tab-oneway" style="display:none;">
+          <div class="widget-title">Book One Way Cab</div>
+          <div class="widget-sub">Pay only for one side of the trip</div>
+          <div class="wfield">
+            <label><i class="fas fa-circle" style="color:#1565C0;font-size:0.5rem;"></i> Pickup Location</label>
+            <div class="wfield-row">
+              <i class="fas fa-map-marker-alt"></i>
+              <input type="text" placeholder="Enter pickup city" />
+            </div>
+          </div>
+          <div class="wfield">
+            <label><i class="fas fa-circle" style="color:#c62828;font-size:0.5rem;"></i> Drop Location</label>
+            <div class="wfield-row">
+              <i class="fas fa-map-marker-alt" style="color:#c62828;"></i>
+              <input type="text" placeholder="Enter drop city" />
+            </div>
+          </div>
+          <div class="wrow2">
+            <div class="wfield">
+              <label>Journey Date</label>
+              <div class="wfield-row">
+                <i class="fas fa-calendar"></i>
+                <input type="date" />
+              </div>
+            </div>
+            <div class="wfield">
+              <label>Time</label>
+              <div class="wfield-row">
+                <i class="fas fa-clock"></i>
+                <select>
+                  <option>10:00 AM</option>
+                  <option>12:00 PM</option>
+                  <option>02:00 PM</option>
+                  <option>04:00 PM</option>
+                  <option>06:00 PM</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <button class="search-btn" onclick="window.location.href='outstation.html'"><i class="fas fa-search"></i> Search Cabs</button>
         </div>
 
       </div>
@@ -1102,7 +1126,7 @@ echo "done"
   function switchTab(btn, tab) {
     document.querySelectorAll('.widget-tab').forEach(t => t.classList.remove('active'));
     btn.classList.add('active');
-    ['outstation','airport','local'].forEach(id => {
+    ['outstation','airport','local','oneway'].forEach(id => {
       const el = document.getElementById('tab-' + id);
       if (el) el.style.display = id === tab ? 'block' : 'none';
     });
