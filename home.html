@@ -1242,9 +1242,10 @@
       }
     }
   });
-  window.userLogout = async function() {
+ window.userLogout = async function() {
     await signOut(auth);
-    window.location.href = 'https://clickcab-portals.vercel.app/index.html';
+    window.location.href = 'https://clickcab-portals.vercel.app/user-login.html';
+};
   };
 </script>
 </body>
