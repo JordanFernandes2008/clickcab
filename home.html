@@ -1222,6 +1222,7 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
   import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
   const firebaseConfig = {
     apiKey: "AIzaSyCoITUbvm1c0-Ud9VN_jVOZg99dg42jPgY",
     authDomain: "clickcabs-772bd.firebaseapp.com",
@@ -1230,23 +1231,24 @@
     messagingSenderId: "861153834886",
     appId: "1:861153834886:web:eae295a297c47120c31e07"
   };
+
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
+
   onAuthStateChanged(auth, async (user) => {
     if (user) {
       const userDoc = await getDoc(doc(db, "users", user.uid));
       if (userDoc.exists()) {
-        const btn = document.getElementById('userLogoutBtn');
-        btn.style.display = 'inline-flex';
+        document.getElementById('userLogoutBtn').style.display = 'inline-flex';
       }
     }
   });
- window.userLogout = async function() {
+
+  document.getElementById('userLogoutBtn').addEventListener('click', async () => {
     await signOut(auth);
     window.location.href = 'https://clickcab-portals.vercel.app/user-login.html';
-};
-  
+  });
 </script>
 </body>
 </html>
