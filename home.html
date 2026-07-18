@@ -128,6 +128,55 @@
       padding: 1.8rem; box-shadow: 0 12px 48px rgba(0,0,0,0.35);
       width: 100%; max-width: 400px;
     }
+    .booking-widget--launcher {
+      text-align: center;
+      cursor: pointer;
+      padding: 2.4rem 1.8rem;
+    }
+    .booking-widget--launcher:hover { box-shadow: 0 16px 56px rgba(0,0,0,0.45); }
+
+    /* Modal is wide on purpose — it needs to clear Bootstrap's ~992px
+       breakpoint or the form's own Journey Info / Map columns stack
+       vertically instead of sitting side-by-side. Don't shrink this
+       below ~1000px wide or the stacking bug comes back. */
+    .booking-modal-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 9999;
+      align-items: center; justify-content: center;
+      padding: 3vh 2vw;
+    }
+    .booking-modal-overlay.open { display: flex; }
+    .booking-modal {
+      position: relative;
+      width: 100%; max-width: 1100px;
+      height: 94vh;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+    .booking-modal iframe {
+      width: 100%; height: 100%;
+      border: none; display: block;
+    }
+    .booking-modal-close {
+      position: absolute; top: 10px; right: 14px;
+      z-index: 2;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: none;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      font-size: 1.4rem; line-height: 1;
+      color: #333;
+      cursor: pointer;
+    }
+    body.modal-open { overflow: hidden; }
+    @media (max-width: 700px) {
+      .booking-modal { max-width: 100%; height: 100vh; border-radius: 0; }
+    }
     .widget-tabs {
       display: flex; gap: 0.4rem; margin-bottom: 1.4rem;
       background: var(--offwhite); border-radius: 8px; padding: 4px;
@@ -516,50 +565,28 @@
       </div>
     </div>
 
-    <!-- BOOKING WIDGET (simple search box — routes to the real,
-         full-width QuickCab booking page instead of cramming the
-         whole multi-step form + map into this small hero box) -->
+    <!-- BOOKING WIDGET (launcher card -> opens the real QuickCab form
+         in a large popup, wide enough that the form's own left/right
+         layout — Journey Info left, Map right — displays properly
+         instead of stacking) -->
     <div class="hero-right">
-      <div class="booking-widget">
-        <div class="widget-title">Book Your Cab</div>
-        <div class="widget-sub">Enter your trip details to get started</div>
-        <div class="wfield">
-          <label><i class="fas fa-circle" style="color:#1565C0;font-size:0.5rem;"></i> Pickup Location</label>
-          <div class="wfield-row">
-            <i class="fas fa-map-marker-alt"></i>
-            <input type="text" id="hero-pickup" placeholder="Enter pickup location" />
-          </div>
-        </div>
-        <div class="wfield">
-          <label><i class="fas fa-circle" style="color:#c62828;font-size:0.5rem;"></i> Drop Location</label>
-          <div class="wfield-row">
-            <i class="fas fa-map-marker-alt" style="color:#c62828;"></i>
-            <input type="text" id="hero-drop" placeholder="Enter drop location" />
-          </div>
-        </div>
-        <div class="wrow2">
-          <div class="wfield">
-            <label>Date</label>
-            <div class="wfield-row">
-              <i class="fas fa-calendar"></i>
-              <input type="date" id="hero-date" />
-            </div>
-          </div>
-          <div class="wfield">
-            <label>Time</label>
-            <div class="wfield-row">
-              <i class="fas fa-clock"></i>
-              <select id="hero-time">
-                <option>10:00 AM</option>
-                <option>12:00 PM</option>
-                <option>02:00 PM</option>
-                <option>04:00 PM</option>
-                <option>06:00 PM</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <button class="search-btn" onclick="goToBooking()"><i class="fas fa-search"></i> Search Cabs</button>
+      <div class="booking-widget booking-widget--launcher" onclick="openBookingModal()">
+        <i class="fas fa-taxi" style="font-size:2.2rem; color:var(--blue); margin-bottom:0.8rem;"></i>
+        <div class="widget-title" style="font-size:1.2rem;">Book Your Cab</div>
+        <div class="widget-sub" style="margin-bottom:1.4rem;">Enter your pickup, destination, and get an instant quote.</div>
+        <button class="search-btn" type="button"><i class="fas fa-search"></i> Start Booking</button>
+      </div>
+    </div>
+
+    <!-- BOOKING MODAL -->
+    <div id="booking-modal-overlay" class="booking-modal-overlay" onclick="if(event.target===this) closeBookingModal()">
+      <div class="booking-modal">
+        <button class="booking-modal-close" onclick="closeBookingModal()" aria-label="Close">&times;</button>
+        <iframe
+          src="https://user.clickcabs.in/book-now/"
+          title="Book a cab"
+          loading="lazy">
+        </iframe>
       </div>
     </div>
 
@@ -1173,15 +1200,19 @@
 </footer>
 
 <script>
-  // Hero widget "Search Cabs" -> real QuickCab booking page.
-  // Note: pickup/drop/date values are NOT currently passed through —
-  // QuickCab's own form doesn't support pre-fill via URL params out
-  // of the box, so this is a clean handoff, not a data carry-over.
-  // If pre-fill is wanted later, that needs a small QuickCab-side
-  // change, not just this page.
-  function goToBooking() {
-    window.location.href = 'https://user.clickcabs.in/book-now/';
+<script>
+  // Booking modal open/close
+  function openBookingModal() {
+    document.getElementById('booking-modal-overlay').classList.add('open');
+    document.body.classList.add('modal-open');
   }
+  function closeBookingModal() {
+    document.getElementById('booking-modal-overlay').classList.remove('open');
+    document.body.classList.remove('modal-open');
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeBookingModal();
+  });
 
   // Tab switcher
   function switchTab(btn, tab) {
