@@ -144,15 +144,16 @@
       position: fixed; inset: 0;
       background: rgba(0,0,0,0.6);
       z-index: 9999;
-      align-items: center; justify-content: center;
-      padding: 7vh 2vw;
+      align-items: flex-start; justify-content: center;
+      padding: 9vh 2vw 3vh;
       box-sizing: border-box;
     }
     .booking-modal-overlay.open { display: flex; }
     .booking-modal {
       position: relative;
       width: 100%; max-width: 1020px;
-      height: min(64vh, 600px);
+      height: 78vh;
+      max-height: 760px;
       background: #fff;
       border-radius: 12px;
       overflow: hidden;
