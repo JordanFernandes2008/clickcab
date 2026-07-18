@@ -128,6 +128,20 @@
       padding: 1.8rem; box-shadow: 0 12px 48px rgba(0,0,0,0.35);
       width: 100%; max-width: 400px;
     }
+    /* The real QuickCab form (with its map) needs more room than the
+       old 400px fake widget card, so this variant is wider and taller.
+       Adjust max-width / height to taste once you see it live. */
+    .booking-widget--iframe {
+      max-width: 480px;
+      padding: 0;
+      overflow: hidden;
+    }
+    .booking-widget--iframe iframe {
+      width: 100%;
+      height: 640px;
+      border: none;
+      display: block;
+    }
     .widget-tabs {
       display: flex; gap: 0.4rem; margin-bottom: 1.4rem;
       background: var(--offwhite); border-radius: 8px; padding: 4px;
@@ -516,8 +530,23 @@
       </div>
     </div>
 
-    <!-- BOOKING WIDGET -->
+    <!-- BOOKING WIDGET (now the real QuickCab booking form) -->
     <div class="hero-right">
+      <div class="booking-widget booking-widget--iframe">
+        <iframe
+          src="https://user.clickcabs.in/book-now/"
+          title="Book a cab"
+          loading="lazy">
+        </iframe>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         OLD FAKE WIDGET (kept here, hidden, in case you need to
+         revert or reuse the tab markup later). Safe to delete once
+         you're confident the iframe version above is final.
+    ============================================================ -->
+    <div class="hero-right" style="display:none;">
       <div class="booking-widget">
         <div class="widget-tabs">
           <button class="widget-tab active" onclick="switchTab(this,'outstation')">Outstation</button>
