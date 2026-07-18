@@ -128,52 +128,22 @@
       padding: 1.8rem; box-shadow: 0 12px 48px rgba(0,0,0,0.35);
       width: 100%; max-width: 400px;
     }
-    /* Launcher card: small, sits in the hero corner, just opens the modal */
-    .booking-widget--launcher {
-      text-align: center;
-      cursor: pointer;
-      padding: 2.4rem 1.8rem;
-    }
-    .booking-widget--launcher:hover { box-shadow: 0 16px 56px rgba(0,0,0,0.45); }
-
-    /* Modal: hidden by default, opens large so the real form + map
-       has room to breathe and needs minimal internal scrolling */
-    .booking-modal-overlay {
-      display: none;
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.6);
-      z-index: 9999;
-      align-items: center; justify-content: center;
-      padding: 3vh 2vw;
-    }
-    .booking-modal-overlay.open { display: flex; }
-    .booking-modal {
-      position: relative;
-      width: 100%; max-width: 560px;
-      height: 780px;
-      max-height: 92vh;
-      background: #fff;
-      border-radius: 12px;
+    /* Inline booking form, no popup. Content will need some internal
+       scroll on this small width — that's Bootstrap stacking the
+       columns below ~992px, not something CSS here can undo without
+       widening the box. */
+    .booking-widget--iframe {
+      max-width: 480px;
+      padding: 0;
       overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      border-radius: 16px;
     }
-    .booking-modal iframe {
-      width: 100%; height: 100%;
-      border: none; display: block;
-    }
-    .booking-modal-close {
-      position: absolute; top: 10px; right: 14px;
-      z-index: 2;
-      width: 36px; height: 36px;
-      border-radius: 50%;
+    .booking-widget--iframe iframe {
+      width: 100%;
+      height: 540px;
       border: none;
-      background: #fff;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-      font-size: 1.4rem; line-height: 1;
-      color: #333;
-      cursor: pointer;
+      display: block;
     }
-    body.modal-open { overflow: hidden; }
     .widget-tabs {
       display: flex; gap: 0.4rem; margin-bottom: 1.4rem;
       background: var(--offwhite); border-radius: 8px; padding: 4px;
@@ -562,21 +532,9 @@
       </div>
     </div>
 
-    <!-- BOOKING WIDGET (now a launcher for the real QuickCab booking form,
-         which opens in a large popup instead of a cramped inline box) -->
+    <!-- BOOKING WIDGET (inline, no popup — real QuickCab form) -->
     <div class="hero-right">
-      <div class="booking-widget booking-widget--launcher" onclick="openBookingModal()">
-        <i class="fas fa-taxi" style="font-size:2.2rem; color:var(--blue); margin-bottom:0.8rem;"></i>
-        <div class="widget-title" style="font-size:1.2rem;">Book Your Cab</div>
-        <div class="widget-sub" style="margin-bottom:1.4rem;">Enter your pickup, destination, and get an instant quote.</div>
-        <button class="search-btn" type="button"><i class="fas fa-search"></i> Start Booking</button>
-      </div>
-    </div>
-
-    <!-- BOOKING MODAL (opens large, holds the real QuickCab form) -->
-    <div id="booking-modal-overlay" class="booking-modal-overlay" onclick="if(event.target===this) closeBookingModal()">
-      <div class="booking-modal">
-        <button class="booking-modal-close" onclick="closeBookingModal()" aria-label="Close">&times;</button>
+      <div class="booking-widget booking-widget--iframe">
         <iframe
           src="https://user.clickcabs.in/book-now/"
           title="Book a cab"
@@ -1195,19 +1153,6 @@
 </footer>
 
 <script>
-  // Booking modal open/close
-  function openBookingModal() {
-    document.getElementById('booking-modal-overlay').classList.add('open');
-    document.body.classList.add('modal-open');
-  }
-  function closeBookingModal() {
-    document.getElementById('booking-modal-overlay').classList.remove('open');
-    document.body.classList.remove('modal-open');
-  }
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') closeBookingModal();
-  });
-
   // Tab switcher
   function switchTab(btn, tab) {
     document.querySelectorAll('.widget-tab').forEach(t => t.classList.remove('active'));
