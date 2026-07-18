@@ -128,22 +128,6 @@
       padding: 1.8rem; box-shadow: 0 12px 48px rgba(0,0,0,0.35);
       width: 100%; max-width: 400px;
     }
-    /* Inline booking form, no popup. Content will need some internal
-       scroll on this small width — that's Bootstrap stacking the
-       columns below ~992px, not something CSS here can undo without
-       widening the box. */
-    .booking-widget--iframe {
-      max-width: 480px;
-      padding: 0;
-      overflow: hidden;
-      border-radius: 16px;
-    }
-    .booking-widget--iframe iframe {
-      width: 100%;
-      height: 540px;
-      border: none;
-      display: block;
-    }
     .widget-tabs {
       display: flex; gap: 0.4rem; margin-bottom: 1.4rem;
       background: var(--offwhite); border-radius: 8px; padding: 4px;
@@ -532,14 +516,50 @@
       </div>
     </div>
 
-    <!-- BOOKING WIDGET (inline, no popup — real QuickCab form) -->
+    <!-- BOOKING WIDGET (simple search box — routes to the real,
+         full-width QuickCab booking page instead of cramming the
+         whole multi-step form + map into this small hero box) -->
     <div class="hero-right">
-      <div class="booking-widget booking-widget--iframe">
-        <iframe
-          src="https://user.clickcabs.in/book-now/"
-          title="Book a cab"
-          loading="lazy">
-        </iframe>
+      <div class="booking-widget">
+        <div class="widget-title">Book Your Cab</div>
+        <div class="widget-sub">Enter your trip details to get started</div>
+        <div class="wfield">
+          <label><i class="fas fa-circle" style="color:#1565C0;font-size:0.5rem;"></i> Pickup Location</label>
+          <div class="wfield-row">
+            <i class="fas fa-map-marker-alt"></i>
+            <input type="text" id="hero-pickup" placeholder="Enter pickup location" />
+          </div>
+        </div>
+        <div class="wfield">
+          <label><i class="fas fa-circle" style="color:#c62828;font-size:0.5rem;"></i> Drop Location</label>
+          <div class="wfield-row">
+            <i class="fas fa-map-marker-alt" style="color:#c62828;"></i>
+            <input type="text" id="hero-drop" placeholder="Enter drop location" />
+          </div>
+        </div>
+        <div class="wrow2">
+          <div class="wfield">
+            <label>Date</label>
+            <div class="wfield-row">
+              <i class="fas fa-calendar"></i>
+              <input type="date" id="hero-date" />
+            </div>
+          </div>
+          <div class="wfield">
+            <label>Time</label>
+            <div class="wfield-row">
+              <i class="fas fa-clock"></i>
+              <select id="hero-time">
+                <option>10:00 AM</option>
+                <option>12:00 PM</option>
+                <option>02:00 PM</option>
+                <option>04:00 PM</option>
+                <option>06:00 PM</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <button class="search-btn" onclick="goToBooking()"><i class="fas fa-search"></i> Search Cabs</button>
       </div>
     </div>
 
@@ -1153,6 +1173,16 @@
 </footer>
 
 <script>
+  // Hero widget "Search Cabs" -> real QuickCab booking page.
+  // Note: pickup/drop/date values are NOT currently passed through —
+  // QuickCab's own form doesn't support pre-fill via URL params out
+  // of the box, so this is a clean handoff, not a data carry-over.
+  // If pre-fill is wanted later, that needs a small QuickCab-side
+  // change, not just this page.
+  function goToBooking() {
+    window.location.href = 'https://user.clickcabs.in/book-now/';
+  }
+
   // Tab switcher
   function switchTab(btn, tab) {
     document.querySelectorAll('.widget-tab').forEach(t => t.classList.remove('active'));
