@@ -313,6 +313,48 @@
       .footer-grid { grid-template-columns: 1fr; }
     }
   </style>
+<style>
+  .booking-modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 9999;
+    align-items: flex-start; justify-content: center;
+    padding-top: 90px;
+    box-sizing: border-box;
+  }
+  .booking-modal-overlay.open { display: flex; }
+  .booking-modal {
+    position: relative;
+    width: 100%; max-width: 1020px;
+    margin: 0 2vw;
+    height: 480px;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  .booking-modal iframe {
+    width: 100%; height: 100%;
+    border: none; display: block;
+  }
+  .booking-modal-close {
+    position: absolute; top: 10px; right: 14px;
+    z-index: 2;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    font-size: 1.4rem; line-height: 1;
+    color: #333;
+    cursor: pointer;
+  }
+  body.modal-open { overflow: hidden; }
+  @media (max-width: 700px) {
+    .booking-modal { max-width: 100%; height: 100vh; border-radius: 0; }
+  }
+</style>
 </head>
 <body>
 
@@ -375,7 +417,7 @@
 <!-- BOOKING BAR -->
 <div class="booking-bar-wrap">
   <div class="booking-bar">
-    <div class="ride-pill" onclick="openRideModal()">
+    <div class="ride-pill" onclick="openBookingModal()">
       <div class="ride-pill-icon"><i class="fas fa-map-marker-alt"></i></div>
       <div class="ride-pill-text">
         <div class="ride-pill-main" id="ridePillMain">Set pickup location</div>
@@ -383,7 +425,7 @@
       </div>
       <i class="fas fa-chevron-right ride-pill-chevron"></i>
     </div>
-    <button class="search-btn" onclick="openRideModal()">Book Rental Now</button>
+    <button class="search-btn" onclick="openBookingModal()">Book Rental Now</button>
   </div>
 </div>
 
@@ -675,7 +717,31 @@
   </div>
 </footer>
 
+<!-- BOOKING MODAL (real QuickCab form) -->
+<div id="booking-modal-overlay" class="booking-modal-overlay" onclick="if(event.target===this) closeBookingModal()">
+  <div class="booking-modal">
+    <button class="booking-modal-close" onclick="closeBookingModal()" aria-label="Close">&times;</button>
+    <iframe
+      src="https://user.clickcabs.in/book-now/"
+      title="Book a cab"
+      loading="lazy">
+    </iframe>
+  </div>
+</div>
+
 <script>
+  function openBookingModal() {
+    document.getElementById('booking-modal-overlay').classList.add('open');
+    document.body.classList.add('modal-open');
+  }
+  function closeBookingModal() {
+    document.getElementById('booking-modal-overlay').classList.remove('open');
+    document.body.classList.remove('modal-open');
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeBookingModal();
+  });
+
   function openRideModal() {
     document.getElementById('rideModalOverlay').classList.add('open');
   }
