@@ -58,7 +58,7 @@
     /* ── HERO (image bg, same shape as homepage's gradient hero) ── */
     .hero {
       padding-top: 60px;
-      min-height: 480px;
+      min-height: 560px;
       background: linear-gradient(rgba(10,7,2,0.55), rgba(10,7,2,0.75)), url('images/tour.jpg') center/cover no-repeat;
       display: flex;
       flex-direction: column;
@@ -77,17 +77,17 @@
 
     .hero-sub { font-size: 0.88rem; color: #ddd; line-height: 1.7; max-width: 460px; margin-top: 1rem; }
 
-    /* ── BOOKING BAR (floats over the top of the tours section) ── */
+    /* ── BOOKING BAR (overlaps bottom of hero, like airport-transfer) ── */
+    .booking-bar-wrap { padding: 0 2rem; background: #fff; }
     .booking-bar {
       background: #fff;
       border-radius: 16px;
       box-shadow: 0 20px 50px rgba(0,0,0,0.25);
       padding: 1.4rem 1.6rem;
       max-width: 1300px;
-      margin: 0 auto -60px;
+      margin: -40px auto 0;
       position: relative;
-      z-index: 3;
-      transform: translateY(-50%);
+      z-index: 10;
       display: flex;
       align-items: center;
       gap: 1.2rem;
@@ -254,7 +254,9 @@
     </h1>
     <p class="hero-sub">Curated travel experiences with comfortable transportation and trusted drivers.</p>
   </div>
+</div>
 
+<div class="booking-bar-wrap">
   <div class="booking-bar">
     <div class="ride-pill" onclick="openRideModal()">
       <div class="ride-pill-icon"><i class="fas fa-route"></i></div>
