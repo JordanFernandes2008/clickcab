@@ -513,9 +513,9 @@
 </a>
   <ul class="nav-links">
     <li><a href="/" class="active">Home</a></li>
-    <li><a href="outstation.html">Outstation</a></li>
     <li><a href="airport-transfer.html">Airport Transfer</a></li>
     <li><a href="local-rental.html">Local Rental</a></li>
+    <li><a href="outstation.html">Outstation</a></li>
     <li><a href="corporate.html">Corporate</a></li>
     <li><a href="tour-packages.html">Tour Packages</a></li>
     <li><a href="contact-us.html">Contact Us</a></li>
@@ -540,9 +540,9 @@
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
   <a href="/" class="active">Home</a>
-  <a href="outstation.html">Outstation</a>
   <a href="airport-transfer.html">Airport Transfer</a>
   <a href="local-rental.html">Local Rental</a>
+  <a href="outstation.html">Outstation</a>
   <a href="corporate.html">Corporate</a>
   <a href="tour-packages.html">Tour Packages</a>
   <a href="contact-us.html">Contact Us</a>
@@ -567,19 +567,6 @@
       </div>
     </div>
 
-    <!-- BOOKING WIDGET (launcher card -> opens the real QuickCab form
-         in a large popup, wide enough that the form's own left/right
-         layout — Journey Info left, Map right — displays properly
-         instead of stacking) -->
-    <div class="hero-right">
-      <div class="booking-widget booking-widget--launcher" onclick="openBookingModal()">
-        <i class="fas fa-taxi" style="font-size:2.2rem; color:var(--blue); margin-bottom:0.8rem;"></i>
-        <div class="widget-title" style="font-size:1.2rem;">Book Your Cab</div>
-        <div class="widget-sub" style="margin-bottom:1.4rem;">Enter your pickup, destination, and get an instant quote.</div>
-        <button class="search-btn" type="button"><i class="fas fa-search"></i> Start Booking</button>
-      </div>
-    </div>
-
     <!-- BOOKING MODAL -->
     <div id="booking-modal-overlay" class="booking-modal-overlay" onclick="if(event.target===this) closeBookingModal()">
       <div class="booking-modal">
@@ -594,11 +581,11 @@
     </div>
 
     <!-- ============================================================
-         OLD FAKE WIDGET (kept here, hidden, in case you need to
-         revert or reuse the tab markup later). Safe to delete once
-         you're confident the iframe version above is final.
+         HERO BOOKING WIDGET - tabbed. Fields are a visual front door;
+         every "Search Cabs" button opens the real QuickCab booking
+         form in the modal below.
     ============================================================ -->
-    <div class="hero-right" style="display:none;">
+    <div class="hero-right">
       <div class="booking-widget">
         <div class="widget-tabs">
           <button class="widget-tab active" onclick="switchTab(this,'outstation')">Outstation</button>
@@ -615,14 +602,14 @@
             <label><i class="fas fa-circle" style="color:#1565C0;font-size:0.5rem;"></i> Pickup Location</label>
             <div class="wfield-row">
               <i class="fas fa-map-marker-alt"></i>
-              <input type="text" placeholder="Enter pickup city" />
+              <input type="text" data-role="pickup" placeholder="Enter pickup city" />
             </div>
           </div>
           <div class="wfield">
             <label><i class="fas fa-circle" style="color:#c62828;font-size:0.5rem;"></i> Drop Location</label>
             <div class="wfield-row">
               <i class="fas fa-map-marker-alt" style="color:#c62828;"></i>
-              <input type="text" placeholder="Enter drop city" />
+              <input type="text" data-role="drop" placeholder="Enter drop city" />
             </div>
           </div>
           <div class="wrow2">
@@ -630,7 +617,7 @@
               <label>Journey Date</label>
               <div class="wfield-row">
                 <i class="fas fa-calendar"></i>
-                <input type="date" />
+                <input type="date" data-role="date" />
               </div>
             </div>
             <div class="wfield">
@@ -647,7 +634,7 @@
               </div>
             </div>
           </div>
-          <button class="search-btn" onclick="window.location.href='outstation.html'"><i class="fas fa-search"></i> Search Cabs</button>
+          <button class="search-btn" type="button" onclick="openBookingModal()"><i class="fas fa-search"></i> Search Cabs</button>
         </div>
 
         <!-- Airport tab -->
@@ -658,7 +645,7 @@
             <label>Pickup Location</label>
             <div class="wfield-row">
               <i class="fas fa-map-marker-alt"></i>
-              <input type="text" placeholder="Hotel / Home address" />
+              <input type="text" data-role="pickup" placeholder="Hotel / Home address" />
             </div>
           </div>
           <div class="wfield">
@@ -678,7 +665,7 @@
               <label>Date</label>
               <div class="wfield-row">
                 <i class="fas fa-calendar"></i>
-                <input type="date" />
+                <input type="date" data-role="date" />
               </div>
             </div>
             <div class="wfield">
@@ -694,7 +681,7 @@
               </div>
             </div>
           </div>
-          <button class="search-btn" onclick="window.location.href='airport-transfer.html'"><i class="fas fa-search"></i> Search Cabs</button>
+          <button class="search-btn" type="button" onclick="openBookingModal()"><i class="fas fa-search"></i> Search Cabs</button>
         </div>
 
         <!-- Local tab -->
@@ -705,7 +692,7 @@
             <label>Pickup Location</label>
             <div class="wfield-row">
               <i class="fas fa-map-marker-alt"></i>
-              <input type="text" placeholder="Enter pickup location" />
+              <input type="text" data-role="pickup" placeholder="Enter pickup location" />
             </div>
           </div>
           <div class="wfield">
@@ -725,7 +712,7 @@
               <label>Date</label>
               <div class="wfield-row">
                 <i class="fas fa-calendar"></i>
-                <input type="date" />
+                <input type="date" data-role="date" />
               </div>
             </div>
             <div class="wfield">
@@ -741,7 +728,7 @@
               </div>
             </div>
           </div>
-          <button class="search-btn" onclick="window.location.href='local-rental.html'"><i class="fas fa-search"></i> Search Cabs</button>
+          <button class="search-btn" type="button" onclick="openBookingModal()"><i class="fas fa-search"></i> Search Cabs</button>
         </div>
 
         <!-- One Way tab -->
@@ -752,14 +739,14 @@
             <label><i class="fas fa-circle" style="color:#1565C0;font-size:0.5rem;"></i> Pickup Location</label>
             <div class="wfield-row">
               <i class="fas fa-map-marker-alt"></i>
-              <input type="text" placeholder="Enter pickup city" />
+              <input type="text" data-role="pickup" placeholder="Enter pickup city" />
             </div>
           </div>
           <div class="wfield">
             <label><i class="fas fa-circle" style="color:#c62828;font-size:0.5rem;"></i> Drop Location</label>
             <div class="wfield-row">
               <i class="fas fa-map-marker-alt" style="color:#c62828;"></i>
-              <input type="text" placeholder="Enter drop city" />
+              <input type="text" data-role="drop" placeholder="Enter drop city" />
             </div>
           </div>
           <div class="wrow2">
@@ -767,7 +754,7 @@
               <label>Journey Date</label>
               <div class="wfield-row">
                 <i class="fas fa-calendar"></i>
-                <input type="date" />
+                <input type="date" data-role="date" />
               </div>
             </div>
             <div class="wfield">
@@ -784,7 +771,7 @@
               </div>
             </div>
           </div>
-          <button class="search-btn" onclick="window.location.href='outstation.html'"><i class="fas fa-search"></i> Search Cabs</button>
+          <button class="search-btn" type="button" onclick="openBookingModal()"><i class="fas fa-search"></i> Search Cabs</button>
         </div>
 
       </div>
@@ -1207,6 +1194,48 @@
   function openBookingModal() {
     document.getElementById('booking-modal-overlay').classList.add('open');
     document.body.classList.add('modal-open');
+    sendPrefillToBookingForm();
+  }
+
+  // --- Hand the hero widget's typed values over to the QuickCab form ---
+  // The form lives on user.clickcabs.in inside the iframe, so we can't write
+  // into it directly (browser cross-origin rule). Instead we post the values
+  // across; a small listener snippet on the WordPress side fills the fields.
+  function getActiveHeroTabValues() {
+    var pane = null;
+    ['outstation', 'airport', 'local', 'oneway'].forEach(function (id) {
+      var el = document.getElementById('tab-' + id);
+      if (el && el.style.display !== 'none') pane = el;
+    });
+    if (!pane) pane = document.getElementById('tab-outstation');
+    if (!pane) return { pickup: '', drop: '', date: '' };
+    var read = function (role) {
+      var el = pane.querySelector('[data-role="' + role + '"]');
+      return el && el.value ? el.value.trim() : '';
+    };
+    return { pickup: read('pickup'), drop: read('drop'), date: read('date') };
+  }
+
+  function sendPrefillToBookingForm() {
+    var data = getActiveHeroTabValues();
+    if (!data.pickup && !data.drop) return; // nothing typed, nothing to send
+    var iframe = document.querySelector('#booking-modal-overlay iframe');
+    if (!iframe) return;
+    var payload = {
+      source: 'clickcab-hero',
+      pickup: data.pickup,
+      drop: data.drop,
+      date: data.date
+    };
+    // The iframe is lazy-loaded, so retry for a few seconds until it is ready.
+    var tries = 0;
+    (function send() {
+      tries++;
+      try {
+        iframe.contentWindow.postMessage(payload, 'https://user.clickcabs.in');
+      } catch (e) { /* iframe not ready yet */ }
+      if (tries < 12) setTimeout(send, 600);
+    })();
   }
   function closeBookingModal() {
     document.getElementById('booking-modal-overlay').classList.remove('open');
