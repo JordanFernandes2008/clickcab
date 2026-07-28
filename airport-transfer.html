@@ -317,6 +317,47 @@
     }
   </style>
 <style>
+
+  /* ---- Inline booking form (embedded in page, replaces popup) ---- */
+  .inline-booking {
+    max-width: 1180px;
+    margin: -40px auto 3rem;
+    position: relative;
+    z-index: 5;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 18px 50px rgba(0,0,0,0.28);
+    overflow: hidden;
+  }
+  .inline-booking-head {
+    padding: 1.4rem 1.8rem 0.4rem;
+    border-bottom: 1px solid #eee;
+  }
+  .inline-booking-head h2 {
+    margin: 0 0 0.25rem;
+    font-size: 1.35rem;
+    color: #012f4a;
+    font-weight: 800;
+  }
+  .inline-booking-head p {
+    margin: 0 0 0.9rem;
+    color: #666;
+    font-size: 0.92rem;
+  }
+  .inline-booking iframe {
+    width: 100%;
+    height: 560px;
+    border: none;
+    display: block;
+  }
+  @media (max-width: 1100px) {
+    .inline-booking { margin: 1.5rem 1rem 2.5rem; border-radius: 12px; }
+    .inline-booking iframe { height: 820px; }
+  }
+  @media (max-width: 600px) {
+    .inline-booking iframe { height: 900px; }
+  }
+
   .booking-modal-overlay {
     display: none;
     position: fixed; inset: 0;
@@ -418,19 +459,19 @@
 </div>
 
 <!-- BOOKING BAR -->
-<div class="booking-bar-wrap">
-  <div class="booking-bar">
-    <div class="ride-pill" onclick="openBookingModal()">
-      <div class="ride-pill-icon"><i class="fas fa-plane"></i></div>
-      <div class="ride-pill-text">
-        <div class="ride-pill-main" id="ridePillMain">Set pickup &amp; airport</div>
-        <div class="ride-pill-sub" id="ridePillSub">Add pickup, drop, flight date &amp; time</div>
-      </div>
-      <i class="fas fa-chevron-right ride-pill-chevron"></i>
-    </div>
-    <button class="search-btn" onclick="openBookingModal()">Search Cabs</button>
+<!-- BOOKING FORM - embedded in page (no popup). Keep full width:
+     the QuickCab form stacks into one column below ~1000px. -->
+<section class="inline-booking" id="book">
+  <div class="inline-booking-head">
+    <h2>Book Your Airport Transfer</h2>
+    <p>Enter your pickup and airport to get an instant fare.</p>
   </div>
-</div>
+  <iframe
+    src="https://user.clickcabs.in/book-now/"
+    title="Book a cab"
+    allow="geolocation">
+  </iframe>
+</section>
 
 <!-- RIDE MODAL -->
 <div class="ride-modal-overlay" id="rideModalOverlay" onclick="closeRideModalOutside(event)">
@@ -649,30 +690,9 @@
 </footer>
 
 <!-- BOOKING MODAL (real QuickCab form) -->
-<div id="booking-modal-overlay" class="booking-modal-overlay" onclick="if(event.target===this) closeBookingModal()">
-  <div class="booking-modal">
-    <button class="booking-modal-close" onclick="closeBookingModal()" aria-label="Close">&times;</button>
-    <iframe
-      src="https://user.clickcabs.in/book-now/"
-      title="Book a cab"
-      loading="lazy"
-      allow="geolocation">
-    </iframe>
-  </div>
-</div>
 
 <script>
-  function openBookingModal() {
-    document.getElementById('booking-modal-overlay').classList.add('open');
-    document.body.classList.add('modal-open');
-  }
-  function closeBookingModal() {
-    document.getElementById('booking-modal-overlay').classList.remove('open');
-    document.body.classList.remove('modal-open');
-  }
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') closeBookingModal();
-  });
+
 
   function openRideModal() {
     document.getElementById('rideModalOverlay').classList.add('open');
