@@ -318,7 +318,43 @@
   </style>
 <style>
 
-  /* ---- Inline booking form (embedded in page, replaces popup) ---- */
+
+  /* ---- Booking box (real, feeds the form below - no popup) ---- */
+  .cc-box-wrap { padding: 0 2rem; }
+  .cc-box {
+    max-width: 1180px; margin: -40px auto 0; position: relative; z-index: 10;
+    background: #fff; border-radius: 14px; padding: 1.1rem 1.3rem;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.18);
+    display: flex; align-items: flex-end; gap: 0.9rem; flex-wrap: wrap;
+  }
+  .cc-field { flex: 1; min-width: 170px; display: flex; flex-direction: column; gap: 0.3rem; }
+  .cc-field label {
+    font-size: 0.6rem; font-weight: 700; color: #999;
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .cc-input {
+    display: flex; align-items: center; gap: 0.5rem;
+    border: 1.5px solid #e0e0e0; border-radius: 8px; padding: 0.6rem 0.8rem;
+  }
+  .cc-input:focus-within { border-color: #01456c; }
+  .cc-input i { color: #bbb; font-size: 0.8rem; flex-shrink: 0; }
+  .cc-input input {
+    border: none; outline: none; flex: 1; background: transparent;
+    font-family: 'Inter', sans-serif; font-size: 0.83rem; color: #333; min-width: 0;
+  }
+  .cc-go {
+    background: #f5a200; color: #000; border: none; border-radius: 8px;
+    font-family: 'Inter', sans-serif; font-size: 0.87rem; font-weight: 800;
+    padding: 0.78rem 1.7rem; cursor: pointer; white-space: nowrap;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .cc-go:hover { background: #d48e00; }
+  @media (max-width: 860px) {
+    .cc-box { margin: 1rem auto 0; flex-direction: column; align-items: stretch; }
+    .cc-go { justify-content: center; }
+  }
+
+  /* ---- Inline booking form ---- */
   .inline-booking {
     max-width: 1180px;
     margin: -40px auto 3rem;
@@ -459,9 +495,38 @@
 </div>
 
 <!-- BOOKING BAR -->
+<div class="cc-box-wrap">
+  <div class="cc-box">
+    <div class="cc-field">
+      <label>Pickup Location</label>
+      <div class="cc-input">
+        <i class="fas fa-map-marker-alt"></i>
+        <input type="text" data-role="pickup" placeholder="Hotel / home address" />
+      </div>
+    </div>
+    <div class="cc-field">
+      <label>Airport</label>
+      <div class="cc-input">
+        <i class="fas fa-map-marker-alt" style="color:#c62828;"></i>
+        <input type="text" data-role="drop" placeholder="Which airport?" />
+      </div>
+    </div>
+    <div class="cc-field" style="max-width:180px;">
+      <label>Date</label>
+      <div class="cc-input">
+        <i class="fas fa-calendar"></i>
+        <input type="date" data-role="date" />
+      </div>
+    </div>
+    <button class="cc-go" type="button" onclick="startBooking()">
+      <i class="fas fa-search"></i> Search Cabs
+    </button>
+  </div>
+</div>
+
 <!-- BOOKING FORM - embedded in page (no popup). Keep full width:
      the QuickCab form stacks into one column below ~1000px. -->
-<section class="inline-booking" id="book">
+<section class="inline-booking" id="book" style="display:none;">
   <div class="inline-booking-head">
     <h2>Book Your Airport Transfer</h2>
     <p>Enter your pickup and airport to get an instant fare.</p>
@@ -473,35 +538,6 @@
   </iframe>
 </section>
 
-<!-- RIDE MODAL -->
-<div class="ride-modal-overlay" id="rideModalOverlay" onclick="closeRideModalOutside(event)">
-  <div class="ride-modal">
-    <button class="ride-modal-close" onclick="closeRideModal()"><i class="fas fa-times"></i></button>
-    <h3>Plan Your Airport Transfer</h3>
-    <div class="ride-input-group">
-      <div class="ride-line"></div>
-      <div class="ride-row">
-        <div class="ride-dot pickup"></div>
-        <input type="text" id="pickupInput" placeholder="Enter pickup location" />
-      </div>
-      <div class="ride-row">
-        <div class="ride-dot drop"></div>
-        <input type="text" id="dropInput" placeholder="Enter airport or city" />
-      </div>
-    </div>
-    <div class="ride-datetime">
-      <div class="ride-dt-field">
-        <label>Flight Date</label>
-        <input type="date" id="rideDateInput" value="2026-05-15" />
-      </div>
-      <div class="ride-dt-field">
-        <label>Time</label>
-        <input type="time" id="rideTimeInput" value="10:00" />
-      </div>
-    </div>
-    <button class="ride-confirm-btn" onclick="confirmRide()">Search Cabs</button>
-  </div>
-</div>
 
 <!-- OUR BENEFITS -->
 <section class="section benefits-section">
@@ -693,23 +729,35 @@
 
 <script>
 
+  /* Booking box -> real booking form, revealed on this same page. */
+  function startBooking() {
+    var read = function (role) {
+      var el = document.querySelector('.cc-box [data-role="' + role + '"]');
+      return el && el.value ? el.value.trim() : '';
+    };
+    var data = { pickup: read('pickup'), drop: read('drop'), date: read('date') };
 
-  function openRideModal() {
-    document.getElementById('rideModalOverlay').classList.add('open');
+    var form = document.getElementById('book');
+    if (!form) return;
+    form.style.display = '';
+
+    var iframe = form.querySelector('iframe');
+    if (iframe && (data.pickup || data.drop)) {
+      var payload = { source: 'clickcab-hero', pickup: data.pickup, drop: data.drop, date: data.date };
+      var tries = 0;
+      (function send() {
+        tries++;
+        try { iframe.contentWindow.postMessage(payload, 'https://user.clickcabs.in'); }
+        catch (e) {}
+        if (tries < 12) setTimeout(send, 600);
+      })();
+    }
+    setTimeout(function () {
+      form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 60);
   }
-  function closeRideModal() {
-    document.getElementById('rideModalOverlay').classList.remove('open');
-  }
-  function closeRideModalOutside(e) {
-    if (e.target.id === 'rideModalOverlay') closeRideModal();
-  }
-  function confirmRide() {
-    const pickup = document.getElementById('pickupInput').value || 'Pickup location';
-    const drop = document.getElementById('dropInput').value || 'Airport / city';
-    document.getElementById('ridePillMain').textContent = pickup + ' → ' + drop;
-    document.getElementById('ridePillSub').textContent = document.getElementById('rideDateInput').value + ' • ' + document.getElementById('rideTimeInput').value;
-    closeRideModal();
-  }
+
+
 </script>
 
 </body>

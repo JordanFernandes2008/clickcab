@@ -600,8 +600,8 @@
 </div>
 
 <!-- HERO -->
-<div class="hero hero--compact">
-  <div class="hero-inner hero-inner--single">
+<div class="hero">
+  <div class="hero-inner">
     <div class="hero-left">
       <div class="hero-label">Safe. Reliable. On-Time.</div>
       <h1 class="hero-h1">Your Journey,<br><span class="yellow">Our Priority</span></h1>
@@ -617,16 +617,210 @@
         <a href="contact-us.html" class="btn-outline"><i class="fas fa-envelope"></i> Send Inquiry</a>
       </div>
     </div>
+
+    <!-- BOOKING BOX - the real thing. Fields feed straight into the
+         booking form that opens below, on the same page. No popup. -->
+    <div class="hero-right">
+      <div class="booking-widget">
+        <div class="widget-tabs">
+          <button class="widget-tab active" onclick="switchTab(this,'outstation')">Outstation</button>
+          <button class="widget-tab" onclick="switchTab(this,'airport')">Airport</button>
+          <button class="widget-tab" onclick="switchTab(this,'local')">Local</button>
+          <button class="widget-tab" onclick="switchTab(this,'oneway')">One Way</button>
+        </div>
+
+        <!-- Outstation tab -->
+        <div id="tab-outstation">
+          <div class="widget-title">Book Outstation Cab</div>
+          <div class="widget-sub">One way &amp; round trips to any city</div>
+          <div class="wfield">
+            <label><i class="fas fa-circle" style="color:#1565C0;font-size:0.5rem;"></i> Pickup Location</label>
+            <div class="wfield-row">
+              <i class="fas fa-map-marker-alt"></i>
+              <input type="text" data-role="pickup" placeholder="Enter pickup city" />
+            </div>
+          </div>
+          <div class="wfield">
+            <label><i class="fas fa-circle" style="color:#c62828;font-size:0.5rem;"></i> Drop Location</label>
+            <div class="wfield-row">
+              <i class="fas fa-map-marker-alt" style="color:#c62828;"></i>
+              <input type="text" data-role="drop" placeholder="Enter drop city" />
+            </div>
+          </div>
+          <div class="wrow2">
+            <div class="wfield">
+              <label>Journey Date</label>
+              <div class="wfield-row">
+                <i class="fas fa-calendar"></i>
+                <input type="date" data-role="date" />
+              </div>
+            </div>
+            <div class="wfield">
+              <label>Time</label>
+              <div class="wfield-row">
+                <i class="fas fa-clock"></i>
+                <select>
+                  <option>10:00 AM</option>
+                  <option>12:00 PM</option>
+                  <option>02:00 PM</option>
+                  <option>04:00 PM</option>
+                  <option>06:00 PM</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <button class="search-btn" type="button" onclick="startBooking()"><i class="fas fa-search"></i> Search Cabs</button>
+        </div>
+
+        <!-- Airport tab -->
+        <div id="tab-airport" style="display:none;">
+          <div class="widget-title">Book Airport Transfer</div>
+          <div class="widget-sub">Timely pickup &amp; drop to all airports</div>
+          <div class="wfield">
+            <label>Pickup Location</label>
+            <div class="wfield-row">
+              <i class="fas fa-map-marker-alt"></i>
+              <input type="text" data-role="pickup" placeholder="Hotel / Home address" />
+            </div>
+          </div>
+          <div class="wfield">
+            <label>Airport</label>
+            <div class="wfield-row">
+              <i class="fas fa-plane"></i>
+              <select>
+                <option>Mumbai International Airport</option>
+                <option>Chhatrapati Shivaji Airport</option>
+                <option>Pune Airport</option>
+                <option>Navi Mumbai Airport</option>
+              </select>
+            </div>
+          </div>
+          <div class="wrow2">
+            <div class="wfield">
+              <label>Date</label>
+              <div class="wfield-row">
+                <i class="fas fa-calendar"></i>
+                <input type="date" data-role="date" />
+              </div>
+            </div>
+            <div class="wfield">
+              <label>Time</label>
+              <div class="wfield-row">
+                <i class="fas fa-clock"></i>
+                <select>
+                  <option>10:00 AM</option>
+                  <option>12:00 PM</option>
+                  <option>02:00 PM</option>
+                  <option>04:00 PM</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <button class="search-btn" type="button" onclick="startBooking()"><i class="fas fa-search"></i> Search Cabs</button>
+        </div>
+
+        <!-- Local tab -->
+        <div id="tab-local" style="display:none;">
+          <div class="widget-title">Book Local Rental</div>
+          <div class="widget-sub">Hourly &amp; daily rental packages</div>
+          <div class="wfield">
+            <label>Pickup Location</label>
+            <div class="wfield-row">
+              <i class="fas fa-map-marker-alt"></i>
+              <input type="text" data-role="pickup" placeholder="Enter pickup location" />
+            </div>
+          </div>
+          <div class="wfield">
+            <label>Rental Package</label>
+            <div class="wfield-row">
+              <i class="fas fa-clock"></i>
+              <select>
+                <option>4 Hrs / 40 Km</option>
+                <option>8 Hrs / 80 Km</option>
+                <option>12 Hrs / 120 Km</option>
+                <option>Full Day Rental</option>
+              </select>
+            </div>
+          </div>
+          <div class="wrow2">
+            <div class="wfield">
+              <label>Date</label>
+              <div class="wfield-row">
+                <i class="fas fa-calendar"></i>
+                <input type="date" data-role="date" />
+              </div>
+            </div>
+            <div class="wfield">
+              <label>Time</label>
+              <div class="wfield-row">
+                <i class="fas fa-clock"></i>
+                <select>
+                  <option>10:00 AM</option>
+                  <option>12:00 PM</option>
+                  <option>02:00 PM</option>
+                  <option>04:00 PM</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <button class="search-btn" type="button" onclick="startBooking()"><i class="fas fa-search"></i> Search Cabs</button>
+        </div>
+
+        <!-- One Way tab -->
+        <div id="tab-oneway" style="display:none;">
+          <div class="widget-title">Book One Way Cab</div>
+          <div class="widget-sub">Pay only for one side of the trip</div>
+          <div class="wfield">
+            <label><i class="fas fa-circle" style="color:#1565C0;font-size:0.5rem;"></i> Pickup Location</label>
+            <div class="wfield-row">
+              <i class="fas fa-map-marker-alt"></i>
+              <input type="text" data-role="pickup" placeholder="Enter pickup city" />
+            </div>
+          </div>
+          <div class="wfield">
+            <label><i class="fas fa-circle" style="color:#c62828;font-size:0.5rem;"></i> Drop Location</label>
+            <div class="wfield-row">
+              <i class="fas fa-map-marker-alt" style="color:#c62828;"></i>
+              <input type="text" data-role="drop" placeholder="Enter drop city" />
+            </div>
+          </div>
+          <div class="wrow2">
+            <div class="wfield">
+              <label>Journey Date</label>
+              <div class="wfield-row">
+                <i class="fas fa-calendar"></i>
+                <input type="date" data-role="date" />
+              </div>
+            </div>
+            <div class="wfield">
+              <label>Time</label>
+              <div class="wfield-row">
+                <i class="fas fa-clock"></i>
+                <select>
+                  <option>10:00 AM</option>
+                  <option>12:00 PM</option>
+                  <option>02:00 PM</option>
+                  <option>04:00 PM</option>
+                  <option>06:00 PM</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <button class="search-btn" type="button" onclick="startBooking()"><i class="fas fa-search"></i> Search Cabs</button>
+        </div>
+
+      </div>
+    </div>
   </div>
 </div>
 
 <!-- ============================================================
-     BOOKING FORM - embedded directly in the page (no popup).
+     BOOKING FORM - revealed in place when the box above is used.
      Full width on purpose: the QuickCab form lays Journey Info and
      Map out side-by-side, and collapses into a stacked column below
      ~1000px. Keep this band wide.
 ============================================================ -->
-<section class="inline-booking" id="book">
+<section class="inline-booking" id="book" style="display:none;">
   <div class="inline-booking-head">
     <h2>Book Your Cab</h2>
     <p>Enter your pickup and destination to get an instant fare.</p>
@@ -1050,6 +1244,72 @@
 </footer>
 
 <script>
+
+  /* ---------------- BOOKING BOX ----------------
+     Tabs, plus the handoff from the box into the real booking form.
+     Everything stays on this page - no popup anywhere. */
+
+  function switchTab(btn, name) {
+    ['outstation', 'airport', 'local', 'oneway'].forEach(function (id) {
+      var pane = document.getElementById('tab-' + id);
+      if (pane) pane.style.display = (id === name) ? '' : 'none';
+    });
+    document.querySelectorAll('.widget-tab').forEach(function (b) {
+      b.classList.remove('active');
+    });
+    btn.classList.add('active');
+  }
+
+  function activeTabValues() {
+    var pane = null;
+    ['outstation', 'airport', 'local', 'oneway'].forEach(function (id) {
+      var el = document.getElementById('tab-' + id);
+      if (el && el.style.display !== 'none') pane = el;
+    });
+    if (!pane) pane = document.getElementById('tab-outstation');
+    if (!pane) return { pickup: '', drop: '', date: '' };
+    var read = function (role) {
+      var el = pane.querySelector('[data-role="' + role + '"]');
+      return el && el.value ? el.value.trim() : '';
+    };
+    return { pickup: read('pickup'), drop: read('drop'), date: read('date') };
+  }
+
+  function startBooking() {
+    var data = activeTabValues();
+
+    // reveal the real booking form in place, right below the box
+    var form = document.getElementById('book');
+    if (!form) return;
+    form.style.display = '';
+
+    // hand the typed values across to the form (it lives on
+    // user.clickcabs.in, so they have to be posted across rather
+    // than written in directly)
+    var iframe = form.querySelector('iframe');
+    if (iframe && (data.pickup || data.drop)) {
+      var payload = {
+        source: 'clickcab-hero',
+        pickup: data.pickup,
+        drop: data.drop,
+        date: data.date
+      };
+      var tries = 0;
+      (function send() {
+        tries++;
+        try {
+          iframe.contentWindow.postMessage(payload, 'https://user.clickcabs.in');
+        } catch (e) { /* iframe still loading */ }
+        if (tries < 12) setTimeout(send, 600);
+      })();
+    }
+
+    // bring it into view
+    setTimeout(function () {
+      form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 60);
+  }
+
   // Set today's date as default in all date inputs
   (function() {
     const today = new Date().toISOString().split('T')[0];
