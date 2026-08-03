@@ -113,6 +113,49 @@
     .hb-label { font-size: 0.65rem; font-weight: 600; color: #ddd; }
 
     /* ── BOOKING BAR ── */
+
+  /* ---- Real booking box (with Google address suggestions) ---- */
+  .cc-box-wrap { padding: 0 2rem; position: relative; z-index: 20; }
+  .cc-box {
+    max-width: 1180px; margin: -45px auto 0;
+    background: #fff; border-radius: 14px; padding: 1.2rem 1.4rem;
+    box-shadow: 0 12px 44px rgba(0,0,0,0.20);
+    display: flex; align-items: flex-end; gap: 0.9rem; flex-wrap: wrap;
+  }
+  .cc-field { flex: 1; min-width: 165px; display: flex; flex-direction: column; gap: 0.3rem; }
+  .cc-field label {
+    font-size: 0.6rem; font-weight: 700; color: #999;
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .cc-input {
+    display: flex; align-items: center; gap: 0.5rem;
+    border: 1.5px solid #e0e0e0; border-radius: 8px; padding: 0.62rem 0.8rem;
+    background: #fff;
+  }
+  .cc-input:focus-within { border-color: #01456c; }
+  .cc-input i { color: #bbb; font-size: 0.8rem; flex-shrink: 0; }
+  .cc-input input, .cc-input select {
+    border: none; outline: none; flex: 1; background: transparent;
+    font-family: 'Inter', sans-serif; font-size: 0.83rem; color: #333;
+    min-width: 0; appearance: none;
+  }
+  .cc-go {
+    background: #f5a200; color: #000; border: none; border-radius: 8px;
+    font-family: 'Inter', sans-serif; font-size: 0.87rem; font-weight: 800;
+    padding: 0.8rem 1.7rem; cursor: pointer; white-space: nowrap;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .cc-go:hover { background: #d48e00; }
+  .cc-note {
+    max-width: 1180px; margin: 0.7rem auto 0; padding: 0 0.2rem;
+    font-size: 0.72rem; color: #888;
+  }
+  @media (max-width: 900px) {
+    .cc-box-wrap { padding: 0 1rem; }
+    .cc-box { margin: 1rem auto 0; flex-direction: column; align-items: stretch; }
+    .cc-go { justify-content: center; }
+  }
+
     .booking-bar-wrap { padding: 0 2rem; background: #fff; }
     .booking-bar {
       max-width: 1200px; margin: 0 auto;
@@ -373,63 +416,69 @@
 </div>
 
 <!-- BOOKING BAR -->
-<div class="booking-bar-wrap">
-  <div class="booking-bar">
-    <div class="ride-pill" onclick="openRideModal()">
-      <div class="ride-pill-icon"><i class="fas fa-map-marker-alt"></i></div>
-      <div class="ride-pill-text">
-        <div class="ride-pill-main" id="ridePillMain">Set pickup location</div>
-        <div class="ride-pill-sub" id="ridePillSub">Choose date, time &amp; rental package</div>
+<div class="cc-box-wrap">
+  <div class="cc-box">
+    <div class="cc-field">
+      <label>Pickup Location</label>
+      <div class="cc-input">
+        <i class="fas fa-map-marker-alt"></i>
+        <input type="text" data-role="pickup" id="lrPickup" placeholder="Enter pickup location" />
       </div>
-      <i class="fas fa-chevron-right ride-pill-chevron"></i>
     </div>
-    <button class="search-btn" onclick="openRideModal()">Book Rental Now</button>
+    <div class="cc-field">
+      <label>Rental Package</label>
+      <div class="cc-input">
+        <i class="fas fa-clock"></i>
+        <select id="lrPackage">
+          <option>4 Hrs / 40 Km</option>
+          <option>8 Hrs / 80 Km</option>
+          <option>12 Hrs / 120 Km</option>
+          <option>Full Day Rental</option>
+        </select>
+      </div>
+    </div>
+    <div class="cc-field">
+      <label>Vehicle</label>
+      <div class="cc-input">
+        <i class="fas fa-car"></i>
+        <select id="lrVehicle">
+          <option>Swift Dzire</option>
+          <option>WagonR</option>
+          <option>Ertiga</option>
+          <option>Innova Crysta</option>
+          <option>Tempo Traveller</option>
+        </select>
+      </div>
+    </div>
+    <div class="cc-field" style="max-width:165px;">
+      <label>Date</label>
+      <div class="cc-input">
+        <i class="fas fa-calendar"></i>
+        <input type="date" data-role="date" id="lrDate" />
+      </div>
+    </div>
+    <div class="cc-field" style="max-width:140px;">
+      <label>Time</label>
+      <div class="cc-input">
+        <i class="fas fa-clock"></i>
+        <select id="lrTime">
+          <option>06:00 AM</option><option>08:00 AM</option>
+          <option selected>10:00 AM</option><option>12:00 PM</option>
+          <option>02:00 PM</option><option>04:00 PM</option>
+          <option>06:00 PM</option><option>08:00 PM</option>
+        </select>
+      </div>
+    </div>
+    <button class="cc-go" type="button" onclick="sendRentalEnquiry()">
+      <i class="fab fa-whatsapp"></i> Book Rental
+    </button>
+  </div>
+  <div class="cc-note">
+    <i class="fas fa-info-circle"></i>
+    Rental rates vary by package and vehicle — we confirm your exact fare on WhatsApp within minutes.
   </div>
 </div>
 
-<!-- RIDE MODAL -->
-<div class="ride-modal-overlay" id="rideModalOverlay" onclick="closeRideModalOutside(event)">
-  <div class="ride-modal">
-    <button class="ride-modal-close" onclick="closeRideModal()"><i class="fas fa-times"></i></button>
-    <h3>Book Your Local Rental</h3>
-    <div class="ride-input-group">
-      <div class="ride-row">
-        <div class="ride-dot pickup"></div>
-        <input type="text" id="pickupInput" placeholder="Enter pickup location" />
-      </div>
-    </div>
-    <div class="ride-datetime">
-      <div class="ride-dt-field">
-        <label>Date</label>
-        <input type="date" id="rideDateInput" value="2026-05-15" />
-      </div>
-      <div class="ride-dt-field">
-        <label>Time</label>
-        <input type="time" id="rideTimeInput" value="10:00" />
-      </div>
-    </div>
-    <div class="ride-vehicle-field">
-      <label>Rental Package</label>
-      <select id="rentalPackageInput">
-        <option>4 Hrs / 40 Km</option>
-        <option>8 Hrs / 80 Km</option>
-        <option>12 Hrs / 120 Km</option>
-        <option>Full Day Rental</option>
-      </select>
-    </div>
-    <div class="ride-vehicle-field">
-      <label>Vehicle Type</label>
-      <select id="vehicleTypeInput">
-        <option>All Cars</option>
-        <option>Hatchback</option>
-        <option>Sedan</option>
-        <option>SUV</option>
-        <option>Tempo Traveller</option>
-      </select>
-    </div>
-    <button class="ride-confirm-btn" onclick="confirmRide()">Book Rental Now</button>
-  </div>
-</div>
 
 <!-- WHY CHOOSE LOCAL RENTALS -->
 <section class="section why-rental-section">
@@ -676,22 +725,149 @@
 </footer>
 
 <script>
-  function openRideModal() {
-    document.getElementById('rideModalOverlay').classList.add('open');
+
+  /* ============================================================
+     ADDRESS SUGGESTIONS (Google Places) — Uber / Rapido style.
+
+     >>> PASTE YOUR GOOGLE MAPS BROWSER KEY BELOW <<<
+     This is "Key A" — the browser key from the Google Cloud
+     project. It needs the Places API enabled, and its website
+     restrictions must allow whatever domain the page is served
+     from (see the note in the handover).
+     Until a key is pasted here, the boxes still work as normal
+     typing fields — nothing breaks, you just get no suggestions.
+  ============================================================ */
+  var GOOGLE_MAPS_API_KEY = 'AIzaSyBPXLMtRomjw5kdtWyHKP4qpAvteUsqCzg';
+
+  (function () {
+    'use strict';
+
+    function attachSuggestions() {
+      if (!(window.google && google.maps && google.maps.places)) return;
+
+      var fields = document.querySelectorAll(
+        '[data-role="pickup"], [data-role="drop"], [data-role="airport"]'
+      );
+
+      Array.prototype.forEach.call(fields, function (input) {
+        if (input.dataset.acReady === '1') return;
+        input.dataset.acReady = '1';
+
+        var ac = new google.maps.places.Autocomplete(input, {
+          componentRestrictions: { country: 'in' },
+          fields: ['formatted_address', 'name', 'geometry'],
+          types: ['geocode', 'establishment']
+        });
+
+        // Remember the picked place so the booking form gets a real
+        // location, not just typed text.
+        ac.addListener('place_changed', function () {
+          var place = ac.getPlace();
+          if (!place) return;
+          if (place.geometry && place.geometry.location) {
+            input.dataset.lat = place.geometry.location.lat();
+            input.dataset.lng = place.geometry.location.lng();
+          }
+          if (place.formatted_address) {
+            input.dataset.formatted = place.formatted_address;
+          }
+        });
+
+        // Stop Enter inside the suggestion list from submitting anything.
+        input.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter') e.preventDefault();
+        });
+      });
+    }
+
+    // Called by the Google script tag once it has loaded.
+    window.initClickCabPlaces = attachSuggestions;
+
+    function loadMaps() {
+      if (!GOOGLE_MAPS_API_KEY || GOOGLE_MAPS_API_KEY.indexOf('PASTE_') === 0) {
+        console.warn(
+          '[ClickCab] No Google Maps key set — address suggestions are off. ' +
+          'Paste Key A into GOOGLE_MAPS_API_KEY to switch them on.'
+        );
+        return;
+      }
+      var s = document.createElement('script');
+      s.src = 'https://maps.googleapis.com/maps/api/js?key=' +
+              GOOGLE_MAPS_API_KEY +
+              '&libraries=places&callback=initClickCabPlaces&loading=async';
+      s.async = true;
+      s.onerror = function () {
+        console.warn('[ClickCab] Google Maps failed to load — typing still works.');
+      };
+      document.head.appendChild(s);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', loadMaps);
+    } else {
+      loadMaps();
+    }
+
+    // Tabs swap panes in and out, so re-attach when that happens.
+    document.addEventListener('click', function (e) {
+      if (e.target.closest && e.target.closest('.widget-tab')) {
+        setTimeout(attachSuggestions, 50);
+      }
+    });
+  })();
+
+  /* Keep the Google suggestion dropdown above the booking card. */
+  (function () {
+    var css = document.createElement('style');
+    css.textContent =
+      '.pac-container{z-index:100000 !important;border-radius:8px;' +
+      'box-shadow:0 8px 28px rgba(0,0,0,0.18);border:none;' +
+      "font-family:'Inter',sans-serif;margin-top:2px;}" +
+      '.pac-item{padding:0.5rem 0.8rem;font-size:0.82rem;cursor:pointer;border-top:1px solid #f0f0f0;}' +
+      '.pac-item:first-child{border-top:none;}' +
+      '.pac-item:hover{background:#f7f7f7;}' +
+      '.pac-item-query{font-size:0.85rem;color:#222;}' +
+      '.pac-icon{margin-top:3px;}';
+    document.head.appendChild(css);
+  })();
+
+
+  /* Local rental enquiry -> WhatsApp (rental packages are priced
+     per package + vehicle, so they don't run through the
+     point-to-point booking engine). */
+  function sendRentalEnquiry() {
+    var pickupEl = document.getElementById('lrPickup');
+    var pickup = pickupEl ? (pickupEl.dataset.formatted || pickupEl.value || '').trim() : '';
+    if (!pickup) {
+      alert('Please enter your pickup location.');
+      if (pickupEl) pickupEl.focus();
+      return;
+    }
+    var pkg = document.getElementById('lrPackage').value;
+    var veh = document.getElementById('lrVehicle').value;
+    var date = document.getElementById('lrDate').value;
+    var time = document.getElementById('lrTime').value;
+
+    var msg = 'Hi ClickCabs, I would like to book a LOCAL RENTAL.\n\n'
+            + 'Pickup: ' + pickup + '\n'
+            + 'Package: ' + pkg + '\n'
+            + 'Vehicle: ' + veh + '\n'
+            + 'Date: ' + date + '\n'
+            + 'Time: ' + time + '\n\n'
+            + 'Please confirm availability and fare.';
+
+    window.open('https://wa.me/919702290804?text=' + encodeURIComponent(msg), '_blank');
   }
-  function closeRideModal() {
-    document.getElementById('rideModalOverlay').classList.remove('open');
-  }
-  function closeRideModalOutside(e) {
-    if (e.target.id === 'rideModalOverlay') closeRideModal();
-  }
-  function confirmRide() {
-    const pickup = document.getElementById('pickupInput').value || 'Pickup location';
-    const pkg = document.getElementById('rentalPackageInput').value;
-    document.getElementById('ridePillMain').textContent = pickup;
-    document.getElementById('ridePillSub').textContent = pkg + ' • ' + document.getElementById('rideDateInput').value + ' • ' + document.getElementById('rideTimeInput').value;
-    closeRideModal();
-  }
+
+
+
+  // Default the date fields to today
+  (function () {
+    var today = new Date().toISOString().split('T')[0];
+    document.querySelectorAll('input[type="date"]').forEach(function (i) {
+      if (!i.value) { i.value = today; i.min = today; }
+    });
+  })();
 </script>
 
 </body>
