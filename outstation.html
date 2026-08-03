@@ -879,8 +879,23 @@
       })
       .catch(function (err) {
         searchOff = true;
-        console.warn('[ClickCab] Address search unavailable (' + err.message +
+        var m = err && err.message ? err.message : 'unknown';
+        console.warn('[ClickCab] Address search unavailable (' + m +
                      '). Typing still works.');
+        /* Surface it once, so a blocked key isn't mistaken for
+           "there are just no results". */
+        if (!window.__ccSearchWarned) {
+          window.__ccSearchWarned = true;
+          var el = document.createElement('div');
+          el.style.cssText =
+            'position:fixed;bottom:16px;left:50%;transform:translateX(-50%);' +
+            'background:#222;color:#fff;padding:10px 16px;border-radius:8px;' +
+            'font:600 13px Inter,sans-serif;z-index:200000;max-width:90vw;';
+          el.textContent = 'Address suggestions are unavailable (' + m +
+                           ') — you can still type the address in full.';
+          document.body.appendChild(el);
+          setTimeout(function () { el.remove(); }, 6000);
+        }
         cb([]);
       });
     }
@@ -954,80 +969,60 @@
         var original = label.textContent;
         label.textContent = 'Getting your location\u2026';
 
-        function done(text, full) {
+        function done(text) {
           label.textContent = original;
-          choose({ main: text, secondary: '', full: full || text });
+          choose({ main: text, secondary: '', full: text });
         }
-        function failed() {
+        function giveUp(reason) {
           label.textContent = original;
-          alert('Could not work out your address \u2014 please type it in.');
+          console.warn('[ClickCab] Current location failed -> ' + reason);
+          alert('Could not work out your address automatically.\n' +
+                'Please type your pickup location instead.');
         }
 
         navigator.geolocation.getCurrentPosition(function (pos) {
           var lat = pos.coords.latitude, lng = pos.coords.longitude;
-          var why = [];
 
-          /* 1st choice: reverse geocode - coordinates to a street address. */
-          fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng=' +
-                lat + ',' + lng + '&key=' + GOOGLE_MAPS_API_KEY)
-            .then(function (r) { return r.json(); })
-            .then(function (d) {
-              if (d.status === 'OK' && d.results && d.results.length) {
-                done(d.results[0].formatted_address);
-                return;
+          /* Places API (New) — this one DOES accept browser keys that are
+             locked to a website, which is what our key is. (The Geocoding
+             web service refuses such keys outright, so it isn't used.) */
+          fetch('https://places.googleapis.com/v1/places:searchNearby', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Goog-Api-Key': GOOGLE_MAPS_API_KEY,
+              'X-Goog-FieldMask': 'places.formattedAddress,places.displayName'
+            },
+            body: JSON.stringify({
+              maxResultCount: 5,
+              rankPreference: 'DISTANCE',
+              includedTypes: [
+                'street_address', 'premise', 'subpremise',
+                'point_of_interest', 'establishment'
+              ],
+              locationRestriction: {
+                circle: {
+                  center: { latitude: lat, longitude: lng },
+                  radius: 1000
+                }
               }
-              why.push('Geocoding: ' + (d.status || '?') +
-                       (d.error_message ? ' (' + d.error_message + ')' : ''));
-              throw new Error('geocode failed');
             })
-            .catch(function (e) {
-              if (e && e.message !== 'geocode failed') {
-                why.push('Geocoding: network/blocked');
-              }
-
-              /* 2nd choice: nearest place. Places API (New) requires
-                 includedTypes when ranking by distance. */
-              fetch('https://places.googleapis.com/v1/places:searchNearby', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'X-Goog-Api-Key': GOOGLE_MAPS_API_KEY,
-                  'X-Goog-FieldMask': 'places.formattedAddress,places.displayName'
-                },
-                body: JSON.stringify({
-                  maxResultCount: 5,
-                  rankPreference: 'DISTANCE',
-                  includedTypes: [
-                    'street_address', 'premise', 'subpremise',
-                    'point_of_interest', 'establishment'
-                  ],
-                  locationRestriction: {
-                    circle: {
-                      center: { latitude: lat, longitude: lng },
-                      radius: 1000
-                    }
-                  }
-                })
-              })
-              .then(function (r) {
-                return r.json().then(function (j) { return { ok: r.ok, status: r.status, body: j }; });
-              })
-              .then(function (res) {
-                var p = (res.body.places || [])[0];
-                if (p && p.formattedAddress) { done(p.formattedAddress); return; }
-                why.push('Places nearby: ' + res.status +
-                         (res.body.error && res.body.error.message
-                           ? ' (' + res.body.error.message + ')' : ' (no results)'));
-                throw new Error('nearby failed');
-              })
-              .catch(function () {
-                console.warn('[ClickCab] Current location failed -> ' + why.join(' | '));
-                label.textContent = original;
-                alert('Could not work out your address.\n\n' +
-                      why.join('\n') +
-                      '\n\nPlease type your pickup location instead.');
-              });
-            });
+          })
+          .then(function (r) {
+            return r.json().then(function (j) { return { status: r.status, body: j }; });
+          })
+          .then(function (res) {
+            var p = (res.body.places || [])[0];
+            if (p && p.formattedAddress) { done(p.formattedAddress); return; }
+            var msg = res.status + (res.body.error && res.body.error.message
+                        ? ' ' + res.body.error.message : ' no results');
+            /* Last resort: the Maps JavaScript library's own geocoder, which
+               also works with website-locked keys. Loaded only if needed. */
+            geocodeViaMapsJs(lat, lng, done, function () { giveUp(msg); });
+          })
+          .catch(function () {
+            geocodeViaMapsJs(lat, lng, done, function () { giveUp('network'); });
+          });
         }, function (err) {
           label.textContent = original;
           if (err && err.code === 1) {
@@ -1036,6 +1031,40 @@
             alert('Could not get your location \u2014 please type your address.');
           }
         }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 });
+      }
+
+      /* Loads the Maps JS library once, on demand, purely for reverse
+         geocoding. No Places widget is used, so Google cannot inject its
+         own markup into the page. */
+      function geocodeViaMapsJs(lat, lng, ok, fail) {
+        function run() {
+          try {
+            new google.maps.Geocoder().geocode(
+              { location: { lat: lat, lng: lng } },
+              function (results, status) {
+                if (status === 'OK' && results && results[0]) {
+                  ok(results[0].formatted_address);
+                } else { fail(); }
+              }
+            );
+          } catch (e) { fail(); }
+        }
+        if (window.google && google.maps && google.maps.Geocoder) { run(); return; }
+        if (window.__ccMapsFailed) { fail(); return; }
+        window.gm_authFailure = function () { window.__ccMapsFailed = true; };
+        var s = document.createElement('script');
+        s.src = 'https://maps.googleapis.com/maps/api/js?key=' +
+                GOOGLE_MAPS_API_KEY + '&callback=__ccMapsReady';
+        s.async = true;
+        window.__ccMapsReady = function () {
+          if (window.__ccMapsFailed) { fail(); return; }
+          run();
+        };
+        s.onerror = function () { window.__ccMapsFailed = true; fail(); };
+        document.head.appendChild(s);
+        setTimeout(function () {
+          if (!(window.google && google.maps && google.maps.Geocoder)) fail();
+        }, 7000);
       }
 
       function render(list, term, loading) {
