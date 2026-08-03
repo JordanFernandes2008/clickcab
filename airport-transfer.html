@@ -791,7 +791,8 @@
 
     var ENDPOINT = 'https://places.googleapis.com/v1/places:autocomplete';
     var RECENT_KEY = 'cc_recent_places';
-    var searchOff = false;
+    var searchOffUntil = 0;   // pause briefly after a failure, then retry
+    var lastWarnAt = 0;
 
     /* ---------- recent places ---------- */
     function getRecent() {
@@ -824,7 +825,7 @@
     }
 
     function fetchSuggestions(text, cb) {
-      if (searchOff) return cb([]);
+      if (Date.now() < searchOffUntil) return cb([], 'paused');
       fetch(ENDPOINT, {
         method: 'POST',
         headers: {
@@ -849,25 +850,25 @@
         }).filter(function (x) { return x.main; }));
       })
       .catch(function (err) {
-        searchOff = true;
         var m = err && err.message ? err.message : 'unknown';
-        console.warn('[ClickCab] Address search unavailable (' + m +
-                     '). Typing still works.');
-        /* Surface it once, so a blocked key isn't mistaken for
-           "there are just no results". */
-        if (!window.__ccSearchWarned) {
-          window.__ccSearchWarned = true;
+        /* Back off for a few seconds rather than giving up for good,
+           so a temporary block or a key change can recover on its own. */
+        searchOffUntil = Date.now() + 8000;
+        console.warn('[ClickCab] Address search failed (' + m + ')');
+        if (Date.now() - lastWarnAt > 10000) {
+          lastWarnAt = Date.now();
           var el = document.createElement('div');
           el.style.cssText =
             'position:fixed;bottom:16px;left:50%;transform:translateX(-50%);' +
-            'background:#222;color:#fff;padding:10px 16px;border-radius:8px;' +
-            'font:600 13px Inter,sans-serif;z-index:200000;max-width:90vw;';
-          el.textContent = 'Address suggestions are unavailable (' + m +
-                           ') — you can still type the address in full.';
+            'background:#b3261e;color:#fff;padding:11px 18px;border-radius:8px;' +
+            'font:600 13px Inter,sans-serif;z-index:200000;max-width:92vw;' +
+            'box-shadow:0 6px 24px rgba(0,0,0,0.35);';
+          el.textContent = 'Address suggestions blocked by Google (' + m +
+                           '). Check the API key restrictions.';
           document.body.appendChild(el);
-          setTimeout(function () { el.remove(); }, 6000);
+          setTimeout(function () { el.remove(); }, 8000);
         }
-        cb([]);
+        cb([], m);
       });
     }
 
@@ -880,7 +881,7 @@
       panel.className = 'cc-search-panel';
       document.body.appendChild(panel);
 
-      var timer = null, rows = [], active = -1;
+      var timer = null, rows = [], active = -1, lastError = '';
 
       function place() {
         var r = input.getBoundingClientRect();
@@ -1089,7 +1090,10 @@
         if (!loading && term && term.length >= 3 && !list.length) {
           var n = document.createElement('div');
           n.className = 'cc-search-note';
-          n.textContent = 'No matches — you can type the address in full.';
+          n.textContent = lastError
+            ? 'Suggestions unavailable (' + lastError + ') — type the address in full.'
+            : 'No matches — you can type the address in full.';
+          if (lastError) n.style.color = '#b3261e';
           panel.appendChild(n);
         }
 
@@ -1108,7 +1112,8 @@
         if (v.length < 3) { render([], '', false); return; }
         render([], v, true);
         timer = setTimeout(function () {
-          fetchSuggestions(v, function (list) {
+          fetchSuggestions(v, function (list, errCode) {
+            lastError = errCode && errCode !== 'paused' ? errCode : lastError;
             if (input.value.trim() === v) render(list, v, false);
           });
         }, 280);
