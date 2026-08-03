@@ -946,47 +946,78 @@
       }
 
       function useCurrentLocation(row) {
-        if (!navigator.geolocation) { alert('Location is not available in this browser.'); return; }
+        if (!navigator.geolocation) {
+          alert('Location is not available in this browser.');
+          return;
+        }
         var label = row.querySelector('.cc-search-main');
         var original = label.textContent;
-        label.textContent = 'Getting your location…';
-        navigator.geolocation.getCurrentPosition(function (pos) {
-          fetch('https://places.googleapis.com/v1/places:searchNearby', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-Goog-Api-Key': GOOGLE_MAPS_API_KEY,
-              'X-Goog-FieldMask': 'places.formattedAddress,places.displayName'
-            },
-            body: JSON.stringify({
-              maxResultCount: 1,
-              locationRestriction: {
-                circle: {
-                  center: { latitude: pos.coords.latitude, longitude: pos.coords.longitude },
-                  radius: 120
-                }
-              }
-            })
-          })
-          .then(function (r) { return r.json(); })
-          .then(function (d) {
-            var p = (d.places || [])[0];
-            label.textContent = original;
-            if (!p) { alert('Could not identify your location — please type it in.'); return; }
-            choose({
-              main: (p.displayName && p.displayName.text) || p.formattedAddress,
-              secondary: '',
-              full: p.formattedAddress
-            });
-          })
-          .catch(function () {
-            label.textContent = original;
-            alert('Could not identify your location — please type it in.');
-          });
-        }, function () {
+        label.textContent = 'Getting your location\u2026';
+
+        function done(text, full) {
           label.textContent = original;
-          alert('Location permission denied — please type your address.');
-        }, { enableHighAccuracy: true, timeout: 10000 });
+          choose({ main: text, secondary: '', full: full || text });
+        }
+        function failed() {
+          label.textContent = original;
+          alert('Could not work out your address \u2014 please type it in.');
+        }
+
+        navigator.geolocation.getCurrentPosition(function (pos) {
+          var lat = pos.coords.latitude, lng = pos.coords.longitude;
+
+          /* 1st choice: proper reverse geocode - turns coordinates into
+             a street address. */
+          fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng=' +
+                lat + ',' + lng + '&key=' + GOOGLE_MAPS_API_KEY)
+            .then(function (r) { return r.json(); })
+            .then(function (d) {
+              if (d.status === 'OK' && d.results && d.results.length) {
+                done(d.results[0].formatted_address);
+                return;
+              }
+              throw new Error(d.status || 'no result');
+            })
+            .catch(function () {
+              /* 2nd choice: nearest landmark within half a kilometre.
+                 Used when the Geocoding API isn't enabled on the key. */
+              fetch('https://places.googleapis.com/v1/places:searchNearby', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'X-Goog-Api-Key': GOOGLE_MAPS_API_KEY,
+                  'X-Goog-FieldMask': 'places.formattedAddress,places.displayName'
+                },
+                body: JSON.stringify({
+                  maxResultCount: 1,
+                  rankPreference: 'DISTANCE',
+                  locationRestriction: {
+                    circle: {
+                      center: { latitude: lat, longitude: lng },
+                      radius: 500
+                    }
+                  }
+                })
+              })
+              .then(function (r) { return r.json(); })
+              .then(function (d) {
+                var p = (d.places || [])[0];
+                if (p && p.formattedAddress) {
+                  done(p.formattedAddress);
+                  return;
+                }
+                throw new Error('none nearby');
+              })
+              .catch(failed);
+            });
+        }, function (err) {
+          label.textContent = original;
+          if (err && err.code === 1) {
+            alert('Location permission was denied \u2014 please type your address.');
+          } else {
+            alert('Could not get your location \u2014 please type your address.');
+          }
+        }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 });
       }
 
       function render(list, term, loading) {
