@@ -723,9 +723,9 @@
 
         navigator.geolocation.getCurrentPosition(function (pos) {
           var lat = pos.coords.latitude, lng = pos.coords.longitude;
+          var why = [];
 
-          /* 1st choice: proper reverse geocode - turns coordinates into
-             a street address. */
+          /* 1st choice: reverse geocode - coordinates to a street address. */
           fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng=' +
                 lat + ',' + lng + '&key=' + GOOGLE_MAPS_API_KEY)
             .then(function (r) { return r.json(); })
@@ -734,11 +734,17 @@
                 done(d.results[0].formatted_address);
                 return;
               }
-              throw new Error(d.status || 'no result');
+              why.push('Geocoding: ' + (d.status || '?') +
+                       (d.error_message ? ' (' + d.error_message + ')' : ''));
+              throw new Error('geocode failed');
             })
-            .catch(function () {
-              /* 2nd choice: nearest landmark within half a kilometre.
-                 Used when the Geocoding API isn't enabled on the key. */
+            .catch(function (e) {
+              if (e && e.message !== 'geocode failed') {
+                why.push('Geocoding: network/blocked');
+              }
+
+              /* 2nd choice: nearest place. Places API (New) requires
+                 includedTypes when ranking by distance. */
               fetch('https://places.googleapis.com/v1/places:searchNearby', {
                 method: 'POST',
                 headers: {
@@ -747,26 +753,38 @@
                   'X-Goog-FieldMask': 'places.formattedAddress,places.displayName'
                 },
                 body: JSON.stringify({
-                  maxResultCount: 1,
+                  maxResultCount: 5,
                   rankPreference: 'DISTANCE',
+                  includedTypes: [
+                    'street_address', 'premise', 'subpremise',
+                    'point_of_interest', 'establishment'
+                  ],
                   locationRestriction: {
                     circle: {
                       center: { latitude: lat, longitude: lng },
-                      radius: 500
+                      radius: 1000
                     }
                   }
                 })
               })
-              .then(function (r) { return r.json(); })
-              .then(function (d) {
-                var p = (d.places || [])[0];
-                if (p && p.formattedAddress) {
-                  done(p.formattedAddress);
-                  return;
-                }
-                throw new Error('none nearby');
+              .then(function (r) {
+                return r.json().then(function (j) { return { ok: r.ok, status: r.status, body: j }; });
               })
-              .catch(failed);
+              .then(function (res) {
+                var p = (res.body.places || [])[0];
+                if (p && p.formattedAddress) { done(p.formattedAddress); return; }
+                why.push('Places nearby: ' + res.status +
+                         (res.body.error && res.body.error.message
+                           ? ' (' + res.body.error.message + ')' : ' (no results)'));
+                throw new Error('nearby failed');
+              })
+              .catch(function () {
+                console.warn('[ClickCab] Current location failed -> ' + why.join(' | '));
+                label.textContent = original;
+                alert('Could not work out your address.\n\n' +
+                      why.join('\n') +
+                      '\n\nPlease type your pickup location instead.');
+              });
             });
         }, function (err) {
           label.textContent = original;
