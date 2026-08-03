@@ -265,6 +265,49 @@
       .features { grid-template-columns: 1fr; }
       .footer-grid { grid-template-columns: 1fr; }
     }
+
+    /* ---- Address search panel (Uber / Rapido style) ---- */
+    .cc-search-panel {
+      position: absolute; z-index: 100000; display: none;
+      background: #fff; border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.22);
+      overflow: hidden auto; max-height: 320px;
+      font-family: 'Inter', sans-serif;
+      border: 1px solid #ececec;
+    }
+    .cc-search-row {
+      display: flex; align-items: flex-start; gap: 0.7rem;
+      padding: 0.65rem 0.9rem; cursor: pointer;
+      border-top: 1px solid #f4f4f4;
+    }
+    .cc-search-row:first-child { border-top: none; }
+    .cc-search-row:hover, .cc-search-row.on { background: #f6f8fa; }
+    .cc-search-ico {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: #f1f3f5; color: #666;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; flex-shrink: 0; margin-top: 1px;
+    }
+    .cc-search-current .cc-search-ico { background: #e7f0f6; }
+    .cc-search-current .cc-search-main { color: #01456c; font-weight: 700; }
+    .cc-search-txt { min-width: 0; flex: 1; }
+    .cc-search-main {
+      font-size: 0.84rem; color: #1a1a1a; font-weight: 600;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .cc-search-sub {
+      font-size: 0.72rem; color: #8a8a8a; margin-top: 1px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .cc-search-head {
+      font-size: 0.62rem; font-weight: 800; color: #aaa;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      padding: 0.6rem 0.9rem 0.3rem; background: #fafafa;
+    }
+    .cc-search-note {
+      padding: 0.65rem 0.9rem; font-size: 0.76rem; color: #999;
+    }
+
   </style>
 </head>
 <body>
@@ -517,15 +560,16 @@
 <script>
 
   /* ============================================================
-     ADDRESS SUGGESTIONS
+     ADDRESS SEARCH — modelled on the Uber / Rapido pattern:
+       · suggestions drop straight under the field as you type
+       · "Use current location" pinned to the top of the list
+       · recently used places remembered and shown before typing
+       · the part you typed is highlighted in each result
+       · picking pickup jumps you to the drop field automatically
 
-     Uses the Places API (New) REST endpoint directly and draws our
-     own dropdown. Google's own widget is deliberately NOT used —
-     it injects its own markup into the page and, when the key or
-     API isn't right, drops an error card straight into the form.
-     Doing it this way means Google can never touch our DOM: worst
-     case the request fails quietly and the field stays a normal
-     typing box.
+     Runs on the Places API (New) REST endpoint and draws its own
+     list, so Google never injects markup into the page. If the
+     request fails the field simply stays a normal typing box.
   ============================================================ */
   var GOOGLE_MAPS_API_KEY = 'AIzaSyBPXLMtRomjw5kdtWyHKP4qpAvteUsqCzg';
 
@@ -533,45 +577,55 @@
     'use strict';
 
     var ENDPOINT = 'https://places.googleapis.com/v1/places:autocomplete';
-    var suggestionsOff = false;
+    var RECENT_KEY = 'cc_recent_places';
+    var searchOff = false;
 
-    function makeDropdown() {
-      var d = document.createElement('div');
-      d.className = 'cc-sugg';
-      d.style.cssText =
-        'position:absolute;z-index:100000;background:#fff;border-radius:8px;' +
-        'box-shadow:0 8px 28px rgba(0,0,0,0.18);overflow:hidden;display:none;' +
-        "font-family:'Inter',sans-serif;max-height:260px;overflow-y:auto;";
-      document.body.appendChild(d);
-      return d;
+    /* ---------- recent places ---------- */
+    function getRecent() {
+      try { return JSON.parse(localStorage.getItem(RECENT_KEY) || '[]'); }
+      catch (e) { return []; }
+    }
+    function addRecent(place) {
+      try {
+        var list = getRecent().filter(function (p) { return p.full !== place.full; });
+        list.unshift(place);
+        localStorage.setItem(RECENT_KEY, JSON.stringify(list.slice(0, 4)));
+      } catch (e) { /* private browsing */ }
     }
 
-    function positionDropdown(d, input) {
-      var r = input.getBoundingClientRect();
-      d.style.left = (r.left + window.scrollX) + 'px';
-      d.style.top = (r.bottom + window.scrollY + 4) + 'px';
-      d.style.width = r.width + 'px';
+    /* ---------- highlight the typed part ---------- */
+    function highlight(text, term) {
+      var frag = document.createDocumentFragment();
+      var i = text.toLowerCase().indexOf(term.toLowerCase());
+      if (!term || i === -1) {
+        frag.appendChild(document.createTextNode(text));
+        return frag;
+      }
+      frag.appendChild(document.createTextNode(text.slice(0, i)));
+      var b = document.createElement('span');
+      b.style.cssText = 'font-weight:800;color:#01456c;';
+      b.textContent = text.slice(i, i + term.length);
+      frag.appendChild(b);
+      frag.appendChild(document.createTextNode(text.slice(i + term.length)));
+      return frag;
     }
 
     function fetchSuggestions(text, cb) {
-      if (suggestionsOff) return cb([]);
+      if (searchOff) return cb([]);
       fetch(ENDPOINT, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'X-Goog-Api-Key': GOOGLE_MAPS_API_KEY
         },
-        body: JSON.stringify({
-          input: text,
-          includedRegionCodes: ['in']
-        })
+        body: JSON.stringify({ input: text, includedRegionCodes: ['in'] })
       })
       .then(function (r) {
         if (!r.ok) throw new Error('status ' + r.status);
         return r.json();
       })
       .then(function (data) {
-        var out = (data.suggestions || []).map(function (s) {
+        cb((data.suggestions || []).map(function (s) {
           var p = s.placePrediction || {};
           var sf = p.structuredFormat || {};
           return {
@@ -579,122 +633,232 @@
             secondary: (sf.secondaryText && sf.secondaryText.text) || '',
             full: (p.text && p.text.text) || ''
           };
-        }).filter(function (x) { return x.main; });
-        cb(out);
+        }).filter(function (x) { return x.main; }));
       })
       .catch(function (err) {
-        // Quietly stop trying — typing continues to work normally.
-        suggestionsOff = true;
-        console.warn('[ClickCab] Address suggestions unavailable (' + err.message +
+        searchOff = true;
+        console.warn('[ClickCab] Address search unavailable (' + err.message +
                      '). Typing still works.');
         cb([]);
       });
     }
 
     function wire(input) {
-      if (input.dataset.ccSugg === '1') return;
-      input.dataset.ccSugg = '1';
+      if (input.dataset.ccSearch === '1') return;
+      input.dataset.ccSearch = '1';
       input.setAttribute('autocomplete', 'off');
 
-      var dd = makeDropdown();
-      var timer = null;
-      var items = [];
-      var active = -1;
+      var panel = document.createElement('div');
+      panel.className = 'cc-search-panel';
+      document.body.appendChild(panel);
 
-      function close() { dd.style.display = 'none'; active = -1; }
+      var timer = null, rows = [], active = -1;
 
-      function render(list) {
-        items = list;
-        if (!list.length) { close(); return; }
-        dd.innerHTML = '';
-        list.forEach(function (s, i) {
-          var row = document.createElement('div');
-          row.style.cssText =
-            'padding:0.55rem 0.8rem;cursor:pointer;font-size:0.82rem;' +
-            'border-top:' + (i ? '1px solid #f0f0f0' : 'none') + ';';
-          var m = document.createElement('div');
-          m.style.cssText = 'color:#222;font-weight:600;';
-          m.textContent = s.main;
-          row.appendChild(m);
-          if (s.secondary) {
-            var sec = document.createElement('div');
-            sec.style.cssText = 'color:#888;font-size:0.72rem;margin-top:1px;';
-            sec.textContent = s.secondary;
-            row.appendChild(sec);
-          }
-          row.addEventListener('mouseenter', function () { row.style.background = '#f7f7f7'; });
-          row.addEventListener('mouseleave', function () { row.style.background = '#fff'; });
-          row.addEventListener('mousedown', function (e) {
-            e.preventDefault();
-            input.value = s.full || s.main;
-            input.dataset.formatted = s.full || s.main;
-            close();
-          });
-          dd.appendChild(row);
-        });
-        positionDropdown(dd, input);
-        dd.style.display = 'block';
+      function place() {
+        var r = input.getBoundingClientRect();
+        panel.style.left = (r.left + window.scrollX) + 'px';
+        panel.style.top = (r.bottom + window.scrollY + 6) + 'px';
+        panel.style.width = Math.max(r.width, 260) + 'px';
+      }
+      function close() { panel.style.display = 'none'; active = -1; }
+
+      function choose(item) {
+        input.value = item.full || item.main;
+        input.dataset.formatted = item.full || item.main;
+        addRecent(item);
+        close();
+        // Uber-style: move straight on to the next field.
+        var pane = input.closest('#tab-outstation, #tab-airport, #tab-local, #tab-oneway, .cc-box, .booking-widget') || document;
+        if (input.dataset.role === 'pickup') {
+          var next = pane.querySelector('[data-role="drop"]');
+          if (next && !next.value) { setTimeout(function () { next.focus(); }, 60); }
+        }
       }
 
+      function makeRow(opts) {
+        var row = document.createElement('div');
+        row.className = 'cc-search-row';
+        var ico = document.createElement('div');
+        ico.className = 'cc-search-ico';
+        ico.innerHTML = '<i class="' + opts.icon + '"></i>';
+        if (opts.accent) ico.style.color = opts.accent;
+        row.appendChild(ico);
+        var txt = document.createElement('div');
+        txt.className = 'cc-search-txt';
+        var m = document.createElement('div');
+        m.className = 'cc-search-main';
+        m.appendChild(opts.mainNode || document.createTextNode(opts.main));
+        txt.appendChild(m);
+        if (opts.secondary) {
+          var s = document.createElement('div');
+          s.className = 'cc-search-sub';
+          s.textContent = opts.secondary;
+          txt.appendChild(s);
+        }
+        row.appendChild(txt);
+        row.addEventListener('mousedown', function (e) {
+          e.preventDefault();
+          opts.onPick();
+        });
+        return row;
+      }
+
+      function useCurrentLocation(row) {
+        if (!navigator.geolocation) { alert('Location is not available in this browser.'); return; }
+        var label = row.querySelector('.cc-search-main');
+        var original = label.textContent;
+        label.textContent = 'Getting your location…';
+        navigator.geolocation.getCurrentPosition(function (pos) {
+          fetch('https://places.googleapis.com/v1/places:searchNearby', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Goog-Api-Key': GOOGLE_MAPS_API_KEY,
+              'X-Goog-FieldMask': 'places.formattedAddress,places.displayName'
+            },
+            body: JSON.stringify({
+              maxResultCount: 1,
+              locationRestriction: {
+                circle: {
+                  center: { latitude: pos.coords.latitude, longitude: pos.coords.longitude },
+                  radius: 120
+                }
+              }
+            })
+          })
+          .then(function (r) { return r.json(); })
+          .then(function (d) {
+            var p = (d.places || [])[0];
+            label.textContent = original;
+            if (!p) { alert('Could not identify your location — please type it in.'); return; }
+            choose({
+              main: (p.displayName && p.displayName.text) || p.formattedAddress,
+              secondary: '',
+              full: p.formattedAddress
+            });
+          })
+          .catch(function () {
+            label.textContent = original;
+            alert('Could not identify your location — please type it in.');
+          });
+        }, function () {
+          label.textContent = original;
+          alert('Location permission denied — please type your address.');
+        }, { enableHighAccuracy: true, timeout: 10000 });
+      }
+
+      function render(list, term, loading) {
+        panel.innerHTML = '';
+        rows = [];
+
+        // "Use current location" always sits at the top, like Uber.
+        var cur = makeRow({
+          icon: 'fas fa-location-crosshairs',
+          accent: '#01456c',
+          main: 'Use current location',
+          onPick: function () { useCurrentLocation(cur); }
+        });
+        cur.classList.add('cc-search-current');
+        panel.appendChild(cur);
+
+        if (loading) {
+          var l = document.createElement('div');
+          l.className = 'cc-search-note';
+          l.textContent = 'Searching…';
+          panel.appendChild(l);
+        }
+
+        var recents = (!term ? getRecent() : []);
+        if (recents.length) {
+          var rh = document.createElement('div');
+          rh.className = 'cc-search-head';
+          rh.textContent = 'Recent';
+          panel.appendChild(rh);
+          recents.forEach(function (item) {
+            var r = makeRow({
+              icon: 'fas fa-clock-rotate-left',
+              main: item.main,
+              secondary: item.secondary,
+              onPick: function () { choose(item); }
+            });
+            rows.push(r); panel.appendChild(r);
+          });
+        }
+
+        list.forEach(function (item) {
+          var r = makeRow({
+            icon: 'fas fa-location-dot',
+            mainNode: highlight(item.main, term),
+            secondary: item.secondary,
+            onPick: function () { choose(item); }
+          });
+          rows.push(r); panel.appendChild(r);
+        });
+
+        if (!loading && term && term.length >= 3 && !list.length) {
+          var n = document.createElement('div');
+          n.className = 'cc-search-note';
+          n.textContent = 'No matches — you can type the address in full.';
+          panel.appendChild(n);
+        }
+
+        place();
+        panel.style.display = 'block';
+      }
+
+      input.addEventListener('focus', function () {
+        render([], '', false);
+      });
+
       input.addEventListener('input', function () {
-        // Typing after picking invalidates the stored address.
         delete input.dataset.formatted;
         var v = input.value.trim();
         if (timer) clearTimeout(timer);
-        if (v.length < 3) { close(); return; }
+        if (v.length < 3) { render([], '', false); return; }
+        render([], v, true);
         timer = setTimeout(function () {
-          fetchSuggestions(v, render);
-        }, 300);
+          fetchSuggestions(v, function (list) {
+            if (input.value.trim() === v) render(list, v, false);
+          });
+        }, 280);
       });
 
       input.addEventListener('keydown', function (e) {
-        if (dd.style.display === 'none') return;
-        var rows = dd.children;
+        if (panel.style.display === 'none' || !rows.length) return;
         if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
           e.preventDefault();
           active += (e.key === 'ArrowDown' ? 1 : -1);
           if (active < 0) active = rows.length - 1;
           if (active >= rows.length) active = 0;
-          for (var i = 0; i < rows.length; i++) {
-            rows[i].style.background = (i === active) ? '#f0f0f0' : '#fff';
-          }
+          rows.forEach(function (r, i) { r.classList.toggle('on', i === active); });
+          rows[active].scrollIntoView({ block: 'nearest' });
         } else if (e.key === 'Enter') {
           e.preventDefault();
-          if (active >= 0 && items[active]) {
-            input.value = items[active].full || items[active].main;
-            input.dataset.formatted = input.value;
-          }
-          close();
-        } else if (e.key === 'Escape') {
-          close();
-        }
+          if (active >= 0 && rows[active]) {
+            rows[active].dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+          } else { close(); }
+        } else if (e.key === 'Escape') { close(); }
       });
 
-      input.addEventListener('blur', function () { setTimeout(close, 150); });
+      input.addEventListener('blur', function () { setTimeout(close, 180); });
       window.addEventListener('scroll', function () {
-        if (dd.style.display !== 'none') positionDropdown(dd, input);
+        if (panel.style.display !== 'none') place();
       }, true);
       window.addEventListener('resize', function () {
-        if (dd.style.display !== 'none') positionDropdown(dd, input);
+        if (panel.style.display !== 'none') place();
       });
     }
 
     function wireAll() {
-      document.querySelectorAll('[data-role="pickup"], [data-role="drop"]')
-        .forEach(wire);
+      document.querySelectorAll('[data-role="pickup"], [data-role="drop"]').forEach(wire);
     }
 
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', wireAll);
-    } else {
-      wireAll();
-    }
+    } else { wireAll(); }
 
-    // Tabs swap panes in and out.
     document.addEventListener('click', function (e) {
-      if (e.target.closest && e.target.closest('.widget-tab')) {
-        setTimeout(wireAll, 80);
-      }
+      if (e.target.closest && e.target.closest('.widget-tab')) setTimeout(wireAll, 80);
     });
   })();
 
