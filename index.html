@@ -510,7 +510,12 @@
     /* ── RESPONSIVE ── */
     @media (max-width: 960px) {
       .hero-inner { grid-template-columns: 1fr; }
-      .hero-right { display: none; }
+      /* The booking box is the only way to book - it must stay
+         visible on phones. Stack it under the hero text instead. */
+      .hero-right { margin-top: 1.5rem; }
+      .booking-widget { max-width: 100%; padding: 1.4rem; }
+      .widget-tabs { flex-wrap: wrap; }
+      .widget-tab { flex: 1 1 45%; }
       .hero-h1 { font-size: clamp(1.8rem, 6vw, 2.8rem); }
       .why-grid { grid-template-columns: repeat(2, 1fr); }
       .services-grid { grid-template-columns: 1fr 1fr; }
