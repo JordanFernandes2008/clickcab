@@ -727,79 +727,111 @@
 <script>
 
   /* ============================================================
-     ADDRESS SUGGESTIONS (Google Places) — Uber / Rapido style.
+     ADDRESS SUGGESTIONS (Google Places)
 
-     >>> PASTE YOUR GOOGLE MAPS BROWSER KEY BELOW <<<
-     This is "Key A" — the browser key from the Google Cloud
-     project. It needs the Places API enabled, and its website
-     restrictions must allow whatever domain the page is served
-     from (see the note in the handover).
-     Until a key is pasted here, the boxes still work as normal
-     typing fields — nothing breaks, you just get no suggestions.
+     Built so that if Google fails for ANY reason — wrong API
+     enabled, key restriction, billing, offline — the booking box
+     keeps working as plain typing fields. It must never break
+     the page.
   ============================================================ */
   var GOOGLE_MAPS_API_KEY = 'AIzaSyBPXLMtRomjw5kdtWyHKP4qpAvteUsqCzg';
 
   (function () {
     'use strict';
 
-    function attachSuggestions() {
-      if (!(window.google && google.maps && google.maps.places)) return;
+    var mapsBroken = false;
 
-      var fields = document.querySelectorAll(
-        '[data-role="pickup"], [data-role="drop"], [data-role="airport"]'
-      );
+    /* Google injects a grey "Oops! Something went wrong" overlay on
+       auth failure, which can land on top of the form. Strip it out
+       and leave the fields usable. */
+    function cleanUpGoogleError() {
+      mapsBroken = true;
+      try {
+        document.querySelectorAll('.dismissButton, .gm-err-container, .gm-err-content')
+          .forEach(function (el) {
+            var box = el.closest('div');
+            if (box && box.parentElement) box.parentElement.removeChild(box);
+          });
+        // Any Google overlay dropped inside our inputs
+        document.querySelectorAll('.cc-input > div, .wfield-row > div')
+          .forEach(function (el) { el.remove(); });
+        document.querySelectorAll('.pac-container')
+          .forEach(function (el) { el.remove(); });
+      } catch (e) { /* nothing to clean */ }
 
-      Array.prototype.forEach.call(fields, function (input) {
-        if (input.dataset.acReady === '1') return;
-        input.dataset.acReady = '1';
-
-        var ac = new google.maps.places.Autocomplete(input, {
-          componentRestrictions: { country: 'in' },
-          fields: ['formatted_address', 'name', 'geometry'],
-          types: ['geocode', 'establishment']
+      // Make sure every field is still typable
+      document.querySelectorAll('[data-role="pickup"], [data-role="drop"]')
+        .forEach(function (i) {
+          i.removeAttribute('disabled');
+          i.removeAttribute('readonly');
+          i.style.display = '';
+          i.style.visibility = 'visible';
         });
 
-        // Remember the picked place so the booking form gets a real
-        // location, not just typed text.
-        ac.addListener('place_changed', function () {
-          var place = ac.getPlace();
-          if (!place) return;
-          if (place.geometry && place.geometry.location) {
-            input.dataset.lat = place.geometry.location.lat();
-            input.dataset.lng = place.geometry.location.lng();
-          }
-          if (place.formatted_address) {
-            input.dataset.formatted = place.formatted_address;
-          }
-        });
-
-        // Stop Enter inside the suggestion list from submitting anything.
-        input.addEventListener('keydown', function (e) {
-          if (e.key === 'Enter') e.preventDefault();
-        });
-      });
+      console.warn('[ClickCab] Address suggestions unavailable — ' +
+                   'typing still works. Check that the classic "Places API" ' +
+                   'is enabled on the browser key.');
     }
 
-    // Called by the Google script tag once it has loaded.
-    window.initClickCabPlaces = attachSuggestions;
+    // Google calls this itself when the key/API check fails.
+    window.gm_authFailure = cleanUpGoogleError;
 
-    function loadMaps() {
-      if (!GOOGLE_MAPS_API_KEY || GOOGLE_MAPS_API_KEY.indexOf('PASTE_') === 0) {
-        console.warn(
-          '[ClickCab] No Google Maps key set — address suggestions are off. ' +
-          'Paste Key A into GOOGLE_MAPS_API_KEY to switch them on.'
-        );
+    function attachSuggestions() {
+      if (mapsBroken) return;
+      if (!(window.google && google.maps && google.maps.places &&
+            google.maps.places.Autocomplete)) {
+        cleanUpGoogleError();
         return;
       }
+
+      document.querySelectorAll('[data-role="pickup"], [data-role="drop"]')
+        .forEach(function (input) {
+          if (input.dataset.acReady === '1') return;
+          try {
+            var ac = new google.maps.places.Autocomplete(input, {
+              componentRestrictions: { country: 'in' },
+              fields: ['formatted_address', 'name', 'geometry'],
+              types: ['geocode']
+            });
+            input.dataset.acReady = '1';
+            ac.addListener('place_changed', function () {
+              var p = ac.getPlace();
+              if (!p) return;
+              if (p.geometry && p.geometry.location) {
+                input.dataset.lat = p.geometry.location.lat();
+                input.dataset.lng = p.geometry.location.lng();
+              }
+              if (p.formatted_address) input.dataset.formatted = p.formatted_address;
+            });
+            input.addEventListener('keydown', function (e) {
+              if (e.key === 'Enter') e.preventDefault();
+            });
+          } catch (err) {
+            cleanUpGoogleError();
+          }
+        });
+    }
+
+    window.initClickCabPlaces = function () {
+      // Give Google a beat to report an auth failure first.
+      setTimeout(attachSuggestions, 120);
+    };
+
+    function loadMaps() {
+      if (!GOOGLE_MAPS_API_KEY || GOOGLE_MAPS_API_KEY.indexOf('PASTE_') === 0) return;
       var s = document.createElement('script');
       s.src = 'https://maps.googleapis.com/maps/api/js?key=' +
               GOOGLE_MAPS_API_KEY +
-              '&libraries=places&callback=initClickCabPlaces&loading=async';
+              '&libraries=places&callback=initClickCabPlaces';
       s.async = true;
-      s.onerror = function () {
-        console.warn('[ClickCab] Google Maps failed to load — typing still works.');
-      };
+      s.defer = true;
+      s.onerror = cleanUpGoogleError;
       document.head.appendChild(s);
+
+      // Safety net: if Google never calls back, clean up anyway.
+      setTimeout(function () {
+        if (!window.google || !google.maps) cleanUpGoogleError();
+      }, 6000);
     }
 
     if (document.readyState === 'loading') {
@@ -808,15 +840,14 @@
       loadMaps();
     }
 
-    // Tabs swap panes in and out, so re-attach when that happens.
     document.addEventListener('click', function (e) {
       if (e.target.closest && e.target.closest('.widget-tab')) {
-        setTimeout(attachSuggestions, 50);
+        setTimeout(attachSuggestions, 80);
       }
     });
   })();
 
-  /* Keep the Google suggestion dropdown above the booking card. */
+  /* Suggestion dropdown styling + hide Google's error furniture. */
   (function () {
     var css = document.createElement('style');
     css.textContent =
@@ -827,7 +858,11 @@
       '.pac-item:first-child{border-top:none;}' +
       '.pac-item:hover{background:#f7f7f7;}' +
       '.pac-item-query{font-size:0.85rem;color:#222;}' +
-      '.pac-icon{margin-top:3px;}';
+      '.pac-icon{margin-top:3px;}' +
+      /* never let a Google error card cover the booking box */
+      '.gm-err-container,.gm-err-content,.gm-err-title,.gm-err-message,' +
+      '.gm-err-autocomplete{display:none !important;}' +
+      '.cc-input img,.wfield-row img{display:none !important;}';
     document.head.appendChild(css);
   })();
 
