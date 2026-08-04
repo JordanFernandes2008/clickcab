@@ -398,6 +398,25 @@
       padding: 0.65rem 0.9rem; font-size: 0.76rem; color: #999;
     }
 
+
+    /* ---- inline notice (instead of browser alert popups) ---- */
+    .cc-notice {
+      display: flex; align-items: center; gap: 0.5rem;
+      margin-top: 0.85rem; padding: 0.65rem 0.85rem;
+      background: #fff4f4; border: 1px solid #f3c9c9; border-radius: 8px;
+      color: #b3261e; font-size: 0.8rem; font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      opacity: 0; transform: translateY(-4px);
+      transition: opacity .25s ease, transform .25s ease;
+    }
+    .cc-notice.in { opacity: 1; transform: translateY(0); }
+    .cc-notice i { font-size: 0.85rem; flex-shrink: 0; }
+    .cc-invalid {
+      outline: none !important;
+      box-shadow: 0 0 0 2px rgba(179,38,30,0.35) !important;
+      border-radius: 6px;
+    }
+
   </style>
 </head>
 <body>
@@ -769,6 +788,42 @@
 
 <script>
 
+  /* ---------- inline notices (replaces browser alert popups) ----------
+     A short message that slides in under the booking box and fades out,
+     plus a red outline on whichever field needs attention. Nothing to
+     dismiss, nothing blocking the page. */
+  function ccNotice(message, field) {
+    var host = (field && field.closest('.booking-widget, .cc-box')) ||
+               document.querySelector('.booking-widget, .cc-box');
+    if (!host) return;
+
+    var old = host.querySelector('.cc-notice');
+    if (old) old.remove();
+
+    var n = document.createElement('div');
+    n.className = 'cc-notice';
+    n.innerHTML = '<i class="fas fa-circle-info"></i><span></span>';
+    n.querySelector('span').textContent = message;
+    host.appendChild(n);
+    requestAnimationFrame(function () { n.classList.add('in'); });
+
+    if (field) {
+      field.classList.add('cc-invalid');
+      field.addEventListener('input', function clear() {
+        field.classList.remove('cc-invalid');
+        field.removeEventListener('input', clear);
+      });
+      try { field.focus({ preventScroll: true }); } catch (e) { field.focus(); }
+    }
+
+    clearTimeout(window.__ccNoticeTimer);
+    window.__ccNoticeTimer = setTimeout(function () {
+      n.classList.remove('in');
+      setTimeout(function () { n.remove(); }, 300);
+    }, 4200);
+  }
+
+
   /* ============================================================
      ADDRESS SEARCH — modelled on the Uber / Rapido pattern:
        · suggestions drop straight under the field as you type
@@ -852,19 +907,6 @@
            so a temporary block or a key change can recover on its own. */
         searchOffUntil = Date.now() + 8000;
         console.warn('[ClickCab] Address search failed (' + m + ')');
-        if (Date.now() - lastWarnAt > 10000) {
-          lastWarnAt = Date.now();
-          var el = document.createElement('div');
-          el.style.cssText =
-            'position:fixed;bottom:16px;left:50%;transform:translateX(-50%);' +
-            'background:#b3261e;color:#fff;padding:11px 18px;border-radius:8px;' +
-            'font:600 13px Inter,sans-serif;z-index:200000;max-width:92vw;' +
-            'box-shadow:0 6px 24px rgba(0,0,0,0.35);';
-          el.textContent = 'Address suggestions blocked by Google (' + m +
-                           '). Check the API key restrictions.';
-          document.body.appendChild(el);
-          setTimeout(function () { el.remove(); }, 8000);
-        }
         cb([], m);
       });
     }
@@ -931,7 +973,7 @@
 
       function useCurrentLocation(row) {
         if (!navigator.geolocation) {
-          alert('Location is not available in this browser.');
+          ccNotice('Location isn\'t available in this browser.');
           return;
         }
         var label = row.querySelector('.cc-search-main');
@@ -945,8 +987,7 @@
         function giveUp(reason) {
           label.textContent = original;
           console.warn('[ClickCab] Current location failed -> ' + reason);
-          alert('Could not work out your address automatically.\n' +
-                'Please type your pickup location instead.');
+          ccNotice('Couldn\'t find your address automatically — please type it in.');
         }
 
         navigator.geolocation.getCurrentPosition(function (pos) {
@@ -995,9 +1036,9 @@
         }, function (err) {
           label.textContent = original;
           if (err && err.code === 1) {
-            alert('Location permission was denied \u2014 please type your address.');
+            ccNotice('Location access was blocked — please type your address.');
           } else {
-            alert('Could not get your location \u2014 please type your address.');
+            ccNotice('Couldn\'t get your location — please type your address.');
           }
         }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 });
       }
@@ -1088,9 +1129,8 @@
           var n = document.createElement('div');
           n.className = 'cc-search-note';
           n.textContent = lastError
-            ? 'Suggestions unavailable (' + lastError + ') — type the address in full.'
+            ? 'Type your address in full and continue.'
             : 'No matches — you can type the address in full.';
-          if (lastError) n.style.color = '#b3261e';
           panel.appendChild(n);
         }
 
@@ -1163,8 +1203,7 @@
     var pickupEl = document.getElementById('lrPickup');
     var pickup = pickupEl ? (pickupEl.dataset.formatted || pickupEl.value || '').trim() : '';
     if (!pickup) {
-      alert('Please enter your pickup location.');
-      if (pickupEl) pickupEl.focus();
+      ccNotice('Please enter your pickup location.', pickupEl);
       return;
     }
     var pkg = document.getElementById('lrPackage').value;
