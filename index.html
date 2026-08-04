@@ -671,14 +671,14 @@
     <div class="hero-right">
       <div class="booking-widget">
         <div class="widget-tabs">
-          <button class="widget-tab active" onclick="switchTab(this,'local')">Local</button>
+          <button class="widget-tab active" onclick="switchTab(this,'outstation')">Outstation</button>
           <button class="widget-tab" onclick="switchTab(this,'airport')">Airport</button>
-          <button class="widget-tab" onclick="switchTab(this,'outstation')">Outstation</button>
+          <button class="widget-tab" onclick="switchTab(this,'local')">Local</button>
           <button class="widget-tab" onclick="switchTab(this,'oneway')">One Way</button>
         </div>
 
         <!-- Outstation tab -->
-        <div id="tab-outstation" style="display:none;">
+        <div id="tab-outstation">
           <div class="widget-title">Book Outstation Cab</div>
           <div class="widget-sub">One way &amp; round trips to any city</div>
           <div class="wfield">
@@ -790,7 +790,7 @@
         </div>
 
         <!-- Local tab -->
-        <div id="tab-local">
+        <div id="tab-local" style="display:none;">
           <div class="widget-title">Book Local Rental</div>
           <div class="widget-sub">Hourly &amp; daily rental packages</div>
           <div class="wfield">
@@ -1747,7 +1747,7 @@
       var el = document.getElementById('tab-' + id);
       if (el && el.style.display !== 'none') pane = el;
     });
-    if (!pane) pane = document.getElementById('tab-local');
+    if (!pane) pane = document.getElementById('tab-outstation');
     if (!pane) return { pickup: '', drop: '', date: '' };
     var read = function (role) {
       var el = pane.querySelector('[data-role="' + role + '"]');
