@@ -717,6 +717,17 @@
               </div>
             </div>
           </div>
+          <div class="wfield">
+            <label>Passengers</label>
+            <div class="wfield-row">
+              <i class="fas fa-user-group"></i>
+              <select data-role="passengers">
+                <option>1</option><option>2</option><option selected>3</option>
+                <option>4</option><option>5</option><option>6</option>
+                <option>7</option><option>8</option>
+              </select>
+            </div>
+          </div>
           <button class="search-btn" type="button" onclick="startBooking()"><i class="fas fa-search"></i> Search Cabs</button>
         </div>
 
@@ -764,6 +775,17 @@
               </div>
             </div>
           </div>
+          <div class="wfield">
+            <label>Passengers</label>
+            <div class="wfield-row">
+              <i class="fas fa-user-group"></i>
+              <select data-role="passengers">
+                <option>1</option><option>2</option><option selected>3</option>
+                <option>4</option><option>5</option><option>6</option>
+                <option>7</option><option>8</option>
+              </select>
+            </div>
+          </div>
           <button class="search-btn" type="button" onclick="startBooking()"><i class="fas fa-search"></i> Search Cabs</button>
         </div>
 
@@ -782,11 +804,24 @@
             <label>Rental Package</label>
             <div class="wfield-row">
               <i class="fas fa-clock"></i>
-              <select>
+              <select data-role="package">
                 <option>4 Hrs / 40 Km</option>
                 <option>8 Hrs / 80 Km</option>
                 <option>12 Hrs / 120 Km</option>
                 <option>Full Day Rental</option>
+              </select>
+            </div>
+          </div>
+          <div class="wfield">
+            <label>Vehicle</label>
+            <div class="wfield-row">
+              <i class="fas fa-car"></i>
+              <select data-role="vehicle">
+                <option>Swift Dzire</option>
+                <option>WagonR</option>
+                <option>Ertiga</option>
+                <option>Innova Crysta</option>
+                <option>Tempo Traveller</option>
               </select>
             </div>
           </div>
@@ -811,7 +846,7 @@
               </div>
             </div>
           </div>
-          <button class="search-btn" type="button" onclick="startBooking()"><i class="fas fa-search"></i> Search Cabs</button>
+          <button class="search-btn" type="button" onclick="sendRentalEnquiry()"><i class="fab fa-whatsapp"></i> Book Rental</button>
         </div>
 
         <!-- One Way tab -->
@@ -852,6 +887,17 @@
                   <option>06:00 PM</option>
                 </select>
               </div>
+            </div>
+          </div>
+          <div class="wfield">
+            <label>Passengers</label>
+            <div class="wfield-row">
+              <i class="fas fa-user-group"></i>
+              <select data-role="passengers">
+                <option>1</option><option>2</option><option selected>3</option>
+                <option>4</option><option>5</option><option>6</option>
+                <option>7</option><option>8</option>
+              </select>
             </div>
           </div>
           <button class="search-btn" type="button" onclick="startBooking()"><i class="fas fa-search"></i> Search Cabs</button>
@@ -1709,13 +1755,19 @@
       // Prefer the full address the user picked from suggestions.
       return (el.dataset.formatted || el.value || '').trim();
     };
-    var timeEl = pane.querySelector('[data-role="time"]');
+    var pick = function (role) {
+      var el = pane.querySelector('[data-role="' + role + '"]');
+      return el ? el.value : '';
+    };
     var airportEl = pane.querySelector('[data-role="airport"]');
     return {
       pickup: read('pickup'),
       drop: read('drop') || (airportEl ? airportEl.value : ''),
       date: read('date'),
-      time: to24h(timeEl ? timeEl.value : '')
+      time: to24h(pick('time')),
+      passengers: pick('passengers'),
+      /* One Way tab books a single leg; the others may be return trips. */
+      direction: (pane.id === 'tab-oneway') ? 'One Way' : ''
     };
   }
 
@@ -1730,6 +1782,35 @@
     if (suffix === 'PM' && h !== 12) h += 12;
     if (suffix === 'AM' && h === 12) h = 0;
     return (h < 10 ? '0' + h : h) + ':' + m[2];
+  }
+
+
+  /* Local rentals are quoted by package and vehicle rather than by
+     distance, so they go straight to WhatsApp with the details filled in
+     instead of through the point-to-point booking form. */
+  function sendRentalEnquiry() {
+    var pane = document.getElementById('tab-local');
+    if (!pane) return;
+    var val = function (role) {
+      var el = pane.querySelector('[data-role="' + role + '"]');
+      if (!el) return '';
+      return (el.dataset.formatted || el.value || '').trim();
+    };
+    var pickup = val('pickup');
+    if (!pickup) {
+      alert('Please enter your pickup location.');
+      var pf = pane.querySelector('[data-role="pickup"]');
+      if (pf) pf.focus();
+      return;
+    }
+    var msg = 'Hi ClickCabs, I would like to book a LOCAL RENTAL.\n\n'
+            + 'Pickup: ' + pickup + '\n'
+            + 'Package: ' + val('package') + '\n'
+            + 'Vehicle: ' + val('vehicle') + '\n'
+            + 'Date: ' + val('date') + '\n'
+            + 'Time: ' + val('time') + '\n\n'
+            + 'Please confirm availability and fare.';
+    window.open('https://wa.me/919702290804?text=' + encodeURIComponent(msg), '_blank');
   }
 
   function startBooking() {
@@ -1772,7 +1853,9 @@
         pickup: data.pickup,
         drop: data.drop,
         date: data.date,
-        time: data.time
+        time: data.time,
+        passengers: data.passengers,
+        direction: data.direction
       };
       var tries = 0;
       (function send() {
