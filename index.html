@@ -2240,18 +2240,41 @@
     var d = document.getElementById('offerDock');
     if (d) d.classList.toggle('open');
   }
+  /* ⚠️ WHEN YOU CHANGE THE OFFER, CHANGE THIS ID.
+     Dismissing is remembered against a specific offer, so a new promotion
+     reappears even for visitors who dismissed the previous one. Without
+     this, one dismissal would silently bury every future offer. */
+  var CC_OFFER_ID = 'free-airport-drop-2026';
+  var CC_OFFER_SNOOZE_DAYS = 7;
+
   function dismissOfferDock() {
     var d = document.getElementById('offerDock');
     if (!d) return;
     d.classList.remove('open');
     d.classList.add('gone');
-    try { localStorage.setItem('cc_offer_dismissed', '1'); } catch (e) {}
+    try {
+      localStorage.setItem('cc_offer_dismissed', JSON.stringify({
+        id: CC_OFFER_ID,
+        until: Date.now() + CC_OFFER_SNOOZE_DAYS * 86400000
+      }));
+    } catch (e) {}
   }
+
   (function () {
-    var dismissed = false;
-    try { dismissed = localStorage.getItem('cc_offer_dismissed') === '1'; } catch (e) {}
     var d = document.getElementById('offerDock');
-    if (d && dismissed) d.classList.add('gone');
+    if (!d) return;
+    var hide = false;
+    try {
+      var raw = localStorage.getItem('cc_offer_dismissed');
+      /* Older builds stored a bare '1' that never expired. Anything that
+         isn't the current JSON shape is ignored, so those visitors get the
+         offer back rather than being stuck with it hidden forever. */
+      if (raw && raw.charAt(0) === '{') {
+        var s = JSON.parse(raw);
+        if (s && s.id === CC_OFFER_ID && Date.now() < s.until) hide = true;
+      }
+    } catch (e) {}
+    if (hide) d.classList.add('gone');
   })();
 </script>
 <script type="module">
