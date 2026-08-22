@@ -4,7 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/png" href="images/favicon.png" />
-  <title>Local Rental - Premium Cab Services</title>
+  <title>Local Cab Rental in Mumbai — Hourly &amp; Daily Packages | Click Cabs</title>
+  <meta name="description" content="Flexible hourly and daily cab rentals for shopping, meetings, sightseeing and family travel. 4, 8 and 12-hour packages with professional drivers." />
+  <link rel="canonical" href="https://clickcabs.in/local-rental.html" />
+  <meta property="og:site_name" content="Click Cabs" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Local Cab Rental in Mumbai — Hourly &amp; Daily Packages | Click Cabs" />
+  <meta property="og:description" content="Flexible hourly and daily cab rentals for shopping, meetings, sightseeing and family travel. 4, 8 and 12-hour packages with professional drivers." />
+  <meta property="og:url" content="https://clickcabs.in/local-rental.html" />
+  <meta property="og:image" content="https://clickcabs.in/images/hero-local.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Local Cab Rental in Mumbai — Hourly &amp; Daily Packages | Click Cabs" />
+  <meta name="twitter:description" content="Flexible hourly and daily cab rentals for shopping, meetings, sightseeing and family travel. 4, 8 and 12-hour packages with professional drivers." />
+  <meta name="twitter:image" content="https://clickcabs.in/images/hero-local.jpg" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
@@ -441,6 +453,71 @@
       .nav-links { display: none; }
       .nav-hamburger { display: flex; }
     }
+
+    /* ── MOBILE TYPE FLOOR ──
+       Most traffic is mobile and the desktop scale bottoms out
+       near 9.6px, which is not readable on a phone. Raises only
+       body/label text below 768px; desktop is untouched, and
+       icons + decorative badges are left alone. */
+    @media (max-width: 767px) {
+      .cc-field label { font-size: 13px; }
+      .cc-note { font-size: 13px; }
+      .cc-search-head { font-size: 13px; }
+      .cc-search-note { font-size: 13px; }
+      .cc-search-sub { font-size: 13px; }
+      .fleet-card p { font-size: 13px; }
+      .footer-bottom { font-size: 13px; }
+      .footer-brand p { font-size: 13px; }
+      .footer-col a { font-size: 13px; }
+      .footer-col h4 { font-size: 13px; }
+      .hb-label { font-size: 13px; }
+      .hero-label { font-size: 13px; }
+      .nav-phone { font-size: 13px; }
+      .occasion-desc { font-size: 13px; }
+      .occasion-name { font-size: 13px; }
+      .ride-dt-field input, .ride-dt-field select { font-size: 13px; }
+      .ride-dt-field label { font-size: 13px; }
+      .ride-pill-sub { font-size: 13px; }
+      .ride-vehicle-field label { font-size: 13px; }
+      .ride-vehicle-field select { font-size: 13px; }
+      .trust-item h4 { font-size: 13px; }
+      .trust-item p { font-size: 13px; }
+      .why-rental-card h3 { font-size: 13px; }
+      .why-rental-card p { font-size: 13px; }
+    }
+
+    /* App is in development - badges are not links yet. */
+    .app-badge[aria-disabled="true"] { cursor: default; opacity: 0.92; }
+    .app-badge-soon {
+      display: block; font-size: 0.58rem; font-weight: 700; line-height: 1;
+      text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.7; margin-top: 2px;
+    }
+
+    /* ── BOOKING INPUT TAP TARGETS ──
+       The inputs themselves were only 16-18px tall, so the tappable area on
+       a phone was a thin strip inside a taller padded row. Giving the input
+       its own height makes the whole row tappable. Mobile only. */
+    @media (max-width: 767px) {
+      .cc-input, .wfield-row { padding-top: 0.3rem; padding-bottom: 0.3rem; }
+      .cc-input input, .cc-input select,
+      .wfield-row input, .wfield-row select {
+        min-height: 40px; font-size: 16px;
+      }
+    }
+
+    /* ── APP SECTION TYPE FLOOR ──
+       App section was going to be removed, then kept. Same 13px
+       mobile floor as the rest of the body copy. */
+    @media (max-width: 767px) {
+      .app-badge { font-size: 13px; }
+      .app-center p { font-size: 13px; }
+      .app-number small { font-size: 13px; }
+      .app-url { font-size: 13px; }
+      .app-badge-soon { font-size: 11px; }
+    }
+
+    .app-call-label { font-size: 0.65rem; color: #aaa; margin-bottom: 0.15rem; }
+    @media (max-width: 767px) { .app-call-label { font-size: 13px; } }
 </style>
 </head>
 <body>
@@ -588,7 +665,7 @@
 <section class="section why-rental-section">
   <div class="section-inner">
     <div class="sec-head">
-      <h2>WHY CHOOSE LOCAL RENTALS</h2>
+      <h2>Why Choose Local Rentals</h2>
       <div class="sec-line"></div>
     </div>
     <div class="why-rental-grid">
@@ -630,7 +707,7 @@
 <section class="section occasion-section">
   <div class="section-inner">
     <div class="sec-head">
-      <h2>PERFECT FOR EVERY OCCASION</h2>
+      <h2>Perfect for Every Occasion</h2>
       <div class="sec-line"></div>
     </div>
     <div class="occasion-grid">
@@ -684,7 +761,7 @@
 <section class="section fleet-section">
   <div class="section-inner">
     <div class="sec-head">
-      <h2>OUR FLEET FOR LOCAL RENTALS</h2>
+      <h2>Our Fleet for Local Rentals</h2>
       <div class="sec-line"></div>
     </div>
     <div class="fleet-row-wrap">
@@ -703,17 +780,17 @@
         <div class="fleet-card">
           <img src="images/ertiga.jpg" alt="Ertiga" />
           <h3>Ertiga</h3>
-          <p>Family Comfort</p>
+          <p>Spacious &amp; Comfortable</p>
         </div>
         <div class="fleet-card">
           <img src="images/innova-crysta.jpg" alt="Innova Crysta" />
           <h3>Innova Crysta</h3>
-          <p>Premium Experience</p>
+          <p>Luxury &amp; Space</p>
         </div>
         <div class="fleet-card">
           <img src="images/tempo-local.jpg" alt="Tempo Traveller" />
           <h3>Tempo Traveller</h3>
-          <p>Group Travel Solution</p>
+          <p>Group &amp; Family Travel</p>
         </div>
       </div>
       <div class="fleet-arrow"><i class="fas fa-chevron-right"></i></div>
@@ -727,21 +804,21 @@
     <div style="display:flex;align-items:center;gap:0.8rem;">
       <i class="fas fa-phone-alt" style="color:var(--yellow);font-size:1.4rem;"></i>
       <div>
-        <div style="font-size:0.65rem;color:#aaa;margin-bottom:0.15rem;">Call for Bookings</div>
-        <div class="app-number">097022 90804</div>
+        <div class="app-call-label">Call for Bookings</div>
+        <div class="app-number">+91 97022 90804</div>
         <div class="app-url">www.clickcabs.in</div>
       </div>
     </div>
     <div class="app-center">
-      <h4>DOWNLOAD OUR APP</h4>
+      <h4>Download Our App</h4>
       <p>Quick bookings, exclusive offers &amp; easy cancellations.</p>
       <div class="app-badges">
-        <a href="#" class="app-badge"><i class="fab fa-google-play"></i> Google Play</a>
-        <a href="#" class="app-badge"><i class="fab fa-apple"></i> App Store</a>
+        <span class="app-badge" aria-disabled="true"><i class="fab fa-google-play"></i> <span>Google Play<span class="app-badge-soon">Coming soon</span></span></span>
+        <span class="app-badge" aria-disabled="true"><i class="fab fa-apple"></i> <span>App Store<span class="app-badge-soon">Coming soon</span></span></span>
       </div>
     </div>
     <div class="app-right">
-      <img src="images/app-strip.jpg" alt="App Preview" />
+      <img src="images/app-strip.jpg" alt="Click Cabs mobile app preview" />
     </div>
   </div>
 </div>
@@ -806,8 +883,8 @@
         <li><a href="#">About Us</a></li>
         <li><a href="#">Our Fleet</a></li>
         <li><a href="#">Careers</a></li>
-        <li><a href="#">Blog</a></li>
-        <li><a href="#">Contact Us</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="contact-us.html">Contact Us</a></li>
       </ul>
     </div>
     <div class="footer-col">
@@ -830,7 +907,7 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2026 Premium Cab Services. All Rights Reserved.</span>
+    <span>© 2026 Click Cabs. All Rights Reserved.</span>
     <span>www.clickcabs.in</span>
   </div>
 </footer>

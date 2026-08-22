@@ -4,7 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/png" href="images/favicon.png" />
-  <title>Tour Packages - Premium Cab Services</title>
+  <title>Tour Packages — Goa, Shirdi, Mahabaleshwar &amp; More | Click Cabs</title>
+  <meta name="description" content="Curated tour packages with comfortable transport and trusted drivers. Goa, Kerala, Rajasthan, Shirdi, Lonavala and Mahabaleshwar itineraries." />
+  <link rel="canonical" href="https://clickcabs.in/tour-packages.html" />
+  <meta property="og:site_name" content="Click Cabs" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Tour Packages — Goa, Shirdi, Mahabaleshwar &amp; More | Click Cabs" />
+  <meta property="og:description" content="Curated tour packages with comfortable transport and trusted drivers. Goa, Kerala, Rajasthan, Shirdi, Lonavala and Mahabaleshwar itineraries." />
+  <meta property="og:url" content="https://clickcabs.in/tour-packages.html" />
+  <meta property="og:image" content="https://clickcabs.in/images/tour.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Tour Packages — Goa, Shirdi, Mahabaleshwar &amp; More | Click Cabs" />
+  <meta name="twitter:description" content="Curated tour packages with comfortable transport and trusted drivers. Goa, Kerala, Rajasthan, Shirdi, Lonavala and Mahabaleshwar itineraries." />
+  <meta name="twitter:image" content="https://clickcabs.in/images/tour.jpg" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
@@ -356,6 +368,60 @@
       .nav-links { display: none; }
       .nav-hamburger { display: flex; }
     }
+
+    /* ── MOBILE TYPE FLOOR ──
+       Most traffic is mobile and the desktop scale bottoms out
+       near 9.6px, which is not readable on a phone. Raises only
+       body/label text below 768px; desktop is untouched, and
+       icons + decorative badges are left alone. */
+    @media (max-width: 767px) {
+      .cc-field label { font-size: 13px; }
+      .cc-note { font-size: 13px; }
+      .cc-search-head { font-size: 13px; }
+      .cc-search-note { font-size: 13px; }
+      .cc-search-sub { font-size: 13px; }
+      .feature-card p { font-size: 13px; }
+      .footer-bottom { font-size: 13px; }
+      .footer-col h4 { font-size: 13px; }
+      .hero-eyebrow { font-size: 13px; }
+      .nav-phone { font-size: 13px; }
+      .ride-dt-field input { font-size: 13px; }
+      .ride-dt-field label { font-size: 13px; }
+      .ride-pill-sub { font-size: 13px; }
+      .ride-vehicle-field label { font-size: 13px; }
+      .ride-vehicle-field select { font-size: 13px; }
+      .tour-meta { font-size: 13px; }
+    }
+
+    /* App is in development - badges are not links yet. */
+    .app-badge[aria-disabled="true"] { cursor: default; opacity: 0.92; }
+    .app-badge-soon {
+      display: block; font-size: 0.58rem; font-weight: 700; line-height: 1;
+      text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.7; margin-top: 2px;
+    }
+
+    /* ── BOOKING INPUT TAP TARGETS ──
+       The inputs themselves were only 16-18px tall, so the tappable area on
+       a phone was a thin strip inside a taller padded row. Giving the input
+       its own height makes the whole row tappable. Mobile only. */
+    @media (max-width: 767px) {
+      .cc-input, .wfield-row { padding-top: 0.3rem; padding-bottom: 0.3rem; }
+      .cc-input input, .cc-input select,
+      .wfield-row input, .wfield-row select {
+        min-height: 40px; font-size: 16px;
+      }
+    }
+
+    /* ── APP SECTION TYPE FLOOR ──
+       App section was going to be removed, then kept. Same 13px
+       mobile floor as the rest of the body copy. */
+    @media (max-width: 767px) {
+      .app-badge { font-size: 13px; }
+      .app-call-label { font-size: 13px; }
+      .app-call-url { font-size: 13px; }
+      .app-center p { font-size: 13px; }
+      .app-badge-soon { font-size: 11px; }
+    }
 </style>
 </head>
 <body>
@@ -563,16 +629,16 @@
       <i class="fas fa-phone-alt"></i>
       <div>
         <div class="app-call-label">Call for Bookings</div>
-        <div class="app-call-number">097022 90804</div>
+        <div class="app-call-number">+91 97022 90804</div>
         <div class="app-call-url">www.clickcabs.in</div>
       </div>
     </div>
     <div class="app-center">
-      <h4>DOWNLOAD OUR APP</h4>
+      <h4>Download Our App</h4>
       <p>Quick bookings, exclusive offers &amp; easy cancellations.</p>
       <div class="app-badges">
-        <a href="#" class="app-badge"><i class="fab fa-google-play"></i> Google Play</a>
-        <a href="#" class="app-badge"><i class="fab fa-apple"></i> App Store</a>
+        <span class="app-badge" aria-disabled="true"><i class="fab fa-google-play"></i> <span>Google Play<span class="app-badge-soon">Coming soon</span></span></span>
+        <span class="app-badge" aria-disabled="true"><i class="fab fa-apple"></i> <span>App Store<span class="app-badge-soon">Coming soon</span></span></span>
       </div>
     </div>
   </div>
@@ -603,7 +669,7 @@
         <li><a href="#">About Us</a></li>
         <li><a href="#">Our Fleet</a></li>
         <li><a href="#">Careers</a></li>
-        <li><a href="#">Blog</a></li>
+        <li><a href="blog.html">Blog</a></li>
       </ul>
     </div>
     <div class="footer-col">
@@ -625,7 +691,7 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2026 Premium Cab Services. All Rights Reserved.</span>
+    <span>© 2026 Click Cabs. All Rights Reserved.</span>
     <span>www.clickcabs.in</span>
   </div>
 </footer>

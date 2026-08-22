@@ -3,7 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>News - Click Cabs</title>
+  <title>News &amp; Company Updates | Click Cabs</title>
+  <meta name="description" content="The latest from Click Cabs — new routes, service updates, seasonal offers and company announcements." />
+  <link rel="canonical" href="https://clickcabs.in/news.html" />
+  <meta property="og:site_name" content="Click Cabs" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="News &amp; Company Updates | Click Cabs" />
+  <meta property="og:description" content="The latest from Click Cabs — new routes, service updates, seasonal offers and company announcements." />
+  <meta property="og:url" content="https://clickcabs.in/news.html" />
+  <meta property="og:image" content="https://clickcabs.in/images/red-car.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="News &amp; Company Updates | Click Cabs" />
+  <meta name="twitter:description" content="The latest from Click Cabs — new routes, service updates, seasonal offers and company announcements." />
+  <meta name="twitter:image" content="https://clickcabs.in/images/red-car.jpg" />
   <link rel="icon" type="image/png" href="images/favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -165,6 +177,21 @@
     @media (max-width: 1100px) {
       .nav-links { display: none; }
       .nav-hamburger { display: flex; }
+    }
+
+    /* ── MOBILE TYPE FLOOR ──
+       Most traffic is mobile and the desktop scale bottoms out
+       near 9.6px, which is not readable on a phone. Raises only
+       body/label text below 768px; desktop is untouched, and
+       icons + decorative badges are left alone. */
+    @media (max-width: 767px) {
+      .footer-bottom { font-size: 13px; }
+      .footer-brand p { font-size: 13px; }
+      .footer-col a { font-size: 13px; }
+      .footer-col h4 { font-size: 13px; }
+      .hero-label { font-size: 13px; }
+      .nav-phone { font-size: 13px; }
+      .sec-label { font-size: 13px; }
     }
 </style>
 </head>

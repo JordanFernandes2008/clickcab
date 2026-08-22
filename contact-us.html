@@ -4,7 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/png" href="images/favicon.png" />
-  <title>Contact Us - Premium Cab Services</title>
+  <title>Contact Click Cabs — 24x7 Cab Booking Support</title>
+  <meta name="description" content="Get in touch with Click Cabs for bookings, corporate enquiries and support. Call +91 97022 90804 or send us a message — we reply within minutes." />
+  <link rel="canonical" href="https://clickcabs.in/contact-us.html" />
+  <meta property="og:site_name" content="Click Cabs" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Contact Click Cabs — 24x7 Cab Booking Support" />
+  <meta property="og:description" content="Get in touch with Click Cabs for bookings, corporate enquiries and support. Call +91 97022 90804 or send us a message — we reply within minutes." />
+  <meta property="og:url" content="https://clickcabs.in/contact-us.html" />
+  <meta property="og:image" content="https://clickcabs.in/images/contact-hero.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Contact Click Cabs — 24x7 Cab Booking Support" />
+  <meta name="twitter:description" content="Get in touch with Click Cabs for bookings, corporate enquiries and support. Call +91 97022 90804 or send us a message — we reply within minutes." />
+  <meta name="twitter:image" content="https://clickcabs.in/images/contact-hero.jpg" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
@@ -282,11 +294,6 @@
     .footer-col a { color: #fff; text-decoration: none; font-size: 0.75rem; transition: color 0.2s; }
     .footer-col a:hover { color: var(--yellow); }
 
-    .newsletter-wrap { display: flex; gap: 0.5rem; margin-top: 0.8rem; }
-    .newsletter-wrap input { flex: 1; border: 1px solid #333; background: #111; border-radius: 6px; padding: 0.5rem 0.7rem; font-family: 'Inter', sans-serif; font-size: 0.75rem; color: #fff; outline: none; }
-    .newsletter-wrap input::placeholder { color: #555; }
-    .newsletter-wrap button { background: var(--yellow); color: #000; border: none; border-radius: 6px; width: 34px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.85rem; transition: background 0.2s; }
-    .newsletter-wrap button:hover { background: var(--yellow-hover); }
 
     .footer-bottom { max-width: 1200px; margin: 0 auto; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 1.3rem; display: flex; align-items: center; justify-content: space-between; font-size: 0.72rem; color: #fff; }
 
@@ -354,6 +361,45 @@
     @media (max-width: 1100px) {
       .nav-links { display: none; }
       .nav-hamburger { display: flex; }
+    }
+
+    /* ── MOBILE TYPE FLOOR ──
+       Most traffic is mobile and the desktop scale bottoms out
+       near 9.6px, which is not readable on a phone. Raises only
+       body/label text below 768px; desktop is untouched, and
+       icons + decorative badges are left alone. */
+    @media (max-width: 767px) {
+      .contact-detail { font-size: 13px; }
+      .faq-a { font-size: 13px; }
+      .fleet-card p { font-size: 13px; }
+      .footer-bottom { font-size: 13px; }
+      .footer-brand p { font-size: 13px; }
+      .footer-col a { font-size: 13px; }
+      .footer-col h4 { font-size: 13px; }
+      .form-group label { font-size: 13px; }
+      .hero-label { font-size: 13px; }
+      .info-label { font-size: 13px; }
+      .nav-phone { font-size: 13px; }
+      .review-city { font-size: 13px; }
+      .trusted-card h3 { font-size: 13px; }
+      .trusted-card p { font-size: 13px; }
+    }
+
+    /* App is in development - badges are not links yet. */
+    .app-badge[aria-disabled="true"] { cursor: default; opacity: 0.92; }
+    .app-badge-soon {
+      display: block; font-size: 0.58rem; font-weight: 700; line-height: 1;
+      text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.7; margin-top: 2px;
+    }
+
+    /* ── APP SECTION TYPE FLOOR ──
+       App section was going to be removed, then kept. Same 13px
+       mobile floor as the rest of the body copy. */
+    @media (max-width: 767px) {
+      .app-badge span { font-size: 13px; }
+      .app-feature h4 { font-size: 13px; }
+      .app-feature p { font-size: 13px; }
+      .app-badge-soon { font-size: 11px; }
     }
 </style>
 </head>
@@ -467,7 +513,7 @@
         <label>Message</label>
         <textarea id="cfMessage" placeholder="Type your message here..."></textarea>
       </div>
-      <button class="send-btn" type="button" onclick="sendContactEnquiry()"><i class="fas fa-paper-plane"></i> SEND MESSAGE</button>
+      <button class="send-btn" type="button" onclick="sendContactEnquiry()"><i class="fas fa-paper-plane"></i> Send Message</button>
     </div>
 
   </div>
@@ -515,6 +561,11 @@
   </div>
 </section>
 
+<!-- ============================================================
+     REVIEWS — PLACEHOLDER CONTENT, NOT REAL CUSTOMER FEEDBACK.
+     Names, quotes and the 4.8/5 rating are invented and must be
+     replaced before go-live. See PLACEHOLDER-CONTENT.md
+============================================================ -->
 <!-- REVIEWS -->
 <section style="background: #111; padding: 4rem 2rem;">
   <div class="reviews-head">
@@ -669,27 +720,27 @@
       <button type="button" class="fleet-card" onclick="scrollToContactForm(this)">
         <img src="images/swift.jpg" alt="Swift Dzire" />
         <h4>Swift Dzire</h4>
-        <p>Economical &amp; Comfortable</p>
+        <p>Economical &amp; Reliable</p>
       </button>
       <button type="button" class="fleet-card" onclick="scrollToContactForm(this)">
         <img src="images/wagonr.jpg" alt="WagonR" />
         <h4>WagonR</h4>
-        <p>Perfect City Travel</p>
+        <p>Perfect City Ride</p>
       </button>
       <button type="button" class="fleet-card" onclick="scrollToContactForm(this)">
         <img src="images/ertiga.jpg" alt="Ertiga" />
         <h4>Ertiga</h4>
-        <p>Family Travel Comfort</p>
+        <p>Spacious &amp; Comfortable</p>
       </button>
       <button type="button" class="fleet-card" onclick="scrollToContactForm(this)">
         <img src="images/innova-crysta.jpg" alt="Innova Crysta" />
         <h4>Innova Crysta</h4>
-        <p>Premium Outstation Travel</p>
+        <p>Luxury &amp; Space</p>
       </button>
       <button type="button" class="fleet-card" onclick="scrollToContactForm(this)">
         <img src="images/tempo-local.jpg" alt="Tempo Traveller" />
         <h4>Tempo Traveller</h4>
-        <p>Group Transportation</p>
+        <p>Group &amp; Family Travel</p>
       </button>
     </div>
   </div>
@@ -724,8 +775,8 @@
         </div>
       </div>
       <div class="app-badges">
-        <a href="#" class="app-badge"><i class="fab fa-google-play"></i><span>Google Play</span></a>
-        <a href="#" class="app-badge"><i class="fab fa-apple"></i><span>App Store</span></a>
+        <span class="app-badge" aria-disabled="true"><i class="fab fa-google-play"></i><span>Google Play<span class="app-badge-soon">Coming soon</span></span></span>
+        <span class="app-badge" aria-disabled="true"><i class="fab fa-apple"></i><span>App Store<span class="app-badge-soon">Coming soon</span></span></span>
       </div>
     </div>
   </div>
@@ -772,10 +823,10 @@
     </div>
     <div class="app-strip2-right">
       <div class="contact-details">
-        <a href="tel:+919702290804" class="contact-detail"><i class="fas fa-phone"></i> 097022 90804</a>
+        <a href="tel:+919702290804" class="contact-detail"><i class="fas fa-phone"></i> +91 97022 90804</a>
         <a href="https://www.clickcabs.in" class="contact-detail"><i class="fas fa-globe"></i> www.clickcabs.in</a>
       </div>
-      <a href="tel:+919702290804" class="book-now-btn">BOOK NOW <i class="fas fa-arrow-right"></i></a>
+      <a href="tel:+919702290804" class="book-now-btn">Book Now <i class="fas fa-arrow-right"></i></a>
     </div>
   </div>
 </div>
@@ -801,7 +852,7 @@
         <li><a href="/">Home</a></li>
         <li><a href="#">About Us</a></li>
         <li><a href="#">Our Fleet</a></li>
-        <li><a href="#">Blog</a></li>
+        <li><a href="blog.html">Blog</a></li>
         <li><a href="#">Careers</a></li>
       </ul>
     </div>
@@ -832,14 +883,6 @@
         <li><a href="mailto:bookings@clickcabs.in"><i class="fas fa-envelope" style="color:var(--yellow);margin-right:0.4rem;"></i>bookings@clickcabs.in</a></li>
         <li><a href="#"><i class="fas fa-map-marker-alt" style="color:var(--yellow);margin-right:0.4rem;"></i>Mumbai, Maharashtra, India</a></li>
       </ul>
-      <div style="margin-top:0.8rem;">
-        <div style="font-size:0.65rem;color:var(--yellow);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;font-weight:700;">Newsletter</div>
-        <div style="font-size:0.68rem;color:#fff;margin-bottom:0.5rem;">Subscribe to get updates &amp; offers</div>
-        <div class="newsletter-wrap">
-          <input type="email" placeholder="Enter your email" />
-          <button><i class="fas fa-arrow-right"></i></button>
-        </div>
-      </div>
     </div>
     <div class="footer-col">
       <h4>Become a Partner</h4>

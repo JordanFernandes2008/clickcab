@@ -4,7 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/png" href="images/favicon.png" />
-  <title>Click Cabs - Your Journey, Our Priority</title>
+  <title>Click Cabs — Cab Booking in Mumbai | Outstation, Airport &amp; Local Rentals</title>
+  <meta name="description" content="Book outstation cabs, airport transfers and local rentals across India with Click Cabs. Verified drivers, transparent pricing, 24x7 support. Call +91 97022 90804." />
+  <link rel="canonical" href="https://clickcabs.in/" />
+  <meta property="og:site_name" content="Click Cabs" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Click Cabs — Cab Booking in Mumbai | Outstation, Airport &amp; Local Rentals" />
+  <meta property="og:description" content="Book outstation cabs, airport transfers and local rentals across India with Click Cabs. Verified drivers, transparent pricing, 24x7 support. Call +91 97022 90804." />
+  <meta property="og:url" content="https://clickcabs.in/" />
+  <meta property="og:image" content="https://clickcabs.in/images/red-car.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Click Cabs — Cab Booking in Mumbai | Outstation, Airport &amp; Local Rentals" />
+  <meta name="twitter:description" content="Book outstation cabs, airport transfers and local rentals across India with Click Cabs. Verified drivers, transparent pricing, 24x7 support. Call +91 97022 90804." />
+  <meta name="twitter:image" content="https://clickcabs.in/images/red-car.jpg" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
@@ -386,7 +398,13 @@
     .review-stars i { color: var(--yellow); font-size: 0.9rem; }
     .review-text { font-size: 0.88rem; color: #ddd; line-height: 1.7; margin-bottom: 1.4rem; }
     .review-author-row { display: flex; align-items: center; gap: 0.8rem; }
-    .review-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+    .review-avatar {
+      width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.82rem; font-weight: 800; letter-spacing: 0.02em;
+      background: var(--blue); color: #fff;
+    }
+    .review-avatar--alt { background: var(--yellow); color: #111; }
     .review-author { font-size: 0.85rem; font-weight: 700; color: #fff; }
     .review-city { font-size: 0.72rem; color: #777; margin-top: 0.15rem; }
 
@@ -492,11 +510,6 @@
     .footer-col li { margin-bottom: 0.45rem; }
     .footer-col a { color: #fff; text-decoration: none; font-size: 0.75rem; transition: color 0.2s; }
     .footer-col a:hover { color: var(--yellow); }
-    .newsletter-wrap { display: flex; gap: 0.5rem; margin-top: 0.8rem; }
-    .newsletter-wrap input { flex: 1; border: 1px solid #333; background: #111; border-radius: 6px; padding: 0.5rem 0.7rem; font-family: 'Inter', sans-serif; font-size: 0.75rem; color: #fff; outline: none; }
-    .newsletter-wrap input::placeholder { color: #555; }
-    .newsletter-wrap button { background: var(--yellow); color: #000; border: none; border-radius: 6px; width: 34px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.85rem; transition: background 0.2s; }
-    .newsletter-wrap button:hover { background: var(--yellow-hover); }
     .footer-bottom {
       max-width: 1200px; margin: 0 auto;
       border-top: 1px solid rgba(255,255,255,0.06); padding-top: 1.3rem;
@@ -740,6 +753,76 @@
     .fleet-card:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 
     @media (max-width: 700px) { .bn-grid { grid-template-columns: 1fr; } }
+
+    /* ── MOBILE TYPE FLOOR ──
+       Most traffic is mobile and the desktop scale bottoms out
+       near 9.6px, which is not readable on a phone. Raises only
+       body/label text below 768px; desktop is untouched, and
+       icons + decorative badges are left alone. */
+    @media (max-width: 767px) {
+      .bn-card p { font-size: 13px; }
+      .bn-link { font-size: 13px; }
+      .cc-search-head { font-size: 13px; }
+      .cc-search-note { font-size: 13px; }
+      .cc-search-sub { font-size: 13px; }
+      .cta-detail { font-size: 13px; }
+      .fleet-card p { font-size: 13px; }
+      .footer-bottom { font-size: 13px; }
+      .footer-brand p { font-size: 13px; }
+      .footer-col a { font-size: 13px; }
+      .footer-col h4 { font-size: 13px; }
+      .hero-badge { font-size: 13px; }
+      .hero-label { font-size: 13px; }
+      .nav-phone { font-size: 13px; }
+      .offer-badge { font-size: 13px; }
+      .offer-dock-btn { font-size: 13px; }
+      .offer-dock-head { font-size: 13px; }
+      .offer-dock-panel p { font-size: 13px; }
+      .offer-dock-terms { font-size: 13px; }
+      .offer-terms { font-size: 13px; }
+      .review-city { font-size: 13px; }
+      .sec-label { font-size: 13px; }
+      .service-body p { font-size: 13px; }
+      .service-link { font-size: 13px; }
+      .service-tag { font-size: 13px; }
+      .stat-label { font-size: 13px; }
+      .step-card p { font-size: 13px; }
+      .trust-item h4 { font-size: 13px; }
+      .trust-item p { font-size: 13px; }
+      .wfield label { font-size: 13px; }
+      .why-card p { font-size: 13px; }
+      .widget-sub { font-size: 13px; }
+      .widget-tab { font-size: 13px; }
+    }
+
+    /* App is in development - badges are not links yet. */
+    .app-badge[aria-disabled="true"] { cursor: default; opacity: 0.92; }
+    .app-badge-soon {
+      display: block; font-size: 0.58rem; font-weight: 700; line-height: 1;
+      text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.7; margin-top: 2px;
+    }
+
+    /* ── BOOKING INPUT TAP TARGETS ──
+       The inputs themselves were only 16-18px tall, so the tappable area on
+       a phone was a thin strip inside a taller padded row. Giving the input
+       its own height makes the whole row tappable. Mobile only. */
+    @media (max-width: 767px) {
+      .cc-input, .wfield-row { padding-top: 0.3rem; padding-bottom: 0.3rem; }
+      .cc-input input, .cc-input select,
+      .wfield-row input, .wfield-row select {
+        min-height: 40px; font-size: 16px;
+      }
+    }
+
+    /* ── APP SECTION TYPE FLOOR ──
+       App section was going to be removed, then kept. Same 13px
+       mobile floor as the rest of the body copy. */
+    @media (max-width: 767px) {
+      .app-badge span { font-size: 13px; }
+      .app-feature h4 { font-size: 13px; }
+      .app-feature p { font-size: 13px; }
+      .app-badge-soon { font-size: 11px; }
+    }
 </style>
 </head>
 <body>
@@ -1307,6 +1390,14 @@
   </div>
 </section>
 
+<!-- ============================================================
+     REVIEWS — PLACEHOLDER CONTENT, NOT REAL CUSTOMER FEEDBACK.
+     The names, quotes, cities, the 4.8/5 rating and the "1200+ reviews"
+     figure are all invented and must be replaced with genuine reviews
+     before go-live. Avatars are generated initials, deliberately — do
+     not substitute stock photos of people who are not real customers.
+     See PLACEHOLDER-CONTENT.md
+============================================================ -->
 <!-- REVIEWS -->
 <section class="reviews-section">
   <div class="section-inner">
@@ -1326,7 +1417,7 @@
           <div class="review-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
           <div class="review-text">Excellent service! The driver was punctual and the car was very comfortable. Highly recommend for outstation trips!</div>
           <div class="review-author-row">
-            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=100&auto=format&fit=crop" class="review-avatar" alt="Rahul Sharma" />
+            <div class="review-avatar" aria-hidden="true">RS</div>
             <div><div class="review-author">Rahul Sharma</div><div class="review-city">Mumbai</div></div>
           </div>
         </div>
@@ -1335,7 +1426,7 @@
           <div class="review-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
           <div class="review-text">Very professional and reliable service. Used for airport transfer and it was a smooth experience from start to finish.</div>
           <div class="review-author-row">
-            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=100&auto=format&fit=crop" class="review-avatar" alt="Priya Mehta" />
+            <div class="review-avatar review-avatar--alt" aria-hidden="true">PM</div>
             <div><div class="review-author">Priya Mehta</div><div class="review-city">Pune</div></div>
           </div>
         </div>
@@ -1344,7 +1435,7 @@
           <div class="review-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
           <div class="review-text">Booked an outstation cab to Goa and the journey was very comfortable. Driver was knowledgeable. Will book again!</div>
           <div class="review-author-row">
-            <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=100&auto=format&fit=crop" class="review-avatar" alt="Amit Verma" />
+            <div class="review-avatar" aria-hidden="true">AV</div>
             <div><div class="review-author">Amit Verma</div><div class="review-city">Navi Mumbai</div></div>
           </div>
         </div>
@@ -1353,7 +1444,7 @@
           <div class="review-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
           <div class="review-text">My family had a wonderful tour package experience. The vehicle was spotless and the driver was very friendly and helpful.</div>
           <div class="review-author-row">
-            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=100&auto=format&fit=crop" class="review-avatar" alt="Sunita Patel" />
+            <div class="review-avatar review-avatar--alt" aria-hidden="true">SP</div>
             <div><div class="review-author">Sunita Patel</div><div class="review-city">Thane</div></div>
           </div>
         </div>
@@ -1362,7 +1453,7 @@
           <div class="review-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
           <div class="review-text">Used for corporate travel — incredibly efficient and professional. They exceeded all expectations for our client meetings.</div>
           <div class="review-author-row">
-            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=100&auto=format&fit=crop" class="review-avatar" alt="Rajan Khanna" />
+            <div class="review-avatar" aria-hidden="true">RK</div>
             <div><div class="review-author">Rajan Khanna</div><div class="review-city">Corporate Client</div></div>
           </div>
         </div>
@@ -1371,7 +1462,7 @@
           <div class="review-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
           <div class="review-text">Perfect airport transfer. Even with a delayed late-night flight, my driver was waiting. An absolute life-saver!</div>
           <div class="review-author-row">
-            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=100&auto=format&fit=crop" class="review-avatar" alt="Ananya Iyer" />
+            <div class="review-avatar review-avatar--alt" aria-hidden="true">AI</div>
             <div><div class="review-author">Ananya Iyer</div><div class="review-city">Chennai</div></div>
           </div>
         </div>
@@ -1439,12 +1530,12 @@
         </div>
       </div>
       <div class="app-badges">
-        <a href="#" class="app-badge"><i class="fab fa-google-play"></i><span>Google Play</span></a>
-        <a href="#" class="app-badge"><i class="fab fa-apple"></i><span>App Store</span></a>
+        <span class="app-badge" aria-disabled="true"><i class="fab fa-google-play"></i><span>Google Play<span class="app-badge-soon">Coming soon</span></span></span>
+        <span class="app-badge" aria-disabled="true"><i class="fab fa-apple"></i><span>App Store<span class="app-badge-soon">Coming soon</span></span></span>
       </div>
     </div>
     <div class="app-right">
-      <img src="images/app-strip.jpg" alt="App Preview" />
+      <img src="images/app-strip.jpg" alt="Click Cabs mobile app preview" />
     </div>
   </div>
 </section>
@@ -1484,7 +1575,7 @@
         <a href="mailto:bookings@clickcabs.in" class="cta-detail"><i class="fas fa-envelope"></i> bookings@clickcabs.in</a>
         <a href="#" class="cta-detail"><i class="fas fa-globe"></i> www.clickcabs.in</a>
       </div>
-      <a href="tel:+919702290804" class="cta-btn">BOOK NOW <i class="fas fa-arrow-right"></i></a>
+      <a href="tel:+919702290804" class="cta-btn">Book Now <i class="fas fa-arrow-right"></i></a>
     </div>
   </div>
 </div>
@@ -1499,7 +1590,7 @@
     <button class="offer-dock-close" onclick="dismissOfferDock()" aria-label="Dismiss">&times;</button>
     <div class="offer-dock-head"><i class="fas fa-gift"></i> Current Offer</div>
     <p>Book any <strong>Outstation Trip</strong> and get <strong>1 Airport Drop absolutely FREE*</strong></p>
-    <button type="button" class="offer-dock-btn" onclick="scrollToBooking()">Book now <i class="fas fa-arrow-right"></i></button>
+    <button type="button" class="offer-dock-btn" onclick="scrollToBooking()">Book Now <i class="fas fa-arrow-right"></i></button>
     <span class="offer-dock-terms">*Terms &amp; Conditions Apply</span>
   </div>
 </div>
@@ -1535,7 +1626,7 @@
         <li><a href="#">About Us</a></li>
         <li><a href="#">Our Fleet</a></li>
         <li><a href="#">Careers</a></li>
-        <li><a href="#">Blog</a></li>
+        <li><a href="blog.html">Blog</a></li>
       </ul>
     </div>
     <div class="footer-col">
@@ -1555,14 +1646,6 @@
         <li><a href="mailto:bookings@clickcabs.in"><i class="fas fa-envelope" style="color:var(--yellow);margin-right:0.4rem;"></i>bookings@clickcabs.in</a></li>
         <li><a href="#"><i class="fas fa-map-marker-alt" style="color:var(--yellow);margin-right:0.4rem;"></i>Mumbai, Maharashtra</a></li>
       </ul>
-      <div style="margin-top:1rem;">
-        <div style="font-size:0.65rem;color:var(--yellow);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.4rem;font-weight:700;">Newsletter</div>
-        <div style="font-size:0.68rem;color:#fff;margin-bottom:0.5rem;">Subscribe to get updates &amp; offers</div>
-        <div class="newsletter-wrap">
-          <input type="email" placeholder="Enter your email" />
-          <button><i class="fas fa-arrow-right"></i></button>
-        </div>
-      </div>
     </div>
     <div class="footer-col">
       <h4>Become a Partner</h4>
