@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="images/favicon.png" />
   <title>Tour Packages - Premium Cab Services</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -43,13 +44,14 @@
       border-bottom: 1px solid rgba(255,255,255,0.08);
     }
 
-    .nav-logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
-    .logo-circle { width: 34px; height: 34px; background: var(--yellow); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.95rem; color: #111; }
-    .logo-text { color: #fff; font-size: 1rem; font-weight: 800; letter-spacing: -0.01em; }
-    .logo-text small { display: block; font-size: 0.6rem; font-weight: 500; color: #bcd2de; letter-spacing: 0.12em; text-transform: uppercase; }
+    .logo {
+      display: inline-flex; align-items: center; text-decoration: none; flex-shrink: 0;
+    }
+    .logo img { height: 34px; width: auto; display: block; }
+    .footer-brand .logo img { height: 46px; }
 
     .nav-links { display: flex; gap: 0; list-style: none; }
-    .nav-links a { color: #d4e3eb; text-decoration: none; font-size: 0.82rem; font-weight: 500; padding: 0.35rem 0.7rem; border-radius: 5px; transition: color 0.2s; }
+    .nav-links a { color: #d4e3eb; text-decoration: none; font-size: 0.82rem; font-weight: 500; padding: 0.3rem 0.5rem; border-radius: 5px; transition: color 0.2s; }
     .nav-links a:hover { color: #fff; }
     .nav-links a.active { color: var(--yellow); border-bottom: 2px solid var(--yellow); }
 
@@ -240,14 +242,14 @@
     .app-right img { height: 100px; object-fit: contain; }
 
     /* ── FOOTER ── */
-    footer { background: var(--blue-dark); border-top: 1px solid rgba(255,255,255,0.08); padding: 3rem 2rem 1.5rem; color: #aaa; }
-    .footer-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem; margin-bottom: 2rem; }
-    .footer-col h4 { font-size: 0.72rem; font-weight: 700; color: #ccc; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 1rem; }
+    footer { background: var(--blue-dark); border-top: 1px solid rgba(255,255,255,0.08); padding: 3rem 2rem 1.5rem; color: #fff; }
+    .footer-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 2rem; margin-bottom: 2rem; }
+    .footer-col h4 { font-size: 0.72rem; font-weight: 700; color: #f5a200; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 1rem; }
     .footer-col ul { list-style: none; }
     .footer-col ul li { margin-bottom: 0.5rem; }
-    .footer-col ul li a { text-decoration: none; color: #666; font-size: 0.82rem; transition: color 0.2s; }
+    .footer-col ul li a { text-decoration: none; color: #fff; font-size: 0.82rem; transition: color 0.2s; }
     .footer-col ul li a:hover { color: var(--yellow); }
-    .footer-bottom { max-width: 1100px; margin: 0 auto; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: space-between; font-size: 0.76rem; color: #555; }
+    .footer-bottom { max-width: 1100px; margin: 0 auto; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: space-between; font-size: 0.76rem; color: #fff; }
 
     @media (max-width: 960px) {
       .nav-links { display: none; }
@@ -327,28 +329,73 @@
       border-radius: 6px;
     }
 
-  </style>
+  
+    /* ── MOBILE NAV ── */
+    .nav-hamburger {
+      display: none; flex-direction: column; gap: 4px; cursor: pointer;
+      padding: 4px; background: none; border: none;
+    }
+    .nav-hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; }
+    .mobile-menu {
+      display: none; position: fixed; top: 60px; left: 0; right: 0; z-index: 998;
+      background: var(--blue-dark); padding: 1rem 2rem; flex-direction: column; gap: 0.2rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; font-weight: 500; padding: 0.65rem 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu a:hover { color: var(--yellow); }
+    .mobile-menu a.active { color: var(--yellow); }
+    @media (max-width: 960px) {
+      .nav-hamburger { display: flex; }
+    }
+
+    /* The 9-item nav needs ~1044px; below that it wraps to two lines,
+       so hand over to the mobile menu earlier than the old 960px. */
+    @media (max-width: 1100px) {
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+    }
+</style>
 </head>
 <body>
 
 <nav>
-  <a href="/" class="nav-logo">
-    <div class="logo-circle">P</div>
-    <div class="logo-text">ClickCabs <small>PREMIUM CAB SERVICES</small></div>
+  <a href="/" class="logo">
+    <img src="images/logo-light.png" alt="Click Cabs - Your City, Your Ride" />
   </a>
   <ul class="nav-links">
     <li><a href="/">Home</a></li>
     <li><a href="local-rental.html">Local Rental</a></li>
     <li><a href="airport-transfer.html">Airport Transfer</a></li>
     <li><a href="outstation.html">Outstation</a></li>
-    <li><a href="corporate.html">Corporate</a></li>
     <li><a href="tour-packages.html" class="active">Tour Packages</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="news.html">News</a></li>
+    <li><a href="corporate.html">Corporate</a></li>
     <li><a href="contact-us.html">Contact Us</a></li>
   </ul>
   <a href="tel:+919702290804" class="nav-phone">
-    <i class="fas fa-phone"></i> 24x7 Support +91 97022 90804
+    <i class="fas fa-phone"></i>&nbsp; +91 97022 90804
   </a>
+  <button class="nav-hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="/">Home</a>
+  <a href="local-rental.html">Local Rental</a>
+  <a href="airport-transfer.html">Airport Transfer</a>
+  <a href="outstation.html">Outstation</a>
+  <a href="tour-packages.html" class="active">Tour Packages</a>
+  <a href="blog.html">Blog</a>
+  <a href="news.html">News</a>
+  <a href="corporate.html">Corporate</a>
+  <a href="contact-us.html">Contact Us</a>
+</div>
+
 
 <div class="hero">
   <div class="hero-inner">
@@ -534,11 +581,10 @@
 <footer>
   <div class="footer-grid">
     <div class="footer-brand">
-      <a href="/" class="nav-logo">
-        <div class="logo-circle">P</div>
-        <div class="logo-text">Premium <small>CAB SERVICES</small></div>
+      <a href="/" class="logo">
+        <img src="images/logo-light.png" alt="Click Cabs - Your City, Your Ride" />
       </a>
-      <p style="font-size: 0.82rem; color: #666; margin-top: 0.9rem; line-height: 1.7; max-width: 240px;">Reliable, comfortable and affordable cab services across India with professional drivers.</p>
+      <p style="font-size: 0.82rem; color: #fff; margin-top: 0.9rem; line-height: 1.7; max-width: 240px;">Reliable, comfortable and affordable cab services across India with professional drivers.</p>
     </div>
     <div class="footer-col">
       <h4>Our Services</h4>
@@ -567,6 +613,14 @@
         <li><a href="#">Terms &amp; Conditions</a></li>
         <li><a href="#">Privacy Policy</a></li>
         <li><a href="#">FAQ</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Become a Partner</h4>
+      <ul>
+        <li><a href="contact-us.html">Driver Partner Registration</a></li>
+        <li><a href="contact-us.html">Fleet Owner Partnership</a></li>
+        <li><a href="contact-us.html">Corporate Partnership Inquiry</a></li>
       </ul>
     </div>
   </div>
@@ -1020,6 +1074,20 @@
       if (!i.value) { i.value = today; i.min = today; }
     });
   })();
+
+  // Mobile menu toggle
+  function toggleMenu() {
+    var menu = document.getElementById('mobileMenu');
+    if (menu) menu.classList.toggle('open');
+  }
+  document.addEventListener('click', function (e) {
+    var menu = document.getElementById('mobileMenu');
+    var btn = document.querySelector('.nav-hamburger');
+    if (!menu || !btn) return;
+    if (menu.classList.contains('open') && !menu.contains(e.target) && !btn.contains(e.target)) {
+      menu.classList.remove('open');
+    }
+  });
 </script>
 
 </body>

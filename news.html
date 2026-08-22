@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>News - Click Cabs</title>
+  <link rel="icon" type="image/png" href="images/favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue: #01456c;
+      --blue-dark: #012e48;
+      --yellow: #f5a200;
+      --yellow-hover: #d48e00;
+      --white: #ffffff;
+      --offwhite: #f5f5f5;
+      --text: #1a1a1a;
+      --gray: #666;
+      --border: #e0e0e0;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: #fff; color: var(--text); overflow-x: hidden; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+      background: var(--blue); height: 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem;
+    }
+    .logo {
+      display: inline-flex; align-items: center; text-decoration: none; flex-shrink: 0;
+    }
+    .logo img { height: 34px; width: auto; display: block; }
+    .nav-links { display: flex; list-style: none; }
+    .nav-links a {
+      color: #d4e3eb; text-decoration: none; font-size: 0.8rem; font-weight: 500;
+      padding: 0.3rem 0.5rem; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: #fff; }
+    .nav-links a.active { color: var(--yellow); border-bottom: 2px solid var(--yellow); }
+    .nav-phone {
+      display: flex; align-items: center; gap: 0.6rem;
+      background: var(--yellow); color: #000;
+      font-size: 0.75rem; font-weight: 700;
+      padding: 0.45rem 1rem; border-radius: 6px; text-decoration: none;
+      white-space: nowrap;
+    }
+    .nav-phone:hover { background: var(--yellow-hover); }
+
+    /* HERO */
+    .hero {
+      padding-top: 56px;
+      background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue) 100%);
+      position: relative; overflow: hidden;
+    }
+    .hero-inner { max-width: 1200px; margin: 0 auto; padding: 3.5rem 2rem 3.8rem; position: relative; z-index: 2; }
+    .hero-label {
+      color: var(--yellow); font-size: 0.7rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .hero-label::before { content: ''; display: inline-block; width: 24px; height: 2px; background: var(--yellow); }
+    .hero-h1 { font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 900; color: #fff; line-height: 1.15; letter-spacing: -0.03em; }
+    .hero-h1 .yellow { color: var(--yellow); }
+    .hero-p { font-size: 0.88rem; color: #cfe0ea; line-height: 1.75; margin-top: 0.9rem; max-width: 520px; }
+
+    /* SECTIONS */
+    .section { padding: 4.5rem 2rem; }
+    .section-inner { max-width: 1200px; margin: 0 auto; }
+    .sec-head { text-align: center; margin-bottom: 2.8rem; }
+    .sec-label { font-size: 0.68rem; font-weight: 700; color: var(--yellow); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 0.5rem; }
+    .sec-head h2 { font-size: clamp(1.3rem, 2vw, 1.9rem); font-weight: 900; letter-spacing: -0.02em; color: var(--text); }
+    .sec-line { width: 44px; height: 3px; background: var(--yellow); border-radius: 2px; margin: 0.6rem auto 0; }
+
+    /* COMING SOON */
+    .soon-card {
+      max-width: 640px; margin: 0 auto; text-align: center;
+      background: var(--offwhite); border: 1.5px solid var(--border);
+      border-radius: 16px; padding: 3rem 2rem;
+    }
+    .soon-icon {
+      width: 68px; height: 68px; border-radius: 50%;
+      background: #fff8e1; border: 1.5px solid rgba(245,162,0,0.25);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.3rem; font-size: 1.5rem; color: var(--yellow);
+    }
+    .soon-card h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.6rem; color: var(--text); }
+    .soon-card p { font-size: 0.85rem; color: var(--gray); line-height: 1.75; max-width: 460px; margin: 0 auto 1.6rem; }
+    .soon-actions { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
+    .btn-yellow {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--yellow); color: #000; border: none; border-radius: 8px;
+      font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 800;
+      padding: 0.75rem 1.5rem; cursor: pointer; text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-yellow:hover { background: var(--yellow-hover); transform: translateY(-1px); }
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: transparent; color: var(--blue);
+      border: 1.5px solid var(--border); border-radius: 8px;
+      font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 700;
+      padding: 0.75rem 1.5rem; cursor: pointer; text-decoration: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--yellow); background: #fff; }
+
+    /* FOOTER */
+    footer { background: var(--blue-dark); border-top: 1px solid rgba(255,255,255,0.08); padding: 3rem 2rem 1.5rem; }
+    .footer-grid {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 2rem; margin-bottom: 2rem;
+    }
+    .footer-brand .logo img { height: 46px; }
+    .footer-brand p { font-size: 0.78rem; color: #fff; margin-top: 0.85rem; line-height: 1.75; max-width: 230px; }
+    .footer-col h4 { font-size: 0.68rem; font-weight: 700; color: var(--yellow); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 0.9rem; }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 0.45rem; }
+    .footer-col a { color: #fff; text-decoration: none; font-size: 0.78rem; transition: color 0.2s; }
+    .footer-col a:hover { color: var(--yellow); }
+    .footer-bottom {
+      max-width: 1200px; margin: 0 auto;
+      border-top: 1px solid rgba(255,255,255,0.06); padding-top: 1.3rem;
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 0.72rem; color: #fff;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 960px) {
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 520px) {
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; gap: 0.4rem; text-align: center; }
+    }
+
+    /* MOBILE NAV */
+    .nav-hamburger {
+      display: none; flex-direction: column; gap: 4px; cursor: pointer;
+      padding: 4px; background: none; border: none;
+    }
+    .nav-hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; }
+    .mobile-menu {
+      display: none; position: fixed; top: 56px; left: 0; right: 0; z-index: 998;
+      background: var(--blue-dark); padding: 1rem 2rem; flex-direction: column; gap: 0.2rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; font-weight: 500; padding: 0.65rem 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu a:hover { color: var(--yellow); }
+    .mobile-menu a.active { color: var(--yellow); }
+    @media (max-width: 960px) {
+      .nav-hamburger { display: flex; }
+    }
+  
+    /* The 9-item nav needs ~1044px; below that it wraps to two lines,
+       so hand over to the mobile menu earlier than the old 960px. */
+    @media (max-width: 1100px) {
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+    }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="logo">
+    <img src="images/logo-light.png" alt="Click Cabs - Your City, Your Ride" />
+  </a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="local-rental.html">Local Rental</a></li>
+    <li><a href="airport-transfer.html">Airport Transfer</a></li>
+    <li><a href="outstation.html">Outstation</a></li>
+    <li><a href="tour-packages.html">Tour Packages</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="news.html" class="active">News</a></li>
+    <li><a href="corporate.html">Corporate</a></li>
+    <li><a href="contact-us.html">Contact Us</a></li>
+  </ul>
+  <a href="tel:+919702290804" class="nav-phone">
+    <i class="fas fa-phone"></i>&nbsp; +91 97022 90804
+  </a>
+  <button class="nav-hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="/">Home</a>
+  <a href="local-rental.html">Local Rental</a>
+  <a href="airport-transfer.html">Airport Transfer</a>
+  <a href="outstation.html">Outstation</a>
+  <a href="tour-packages.html">Tour Packages</a>
+  <a href="blog.html">Blog</a>
+  <a href="news.html" class="active">News</a>
+  <a href="corporate.html">Corporate</a>
+  <a href="contact-us.html">Contact Us</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-label">News</div>
+    <h1 class="hero-h1">Company Updates<br><span class="yellow">&amp; Announcements</span></h1>
+    <p class="hero-p">The latest from Click Cabs - new routes, service updates, offers and company announcements.</p>
+  </div>
+</div>
+
+<!-- COMING SOON -->
+<section class="section">
+  <div class="section-inner">
+    <div class="sec-head">
+      <div class="sec-label">News</div>
+      <h2>Click Cabs News</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="soon-card">
+      <div class="soon-icon"><i class="fas fa-newspaper"></i></div>
+      <h3>Coming Soon</h3>
+      <p>This is where we will post service updates, new route launches, seasonal offers and company announcements. Nothing here just yet - call us or send us a message in the meantime.</p>
+      <div class="soon-actions">
+        <a href="tel:+919702290804" class="btn-yellow"><i class="fas fa-phone"></i> Call Us</a>
+        <a href="contact-us.html" class="btn-outline"><i class="fas fa-envelope"></i> Contact Us</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="/" class="logo">
+        <img src="images/logo-light.png" alt="Click Cabs - Your City, Your Ride" />
+      </a>
+      <p>Reliable, comfortable and affordable cab services across India with professional drivers.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Our Services</h4>
+      <ul>
+        <li><a href="outstation.html">Outstation Cabs</a></li>
+        <li><a href="airport-transfer.html">Airport Transfers</a></li>
+        <li><a href="local-rental.html">Local Rentals</a></li>
+        <li><a href="corporate.html">Corporate Travel</a></li>
+        <li><a href="tour-packages.html">Tour Packages</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Our Fleet</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="news.html">News</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="#">Help Center</a></li>
+        <li><a href="#">Terms &amp; Conditions</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Cancellation Policy</a></li>
+        <li><a href="#">FAQ</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Become a Partner</h4>
+      <ul>
+        <li><a href="contact-us.html">Driver Partner Registration</a></li>
+        <li><a href="contact-us.html">Fleet Owner Partnership</a></li>
+        <li><a href="contact-us.html">Corporate Partnership Inquiry</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 Click Cabs. All Rights Reserved.</span>
+    <span>www.clickcabs.in</span>
+  </div>
+</footer>
+
+<script>
+  // Mobile menu toggle
+  function toggleMenu() {
+    var menu = document.getElementById('mobileMenu');
+    if (menu) menu.classList.toggle('open');
+  }
+  document.addEventListener('click', function (e) {
+    var menu = document.getElementById('mobileMenu');
+    var btn = document.querySelector('.nav-hamburger');
+    if (!menu || !btn) return;
+    if (menu.classList.contains('open') && !menu.contains(e.target) && !btn.contains(e.target)) {
+      menu.classList.remove('open');
+    }
+  });
+</script>
+
+</body>
+</html>

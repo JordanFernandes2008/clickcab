@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="images/favicon.png" />
   <title>Contact Us - Premium Cab Services</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -29,12 +30,13 @@
       display: flex; align-items: center; justify-content: space-between;
       padding: 0 2rem;
     }
-    .logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
-    .logo-icon { width: 32px; height: 32px; border-radius: 50%; background: var(--yellow); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.9rem; color: #000; }
-    .logo-name { color: #fff; font-size: 0.95rem; font-weight: 800; line-height: 1; }
-    .logo-name span { display: block; font-size: 0.55rem; font-weight: 400; color: #aaa; letter-spacing: 0.15em; text-transform: uppercase; }
+    .logo {
+      display: inline-flex; align-items: center; text-decoration: none; flex-shrink: 0;
+    }
+    .logo img { height: 34px; width: auto; display: block; }
+    .footer-brand .logo img { height: 46px; }
     .nav-links { display: flex; list-style: none; }
-    .nav-links a { color: #b8d8e8; text-decoration: none; font-size: 0.8rem; font-weight: 500; padding: 0.3rem 0.65rem; transition: color 0.2s; }
+    .nav-links a { color: #b8d8e8; text-decoration: none; font-size: 0.8rem; font-weight: 500; padding: 0.3rem 0.5rem; transition: color 0.2s; }
     .nav-links a:hover { color: #fff; }
     .nav-links a.active { color: var(--yellow); border-bottom: 2px solid var(--yellow); }
     .nav-phone { display: flex; align-items: center; gap: 0.6rem; background: var(--yellow); color: #000; font-size: 0.75rem; font-weight: 700; padding: 0.45rem 1rem; border-radius: 6px; text-decoration: none; }
@@ -269,15 +271,15 @@
 
     /* ── FOOTER ── */
     footer { background: #0a0a0a; border-top: 1px solid rgba(255,255,255,0.06); padding: 3rem 2rem 1.5rem; }
-    .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 2rem; margin-bottom: 2rem; }
-    .footer-brand p { font-size: 0.75rem; color: #555; margin-top: 0.85rem; line-height: 1.75; max-width: 200px; }
+    .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr; gap: 2rem; margin-bottom: 2rem; }
+    .footer-brand p { font-size: 0.75rem; color: #fff; margin-top: 0.85rem; line-height: 1.75; max-width: 200px; }
     .footer-socials { display: flex; gap: 0.6rem; margin-top: 1rem; }
     .social-btn { width: 30px; height: 30px; border-radius: 6px; background: #1a1a1a; border: 1px solid #333; display: flex; align-items: center; justify-content: center; text-decoration: none; color: #aaa; font-size: 0.75rem; transition: border-color 0.2s, color 0.2s; }
     .social-btn:hover { border-color: var(--yellow); color: var(--yellow); }
-    .footer-col h4 { font-size: 0.68rem; font-weight: 700; color: #bbb; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 0.9rem; }
+    .footer-col h4 { font-size: 0.68rem; font-weight: 700; color: var(--yellow); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 0.9rem; }
     .footer-col ul { list-style: none; }
     .footer-col li { margin-bottom: 0.45rem; }
-    .footer-col a { color: #555; text-decoration: none; font-size: 0.75rem; transition: color 0.2s; }
+    .footer-col a { color: #fff; text-decoration: none; font-size: 0.75rem; transition: color 0.2s; }
     .footer-col a:hover { color: var(--yellow); }
 
     .newsletter-wrap { display: flex; gap: 0.5rem; margin-top: 0.8rem; }
@@ -286,7 +288,7 @@
     .newsletter-wrap button { background: var(--yellow); color: #000; border: none; border-radius: 6px; width: 34px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.85rem; transition: background 0.2s; }
     .newsletter-wrap button:hover { background: var(--yellow-hover); }
 
-    .footer-bottom { max-width: 1200px; margin: 0 auto; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 1.3rem; display: flex; align-items: center; justify-content: space-between; font-size: 0.72rem; color: #444; }
+    .footer-bottom { max-width: 1200px; margin: 0 auto; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 1.3rem; display: flex; align-items: center; justify-content: space-between; font-size: 0.72rem; color: #fff; }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 960px) {
@@ -308,29 +310,92 @@
       .footer-grid { grid-template-columns: 1fr; }
       .form-row { grid-template-columns: 1fr; }
     }
-  </style>
+  
+    /* ── MOBILE NAV ── */
+    .nav-hamburger {
+      display: none; flex-direction: column; gap: 4px; cursor: pointer;
+      padding: 4px; background: none; border: none;
+    }
+    .nav-hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; }
+    .mobile-menu {
+      display: none; position: fixed; top: 56px; left: 0; right: 0; z-index: 998;
+      background: #012e48; padding: 1rem 2rem; flex-direction: column; gap: 0.2rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; font-weight: 500; padding: 0.65rem 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu a:hover { color: var(--yellow); }
+    .mobile-menu a.active { color: var(--yellow); }
+    @media (max-width: 960px) {
+      .nav-hamburger { display: flex; }
+    }
+
+    /* ---- inline notice (instead of browser alert popups) ---- */
+    .cc-notice {
+      display: flex; align-items: center; gap: 0.5rem;
+      margin-top: 0.85rem; padding: 0.65rem 0.85rem;
+      background: #fff4f4; border: 1px solid #f3c9c9; border-radius: 8px;
+      color: #b3261e; font-size: 0.8rem; font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      opacity: 0; transform: translateY(-4px);
+      transition: opacity .25s ease, transform .25s ease;
+    }
+    .cc-notice.in { opacity: 1; transform: translateY(0); }
+    .cc-notice i { font-size: 0.85rem; flex-shrink: 0; }
+    .cc-invalid {
+      outline: none !important;
+      box-shadow: 0 0 0 2px rgba(179,38,30,0.35) !important;
+      border-radius: 6px;
+    }
+
+    /* The 9-item nav needs ~1044px; below that it wraps to two lines,
+       so hand over to the mobile menu earlier than the old 960px. */
+    @media (max-width: 1100px) {
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+    }
+</style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav>
  <a href="/" class="logo">
-    <div class="logo-icon">P</div>
-    <div class="logo-name">ClickCabs <span>PREMIUM CAB SERVICES</span></div>
+    <img src="images/logo-light.png" alt="Click Cabs - Your City, Your Ride" />
   </a>
   <ul class="nav-links">
     <li><a href="/">Home</a></li>
     <li><a href="local-rental.html">Local Rental</a></li>
     <li><a href="airport-transfer.html">Airport Transfer</a></li>
     <li><a href="outstation.html">Outstation</a></li>
-    <li><a href="corporate.html">Corporate</a></li>
     <li><a href="tour-packages.html">Tour Packages</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="news.html">News</a></li>
+    <li><a href="corporate.html">Corporate</a></li>
     <li><a href="contact-us.html" class="active">Contact Us</a></li>
   </ul>
   <a href="tel:+919702290804" class="nav-phone">
-    <i class="fas fa-phone"></i> 24x7 Customer Support &nbsp;+91 97022 90804
+    <i class="fas fa-phone"></i>&nbsp; +91 97022 90804
   </a>
+  <button class="nav-hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="/">Home</a>
+  <a href="local-rental.html">Local Rental</a>
+  <a href="airport-transfer.html">Airport Transfer</a>
+  <a href="outstation.html">Outstation</a>
+  <a href="tour-packages.html">Tour Packages</a>
+  <a href="blog.html">Blog</a>
+  <a href="news.html">News</a>
+  <a href="corporate.html">Corporate</a>
+  <a href="contact-us.html" class="active">Contact Us</a>
+</div>
+
 
 <!-- HERO -->
 <div class="hero">
@@ -372,20 +437,20 @@
       <div class="form-row">
         <div class="form-group">
           <label>Full Name</label>
-          <input type="text" placeholder="Enter your full name" />
+          <input type="text" id="cfName" placeholder="Enter your full name" />
         </div>
         <div class="form-group">
           <label>Phone Number</label>
-          <input type="tel" placeholder="Enter your phone number" />
+          <input type="tel" id="cfPhone" placeholder="Enter your phone number" />
         </div>
       </div>
       <div class="form-group">
         <label>Email Address</label>
-        <input type="email" placeholder="Enter your email address" />
+        <input type="email" id="cfEmail" placeholder="Enter your email address" />
       </div>
       <div class="form-group">
         <label>Service Required</label>
-        <select>
+        <select id="cfService">
           <option value="">Select service</option>
           <option>Outstation Cabs</option>
           <option>Airport Transfer</option>
@@ -396,13 +461,13 @@
       </div>
       <div class="form-group">
         <label>Pickup Location</label>
-        <input type="text" placeholder="Enter pickup location" />
+        <input type="text" id="cfPickup" placeholder="Enter pickup location" />
       </div>
       <div class="form-group">
         <label>Message</label>
-        <textarea placeholder="Type your message here..."></textarea>
+        <textarea id="cfMessage" placeholder="Type your message here..."></textarea>
       </div>
-      <button class="send-btn"><i class="fas fa-paper-plane"></i> SEND MESSAGE</button>
+      <button class="send-btn" type="button" onclick="sendContactEnquiry()"><i class="fas fa-paper-plane"></i> SEND MESSAGE</button>
     </div>
 
   </div>
@@ -601,27 +666,27 @@
       <div class="sec-line"></div>
     </div>
     <div class="fleet-grid">
-      <button type="button" class="fleet-card" onclick="">
+      <button type="button" class="fleet-card" onclick="scrollToContactForm(this)">
         <img src="images/swift.jpg" alt="Swift Dzire" />
         <h4>Swift Dzire</h4>
         <p>Economical &amp; Comfortable</p>
       </button>
-      <button type="button" class="fleet-card" onclick="">
+      <button type="button" class="fleet-card" onclick="scrollToContactForm(this)">
         <img src="images/wagonr.jpg" alt="WagonR" />
         <h4>WagonR</h4>
         <p>Perfect City Travel</p>
       </button>
-      <button type="button" class="fleet-card" onclick="">
+      <button type="button" class="fleet-card" onclick="scrollToContactForm(this)">
         <img src="images/ertiga.jpg" alt="Ertiga" />
         <h4>Ertiga</h4>
         <p>Family Travel Comfort</p>
       </button>
-      <button type="button" class="fleet-card" onclick="">
+      <button type="button" class="fleet-card" onclick="scrollToContactForm(this)">
         <img src="images/innova-crysta.jpg" alt="Innova Crysta" />
         <h4>Innova Crysta</h4>
         <p>Premium Outstation Travel</p>
       </button>
-      <button type="button" class="fleet-card" onclick="">
+      <button type="button" class="fleet-card" onclick="scrollToContactForm(this)">
         <img src="images/tempo-local.jpg" alt="Tempo Traveller" />
         <h4>Tempo Traveller</h4>
         <p>Group Transportation</p>
@@ -720,8 +785,7 @@
   <div class="footer-grid">
     <div class="footer-brand">
       <a href="/" class="logo">
-        <div class="logo-icon">P</div>
-        <div class="logo-name" style="color:#fff;">Premium <span>CAB SERVICES</span></div>
+        <img src="images/logo-light.png" alt="Click Cabs - Your City, Your Ride" />
       </a>
       <p>Reliable. Safe. Comfortable. Your trusted travel partner.</p>
       <div class="footer-socials">
@@ -769,17 +833,25 @@
         <li><a href="#"><i class="fas fa-map-marker-alt" style="color:var(--yellow);margin-right:0.4rem;"></i>Mumbai, Maharashtra, India</a></li>
       </ul>
       <div style="margin-top:0.8rem;">
-        <div style="font-size:0.65rem;color:#bbb;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;font-weight:700;">Newsletter</div>
-        <div style="font-size:0.68rem;color:#555;margin-bottom:0.5rem;">Subscribe to get updates &amp; offers</div>
+        <div style="font-size:0.65rem;color:var(--yellow);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;font-weight:700;">Newsletter</div>
+        <div style="font-size:0.68rem;color:#fff;margin-bottom:0.5rem;">Subscribe to get updates &amp; offers</div>
         <div class="newsletter-wrap">
           <input type="email" placeholder="Enter your email" />
           <button><i class="fas fa-arrow-right"></i></button>
         </div>
       </div>
     </div>
+    <div class="footer-col">
+      <h4>Become a Partner</h4>
+      <ul>
+        <li><a href="contact-us.html">Driver Partner Registration</a></li>
+        <li><a href="contact-us.html">Fleet Owner Partnership</a></li>
+        <li><a href="contact-us.html">Corporate Partnership Inquiry</a></li>
+      </ul>
+    </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2025 Click Cabs. All Rights Reserved.</span>
+    <span>© 2026 Click Cabs. All Rights Reserved.</span>
   </div>
 </footer>
 
@@ -878,6 +950,98 @@
     }
     rafId = requestAnimationFrame(autoScrollStep);
   })();
+
+  // Mobile menu toggle
+  function toggleMenu() {
+    var menu = document.getElementById('mobileMenu');
+    if (menu) menu.classList.toggle('open');
+  }
+  document.addEventListener('click', function (e) {
+    var menu = document.getElementById('mobileMenu');
+    var btn = document.querySelector('.nav-hamburger');
+    if (!menu || !btn) return;
+    if (menu.classList.contains('open') && !menu.contains(e.target) && !btn.contains(e.target)) {
+      menu.classList.remove('open');
+    }
+  });
+
+  /* ---------- inline notices (replaces browser alert popups) ---------- */
+  function ccNotice(message, field) {
+    var host = (field && field.closest('.contact-form-box')) ||
+               document.querySelector('.contact-form-box');
+    if (!host) return;
+
+    var old = host.querySelector('.cc-notice');
+    if (old) old.remove();
+
+    var n = document.createElement('div');
+    n.className = 'cc-notice';
+    n.innerHTML = '<i class="fas fa-circle-info"></i><span></span>';
+    n.querySelector('span').textContent = message;
+    host.appendChild(n);
+    requestAnimationFrame(function () { n.classList.add('in'); });
+
+    if (field) {
+      field.classList.add('cc-invalid');
+      field.addEventListener('input', function clear() {
+        field.classList.remove('cc-invalid');
+        field.removeEventListener('input', clear);
+      });
+      try { field.focus({ preventScroll: true }); } catch (e) { field.focus(); }
+    }
+
+    clearTimeout(window.__ccNoticeTimer);
+    window.__ccNoticeTimer = setTimeout(function () {
+      n.classList.remove('in');
+      setTimeout(function () { n.remove(); }, 300);
+    }, 4200);
+  }
+
+  /* Contact enquiry -> WhatsApp, matching how local-rental and
+     tour-packages hand their enquiries over. No backend involved. */
+  function sendContactEnquiry() {
+    var val = function (id) {
+      var el = document.getElementById(id);
+      return el ? el.value.trim() : '';
+    };
+    var name = val('cfName');
+    if (!name) {
+      ccNotice('Please enter your name.', document.getElementById('cfName'));
+      return;
+    }
+    var phone = val('cfPhone');
+    if (!phone) {
+      ccNotice('Please enter your phone number.', document.getElementById('cfPhone'));
+      return;
+    }
+
+    var lines = ['Hi ClickCabs, I would like to make an ENQUIRY.', ''];
+    lines.push('Name: ' + name);
+    lines.push('Phone: ' + phone);
+    if (val('cfEmail'))   lines.push('Email: ' + val('cfEmail'));
+    if (val('cfService')) lines.push('Service: ' + val('cfService'));
+    if (val('cfPickup'))  lines.push('Pickup: ' + val('cfPickup'));
+    if (val('cfMessage')) lines.push('', 'Message: ' + val('cfMessage'));
+    lines.push('', 'Please get back to me.');
+
+    window.open('https://wa.me/919702290804?text=' +
+                encodeURIComponent(lines.join('\n')), '_blank');
+  }
+
+  /* This page has no booking box, so the fleet cards send you to the
+     enquiry form with the vehicle already filled in. */
+  function scrollToContactForm(card) {
+    var box = document.querySelector('.contact-form-box');
+    if (!box) return;
+    var name = card && card.querySelector('h4');
+    var msg = document.getElementById('cfMessage');
+    if (name && msg && !msg.value.trim()) {
+      var v = name.textContent.trim();
+      msg.value = 'I would like to book ' +
+                  (/^[AEIOU]/i.test(v) ? 'an ' : 'a ') + v + '.';
+    }
+    box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
 </script>
 
 </body>

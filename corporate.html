@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="images/favicon.png" />
   <title>Corporate Travel - Premium Cab Services</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -31,12 +32,13 @@
       display: flex; align-items: center; justify-content: space-between;
       padding: 0 2rem;
     }
-    .logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
-    .logo-icon { width: 32px; height: 32px; border-radius: 50%; background: var(--yellow); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.9rem; color: #000; }
-    .logo-name { color: #fff; font-size: 0.95rem; font-weight: 800; line-height: 1; }
-    .logo-name span { display: block; font-size: 0.55rem; font-weight: 400; color: #bcd2de; letter-spacing: 0.15em; text-transform: uppercase; }
+    .logo {
+      display: inline-flex; align-items: center; text-decoration: none; flex-shrink: 0;
+    }
+    .logo img { height: 34px; width: auto; display: block; }
+    .footer-brand .logo img { height: 46px; }
     .nav-links { display: flex; list-style: none; }
-    .nav-links a { color: #d4e3eb; text-decoration: none; font-size: 0.8rem; font-weight: 500; padding: 0.3rem 0.65rem; transition: color 0.2s; }
+    .nav-links a { color: #d4e3eb; text-decoration: none; font-size: 0.8rem; font-weight: 500; padding: 0.3rem 0.5rem; transition: color 0.2s; }
     .nav-links a:hover { color: #fff; }
     .nav-links a.active { color: var(--yellow); border-bottom: 2px solid var(--yellow); }
     .nav-phone { display: flex; align-items: center; gap: 0.6rem; background: var(--yellow); color: #000; font-size: 0.75rem; font-weight: 700; padding: 0.45rem 1rem; border-radius: 6px; text-decoration: none; }
@@ -229,14 +231,14 @@
 
     /* ── FOOTER ── */
     footer { background: var(--blue-dark); border-top: 1px solid rgba(255,255,255,0.08); padding: 3rem 2rem 1.5rem; }
-    .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem; margin-bottom: 2rem; }
-    .footer-brand p { font-size: 0.78rem; color: #555; margin-top: 0.85rem; line-height: 1.75; max-width: 230px; }
-    .footer-col h4 { font-size: 0.68rem; font-weight: 700; color: #bbb; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 0.9rem; }
+    .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 2rem; margin-bottom: 2rem; }
+    .footer-brand p { font-size: 0.78rem; color: #fff; margin-top: 0.85rem; line-height: 1.75; max-width: 230px; }
+    .footer-col h4 { font-size: 0.68rem; font-weight: 700; color: var(--yellow); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 0.9rem; }
     .footer-col ul { list-style: none; }
     .footer-col li { margin-bottom: 0.45rem; }
-    .footer-col a { color: #555; text-decoration: none; font-size: 0.78rem; transition: color 0.2s; }
+    .footer-col a { color: #fff; text-decoration: none; font-size: 0.78rem; transition: color 0.2s; }
     .footer-col a:hover { color: var(--yellow); }
-    .footer-bottom { max-width: 1200px; margin: 0 auto; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 1.3rem; display: flex; align-items: center; justify-content: space-between; font-size: 0.72rem; color: #444; }
+    .footer-bottom { max-width: 1200px; margin: 0 auto; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 1.3rem; display: flex; align-items: center; justify-content: space-between; font-size: 0.72rem; color: #fff; }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 960px) {
@@ -439,6 +441,33 @@
   @media (max-width: 700px) {
     .booking-modal { max-width: 100%; height: 100vh; border-radius: 0; }
   }
+
+    /* ── MOBILE NAV ── */
+    .nav-hamburger {
+      display: none; flex-direction: column; gap: 4px; cursor: pointer;
+      padding: 4px; background: none; border: none;
+    }
+    .nav-hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; }
+    .mobile-menu {
+      display: none; position: fixed; top: 56px; left: 0; right: 0; z-index: 998;
+      background: var(--blue-dark); padding: 1rem 2rem; flex-direction: column; gap: 0.2rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; font-weight: 500; padding: 0.65rem 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu a:hover { color: var(--yellow); }
+    .mobile-menu a.active { color: var(--yellow); }
+    @media (max-width: 960px) {
+      .nav-hamburger { display: flex; }
+    }
+
+    /* The 9-item nav needs ~1044px; below that it wraps to two lines,
+       so hand over to the mobile menu earlier than the old 960px. */
+    @media (max-width: 1100px) {
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+    }
 </style>
 </head>
 <body>
@@ -446,22 +475,40 @@
 <!-- NAV -->
 <nav>
  <a href="/" class="logo">
-    <div class="logo-icon">P</div>
-    <div class="logo-name">ClickCabs <span>PREMIUM CAB SERVICES</span></div>
+    <img src="images/logo-light.png" alt="Click Cabs - Your City, Your Ride" />
   </a>
   <ul class="nav-links">
     <li><a href="/">Home</a></li>
     <li><a href="local-rental.html">Local Rental</a></li>
     <li><a href="airport-transfer.html">Airport Transfer</a></li>
     <li><a href="outstation.html">Outstation</a></li>
-    <li><a href="corporate.html" class="active">Corporate</a></li>
     <li><a href="tour-packages.html">Tour Packages</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="news.html">News</a></li>
+    <li><a href="corporate.html" class="active">Corporate</a></li>
     <li><a href="contact-us.html">Contact Us</a></li>
   </ul>
   <a href="tel:+919702290804" class="nav-phone">
-    <i class="fas fa-phone"></i> 24x7 Customer Support &nbsp;+91 97022 90804
+    <i class="fas fa-phone"></i>&nbsp; +91 97022 90804
   </a>
+  <button class="nav-hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="/">Home</a>
+  <a href="local-rental.html">Local Rental</a>
+  <a href="airport-transfer.html">Airport Transfer</a>
+  <a href="outstation.html">Outstation</a>
+  <a href="tour-packages.html">Tour Packages</a>
+  <a href="blog.html">Blog</a>
+  <a href="news.html">News</a>
+  <a href="corporate.html" class="active">Corporate</a>
+  <a href="contact-us.html">Contact Us</a>
+</div>
+
 
 <!-- HERO -->
 <div class="hero">
@@ -611,7 +658,7 @@
     <div class="fleet-grid">
       <div class="fleet-card">
         <div class="fleet-img-box">
-          <img class="fleet-car" src="images/sedan.jpg" alt="Premium Sedan" />
+          <img class="fleet-car" src="images/swift.jpg" alt="Premium Sedan" />
         </div>
         <div class="fleet-body">
           <div class="fleet-tag">Most Popular</div>
@@ -621,7 +668,7 @@
             <span class="chip">GPS Tracked</span><span class="chip">Music System</span>
           </div>
           <div class="fleet-footer">
-            <button class="btn-sm">Book Now</button>
+            <button class="btn-sm" type="button" onclick="scrollToBooking()">Book Now</button>
           </div>
         </div>
       </div>
@@ -637,7 +684,7 @@
             <span class="chip">GPS Tracked</span><span class="chip">Extra Luggage</span>
           </div>
           <div class="fleet-footer">
-            <button class="btn-sm">Book Now</button>
+            <button class="btn-sm" type="button" onclick="scrollToBooking()">Book Now</button>
           </div>
         </div>
       </div>
@@ -653,7 +700,7 @@
             <span class="chip">GPS Tracked</span><span class="chip">Recliner Seats</span>
           </div>
           <div class="fleet-footer">
-            <button class="btn-sm">Book Now</button>
+            <button class="btn-sm" type="button" onclick="scrollToBooking()">Book Now</button>
           </div>
         </div>
       </div>
@@ -713,8 +760,7 @@
   <div class="footer-grid">
     <div class="footer-brand">
       <a href="/" class="logo">
-        <div class="logo-icon">P</div>
-        <div class="logo-name" style="color:#fff;">Premium <span>CAB SERVICES</span></div>
+        <img src="images/logo-light.png" alt="Click Cabs - Your City, Your Ride" />
       </a>
       <p>Reliable, comfortable and affordable cab services across India with professional drivers.</p>
     </div>
@@ -747,6 +793,14 @@
         <li><a href="#">Privacy Policy</a></li>
         <li><a href="#">Cancellation Policy</a></li>
         <li><a href="#">FAQ</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Become a Partner</h4>
+      <ul>
+        <li><a href="contact-us.html">Driver Partner Registration</a></li>
+        <li><a href="contact-us.html">Fleet Owner Partnership</a></li>
+        <li><a href="contact-us.html">Corporate Partnership Inquiry</a></li>
       </ul>
     </div>
   </div>
@@ -1218,6 +1272,33 @@
       if (!i.value) { i.value = today; i.min = today; }
     });
   })();
+
+  // Mobile menu toggle
+  function toggleMenu() {
+    var menu = document.getElementById('mobileMenu');
+    if (menu) menu.classList.toggle('open');
+  }
+  document.addEventListener('click', function (e) {
+    var menu = document.getElementById('mobileMenu');
+    var btn = document.querySelector('.nav-hamburger');
+    if (!menu || !btn) return;
+    if (menu.classList.contains('open') && !menu.contains(e.target) && !btn.contains(e.target)) {
+      menu.classList.remove('open');
+    }
+  });
+
+  /* "Book Now" buttons jump to the booking box at the top of the page. */
+  function scrollToBooking() {
+    var box = document.querySelector('.cc-box');
+    if (!box) return;
+    box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    var pickup = box.querySelector('[data-role="pickup"]');
+    if (pickup) {
+      setTimeout(function () {
+        try { pickup.focus({ preventScroll: true }); } catch (e) { pickup.focus(); }
+      }, 520);
+    }
+  }
 </script>
 
 </body>
