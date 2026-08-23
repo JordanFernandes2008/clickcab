@@ -250,28 +250,29 @@
 
     /* ── FLEET ── */
     .fleet-section { background: #fff; }
-    .fleet-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
+    .fleet-grid {
+      display: grid; gap: 1.1rem;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    }
     .fleet-card {
       border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden;
       transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
     }
     .fleet-card:hover { border-color: var(--yellow); box-shadow: 0 6px 24px rgba(245,162,0,0.1); transform: translateY(-3px); }
     .fleet-img-box {
-      background: linear-gradient(160deg, #1c1100 0%, #2d1c00 100%);
-      height: 175px; position: relative;
+      background: #fff; border-bottom: 1px solid var(--border);
+      height: 150px; position: relative;
       display: flex; align-items: center; justify-content: center; overflow: hidden;
     }
-    .fleet-img-box::after {
-      content: '';
-      position: absolute; bottom: 0; left: 0; right: 0; height: 50%;
-      background: radial-gradient(ellipse at center bottom, rgba(245,162,0,0.22) 0%, transparent 70%);
+    .fleet-car {
+      width: 100%; height: 100%; object-fit: contain;
+      padding: 0.5rem 0.7rem; position: relative; z-index: 1;
     }
-    .fleet-car { width: 100%; height: 100%; object-fit: cover; position: relative; z-index: 1; }
     .fleet-body { padding: 1.2rem 1.3rem; }
     .fleet-tag { font-size: 0.62rem; font-weight: 700; color: var(--yellow); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.2rem; }
     .fleet-name { font-size: 1rem; font-weight: 800; margin-bottom: 0.8rem; }
     .fleet-chips { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1rem; }
-    .chip { background: #f5f5f5; border: 1px solid #e5e5e5; border-radius: 4px; padding: 0.18rem 0.5rem; font-size: 0.68rem; color: #444; }
+    .chip { background: #f5f5f5; border: 1px solid #e5e5e5; border-radius: 4px; padding: 0.16rem 0.42rem; font-size: 0.68rem; color: #444; }
     .fleet-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); padding-top: 0.85rem; }
     .fleet-price { font-size: 1rem; font-weight: 900; color: var(--yellow); }
     .fleet-price-lbl { font-size: 0.62rem; color: var(--gray); }
@@ -319,7 +320,6 @@
     @media (max-width: 960px) {
       .why-grid { grid-template-columns: repeat(2, 1fr); }
       .routes-grid { grid-template-columns: repeat(2, 1fr); }
-      .fleet-grid { grid-template-columns: 1fr; }
       .footer-grid { grid-template-columns: 1fr 1fr; }
       .nav-links { display: none; }
       .booking-bar { flex-direction: column; align-items: stretch; }
@@ -435,44 +435,6 @@
   }
 
   /* ---- Inline booking form ---- */
-  .inline-booking {
-    max-width: 1180px;
-    margin: -40px auto 3rem;
-    position: relative;
-    z-index: 5;
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 18px 50px rgba(0,0,0,0.28);
-    overflow: hidden;
-  }
-  .inline-booking-head {
-    padding: 1.4rem 1.8rem 0.4rem;
-    border-bottom: 1px solid #eee;
-  }
-  .inline-booking-head h2 {
-    margin: 0 0 0.25rem;
-    font-size: 1.35rem;
-    color: #012f4a;
-    font-weight: 800;
-  }
-  .inline-booking-head p {
-    margin: 0 0 0.9rem;
-    color: #666;
-    font-size: 0.92rem;
-  }
-  .inline-booking iframe {
-    width: 100%;
-    height: 560px;
-    border: none;
-    display: block;
-  }
-  @media (max-width: 1100px) {
-    .inline-booking { margin: 1.5rem 1rem 2.5rem; border-radius: 12px; }
-    .inline-booking iframe { height: 820px; }
-  }
-  @media (max-width: 600px) {
-    .inline-booking iframe { height: 900px; }
-  }
 
   .booking-modal-overlay {
     display: none;
@@ -683,25 +645,16 @@
         <input type="date" data-role="date" />
       </div>
     </div>
-    <button class="cc-go" type="button" onclick="startBooking()">
-      <i class="fas fa-search"></i> Search Cabs
+    <button class="cc-go" type="button" onclick="sendOutstationEnquiry()">
+      <i class="fab fa-whatsapp"></i> Book Outstation Cab
     </button>
   </div>
-</div>
-
-<!-- BOOKING FORM - embedded in page (no popup). Keep full width:
-     the QuickCab form stacks into one column below ~1000px. -->
-<section class="inline-booking" id="book" style="display:none;">
-  <div class="inline-booking-head">
-    <h2>Book Your Outstation Cab</h2>
-    <p>Enter pickup and drop city to get an instant fare.</p>
   </div>
-  <iframe
-    src="https://user.clickcabs.in/book-now/"
-    title="Book a cab"
-    allow="geolocation">
-  </iframe>
-</section>
+  <div class="cc-note">
+    <i class="fas fa-info-circle"></i>
+    One-way and round-trip fares vary by route and vehicle — send your details and we’ll confirm the exact fare on WhatsApp within minutes.
+  </div>
+
 
 
 <!-- WHY CHOOSE OUTSTATION -->
@@ -810,15 +763,12 @@
     <div class="fleet-grid">
       <div class="fleet-card">
         <div class="fleet-img-box">
-          <img class="fleet-car" src="images/swift.jpg" alt="Premium Sedan" />
+          <img class="fleet-car" src="images/swift.jpg" alt="Click Cabs Swift Dzire" />
         </div>
         <div class="fleet-body">
           <div class="fleet-tag">Most Popular</div>
-          <div class="fleet-name">Premium Sedan</div>
-          <div class="fleet-chips">
-            <span class="chip">4 Seats</span><span class="chip">AC</span>
-            <span class="chip">GPS Tracked</span><span class="chip">Music System</span>
-          </div>
+          <div class="fleet-name">Swift Dzire</div>
+          <div class="fleet-chips"><span class="chip">4 Seats</span><span class="chip">AC</span><span class="chip">GPS Tracked</span><span class="chip">Music System</span></div>
           <div class="fleet-footer">
             <button class="btn-sm" type="button" onclick="scrollToBooking()">Book Now</button>
           </div>
@@ -826,15 +776,38 @@
       </div>
       <div class="fleet-card">
         <div class="fleet-img-box">
-          <img class="fleet-car" src="images/innova-crysta.jpg" alt="Luxury SUV" />
+          <img class="fleet-car" src="images/wagonr.jpg" alt="Click Cabs WagonR" />
+        </div>
+        <div class="fleet-body">
+          <div class="fleet-tag">Budget Friendly</div>
+          <div class="fleet-name">WagonR</div>
+          <div class="fleet-chips"><span class="chip">4 Seats</span><span class="chip">AC</span><span class="chip">GPS Tracked</span><span class="chip">City Compact</span></div>
+          <div class="fleet-footer">
+            <button class="btn-sm" type="button" onclick="scrollToBooking()">Book Now</button>
+          </div>
+        </div>
+      </div>
+      <div class="fleet-card">
+        <div class="fleet-img-box">
+          <img class="fleet-car" src="images/ertiga.jpg" alt="Click Cabs Ertiga" />
+        </div>
+        <div class="fleet-body">
+          <div class="fleet-tag">Family Favourite</div>
+          <div class="fleet-name">Ertiga</div>
+          <div class="fleet-chips"><span class="chip">7 Seats</span><span class="chip">AC</span><span class="chip">GPS Tracked</span><span class="chip">Extra Luggage</span></div>
+          <div class="fleet-footer">
+            <button class="btn-sm" type="button" onclick="scrollToBooking()">Book Now</button>
+          </div>
+        </div>
+      </div>
+      <div class="fleet-card">
+        <div class="fleet-img-box">
+          <img class="fleet-car" src="images/innova-crysta.jpg" alt="Click Cabs Innova Crysta" />
         </div>
         <div class="fleet-body">
           <div class="fleet-tag">Premium</div>
-          <div class="fleet-name">Luxury SUV</div>
-          <div class="fleet-chips">
-            <span class="chip">7 Seats</span><span class="chip">AC</span>
-            <span class="chip">GPS Tracked</span><span class="chip">Extra Luggage</span>
-          </div>
+          <div class="fleet-name">Innova Crysta</div>
+          <div class="fleet-chips"><span class="chip">7 Seats</span><span class="chip">AC</span><span class="chip">GPS Tracked</span><span class="chip">Recliner Seats</span></div>
           <div class="fleet-footer">
             <button class="btn-sm" type="button" onclick="scrollToBooking()">Book Now</button>
           </div>
@@ -842,15 +815,12 @@
       </div>
       <div class="fleet-card">
         <div class="fleet-img-box">
-          <img class="fleet-car" src="images/tempo-local.jpg" alt="Tempo Traveller" />
+          <img class="fleet-car" src="images/tempo-local.jpg" alt="Click Cabs Tempo Traveller" />
         </div>
         <div class="fleet-body">
           <div class="fleet-tag">Group Travel</div>
           <div class="fleet-name">Tempo Traveller</div>
-          <div class="fleet-chips">
-            <span class="chip">12 Seats</span><span class="chip">AC</span>
-            <span class="chip">GPS Tracked</span><span class="chip">Recliner Seats</span>
-          </div>
+          <div class="fleet-chips"><span class="chip">12 Seats</span><span class="chip">AC</span><span class="chip">GPS Tracked</span><span class="chip">Recliner Seats</span></div>
           <div class="fleet-footer">
             <button class="btn-sm" type="button" onclick="scrollToBooking()">Book Now</button>
           </div>
@@ -1351,45 +1321,35 @@
   })();
 
 
-  /* Booking box -> real booking form, revealed on this same page. */
-  function startBooking() {
+  /* Outstation Cab enquiries go to WhatsApp. Only the homepage still embeds the
+     QuickCab booking form. */
+  function sendOutstationEnquiry() {
     var read = function (role) {
       var el = document.querySelector('.cc-box [data-role="' + role + '"]');
       if (!el) return '';
       return (el.dataset.formatted || el.value || '').trim();
     };
-    var data = { pickup: read('pickup'), drop: read('drop'), date: read('date') };
-
-    /* Don't open the form half-empty. */
-    if (!data.pickup) {
+    var pickup = read('pickup');
+    if (!pickup) {
       ccNotice('Please enter your pickup location.',
                document.querySelector('.cc-box [data-role="pickup"]'));
       return;
     }
-    if (document.querySelector('.cc-box [data-role="drop"]') && !data.drop) {
-      ccNotice('Please enter your destination.',
+    var drop = read('drop');
+    if (!drop) {
+      ccNotice('Please enter your drop city.',
                document.querySelector('.cc-box [data-role="drop"]'));
       return;
     }
 
-    var form = document.getElementById('book');
-    if (!form) return;
-    form.style.display = '';
+    var msg = 'Hi ClickCabs, I would like to book an OUTSTATION CAB.\n\n'
+            + 'Pickup City: ' + read('pickup') + '\n'
+            + 'Drop City: ' + read('drop') + '\n'
+            + 'Journey Date: ' + read('date') + '\n'
+            + '\nPlease confirm availability and fare.';
 
-    var iframe = form.querySelector('iframe');
-    if (iframe) {
-      var payload = { source: 'clickcab-hero', pickup: data.pickup, drop: data.drop, date: data.date };
-      var tries = 0;
-      (function send() {
-        tries++;
-        try { iframe.contentWindow.postMessage(payload, 'https://user.clickcabs.in'); }
-        catch (e) {}
-        if (tries < 12) setTimeout(send, 600);
-      })();
-    }
-    setTimeout(function () {
-      form.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 60);
+    window.open('https://wa.me/919702290804?text=' +
+                encodeURIComponent(msg), '_blank');
   }
 
 

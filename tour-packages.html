@@ -422,6 +422,84 @@
       .app-center p { font-size: 13px; }
       .app-badge-soon { font-size: 11px; }
     }
+
+    /* ── TOUR DETAIL + ENQUIRY MODAL ── */
+    .tour-card { cursor: pointer; }
+    .tour-card:focus-visible { outline: 2px solid var(--yellow); outline-offset: 3px; }
+    .tm-overlay {
+      position: fixed; inset: 0; z-index: 3000;
+      background: rgba(1,14,22,0.62); backdrop-filter: blur(2px);
+      display: none; align-items: center; justify-content: center; padding: 1.2rem;
+    }
+    .tm-overlay.open { display: flex; }
+    .tm {
+      background: #fff; border-radius: 16px; width: 100%; max-width: 860px;
+      max-height: 92vh; overflow: hidden auto; position: relative;
+      box-shadow: 0 30px 90px rgba(0,0,0,0.4);
+      display: grid; grid-template-columns: 1fr 1fr;
+    }
+    .tm-close {
+      position: absolute; top: 12px; right: 12px; z-index: 3;
+      width: 34px; height: 34px; border-radius: 50%; border: none; cursor: pointer;
+      background: rgba(0,0,0,0.55); color: #fff; font-size: 1.1rem; line-height: 1;
+    }
+    .tm-close:hover { background: rgba(0,0,0,0.78); }
+    .tm-left { background: var(--offwhite); }
+    .tm-left img { width: 100%; height: 190px; object-fit: cover; display: block; }
+    .tm-info { padding: 1.3rem 1.4rem; }
+    .tm-info h3 { font-size: 1.15rem; font-weight: 900; margin-bottom: 0.35rem; }
+    .tm-dur {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: #fff8e1; border: 1px solid rgba(245,166,35,0.35); color: #8a5d00;
+      border-radius: 20px; padding: 0.25rem 0.7rem;
+      font-size: 0.7rem; font-weight: 700; margin-bottom: 0.85rem;
+    }
+    .tm-blurb { font-size: 0.82rem; color: var(--gray); line-height: 1.75; margin-bottom: 1rem; }
+    .tm-hi { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1rem; }
+    .tm-hi span {
+      background: #fff; border: 1px solid var(--border-light, #e5e5e5);
+      border-radius: 4px; padding: 0.2rem 0.5rem; font-size: 0.7rem; color: #444;
+    }
+    .tm-note {
+      font-size: 0.72rem; color: #888; line-height: 1.6;
+      border-top: 1px solid #e5e5e5; padding-top: 0.8rem;
+    }
+    .tm-right { padding: 1.4rem 1.4rem 1.5rem; }
+    .tm-right h4 { font-size: 0.95rem; font-weight: 800; margin-bottom: 0.15rem; }
+    .tm-right > p { font-size: 0.75rem; color: var(--gray); margin-bottom: 1rem; }
+    .tm-field { margin-bottom: 0.7rem; }
+    .tm-field label {
+      display: block; font-size: 0.65rem; font-weight: 700; color: #888;
+      text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 0.25rem;
+    }
+    .tm-field input, .tm-field select, .tm-field textarea {
+      width: 100%; border: 1.5px solid #e0e0e0; border-radius: 8px;
+      padding: 0.6rem 0.75rem; font-family: 'Inter', sans-serif;
+      font-size: 0.83rem; color: #333; outline: none; background: #fff;
+    }
+    .tm-field textarea { resize: vertical; min-height: 62px; }
+    .tm-field input:focus, .tm-field select:focus, .tm-field textarea:focus { border-color: var(--blue); }
+    .tm-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+    .tm-send {
+      width: 100%; margin-top: 0.5rem; background: var(--yellow); color: #111;
+      border: none; border-radius: 9px; font-family: 'Inter', sans-serif;
+      font-size: 0.88rem; font-weight: 800; padding: 0.8rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    }
+    .tm-send:hover { background: var(--yellow-dark, #d4891a); }
+    .tm-send[disabled] { opacity: 0.6; cursor: default; }
+    .tm-status { font-size: 0.75rem; margin-top: 0.6rem; line-height: 1.6; display: none; }
+    .tm-status.show { display: block; }
+    .tm-status.ok { color: #1b7f3b; }
+    .tm-status.err { color: #b3261e; }
+    @media (max-width: 780px) {
+      .tm { grid-template-columns: 1fr; }
+      .tm-left img { height: 150px; }
+    }
+    @media (max-width: 767px) {
+      .tm-field input, .tm-field select, .tm-field textarea { font-size: 16px; min-height: 40px; }
+      .tm-blurb, .tm-note, .tm-right > p { font-size: 13px; }
+    }
 </style>
 </head>
 <body>
@@ -540,7 +618,7 @@
   <h2>Popular Tours</h2>
   <div class="underline"></div>
   <div class="tours-grid">
-    <div class="tour-card">
+    <div class="tour-card" role="button" tabindex="0" onclick="openTour('Goa Tour')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openTour('Goa Tour');}">
       <img src="images/goa-tour.jpg" alt="Goa Tour" />
       <div class="tour-card-body">
         <h3>Goa Tour</h3>
@@ -548,7 +626,7 @@
         <div class="tour-meta"><i class="fas fa-map-marker-alt"></i> Beach, Sightseeing &amp; Water Activities</div>
       </div>
     </div>
-    <div class="tour-card">
+    <div class="tour-card" role="button" tabindex="0" onclick="openTour('Mahabaleshwar Tour')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openTour('Mahabaleshwar Tour');}">
       <img src="images/mahableshwar-tour.jpg" alt="Mahabaleshwar Tour" />
       <div class="tour-card-body">
         <h3>Mahabaleshwar Tour</h3>
@@ -556,7 +634,7 @@
         <div class="tour-meta"><i class="fas fa-map-marker-alt"></i> Hills, Points &amp; Strawberry Farms</div>
       </div>
     </div>
-    <div class="tour-card">
+    <div class="tour-card" role="button" tabindex="0" onclick="openTour('Lonavala Tour')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openTour('Lonavala Tour');}">
       <img src="images/lonavla-tour.jpg" alt="Lonavala Tour" />
       <div class="tour-card-body">
         <h3>Lonavala Tour</h3>
@@ -564,7 +642,7 @@
         <div class="tour-meta"><i class="fas fa-map-marker-alt"></i> Adventure, Camps &amp; Sightseeing</div>
       </div>
     </div>
-    <div class="tour-card">
+    <div class="tour-card" role="button" tabindex="0" onclick="openTour('Shirdi Tour')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openTour('Shirdi Tour');}">
       <img src="images/shirdi-tour.jpg" alt="Shirdi Tour" />
       <div class="tour-card-body">
         <h3>Shirdi Tour</h3>
@@ -572,7 +650,7 @@
         <div class="tour-meta"><i class="fas fa-map-marker-alt"></i> Temple Visit &amp; Local Sightseeing</div>
       </div>
     </div>
-    <div class="tour-card">
+    <div class="tour-card" role="button" tabindex="0" onclick="openTour('Rajasthan Tour')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openTour('Rajasthan Tour');}">
       <img src="images/rajesthan-tour.jpg" alt="Rajasthan Tour" />
       <div class="tour-card-body">
         <h3>Rajasthan Tour</h3>
@@ -580,7 +658,7 @@
         <div class="tour-meta"><i class="fas fa-map-marker-alt"></i> Heritage, Forts &amp; Cultural Experience</div>
       </div>
     </div>
-    <div class="tour-card">
+    <div class="tour-card" role="button" tabindex="0" onclick="openTour('Kerala Tour')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openTour('Kerala Tour');}">
       <img src="images/kerla-tour.jpg" alt="Kerala Tour" />
       <div class="tour-card-body">
         <h3>Kerala Tour</h3>
@@ -640,6 +718,66 @@
         <span class="app-badge" aria-disabled="true"><i class="fab fa-google-play"></i> <span>Google Play<span class="app-badge-soon">Coming soon</span></span></span>
         <span class="app-badge" aria-disabled="true"><i class="fab fa-apple"></i> <span>App Store<span class="app-badge-soon">Coming soon</span></span></span>
       </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- TOUR DETAIL + ENQUIRY MODAL -->
+<div class="tm-overlay" id="tourModal" role="dialog" aria-modal="true" aria-labelledby="tmTitle">
+  <div class="tm">
+    <button class="tm-close" onclick="closeTour()" aria-label="Close">&times;</button>
+    <div class="tm-left">
+      <img id="tmImg" src="" alt="" />
+      <div class="tm-info">
+        <h3 id="tmTitle"></h3>
+        <div class="tm-dur"><i class="fas fa-clock"></i> <span id="tmDur"></span></div>
+        <p class="tm-blurb" id="tmBlurb"></p>
+        <div class="tm-hi" id="tmHi"></div>
+        <p class="tm-note">
+          Itinerary, inclusions and pricing are confirmed on enquiry &mdash; every tour
+          is quoted to your dates, group size and preferred vehicle.
+        </p>
+      </div>
+    </div>
+    <div class="tm-right">
+      <h4>Enquire about this tour</h4>
+      <p>Send your details and we&rsquo;ll come back with a package price.</p>
+      <div class="tm-field">
+        <label for="tmName">Your Name</label>
+        <input type="text" id="tmName" placeholder="Full name" />
+      </div>
+      <div class="tm-row">
+        <div class="tm-field">
+          <label for="tmPhone">Phone</label>
+          <input type="tel" id="tmPhone" placeholder="10-digit mobile" />
+        </div>
+        <div class="tm-field">
+          <label for="tmEmail">Email <span style="text-transform:none;font-weight:400;">(optional)</span></label>
+          <input type="email" id="tmEmail" placeholder="you@example.com" />
+        </div>
+      </div>
+      <div class="tm-row">
+        <div class="tm-field">
+          <label for="tmDate">Start Date</label>
+          <input type="date" id="tmDate" />
+        </div>
+        <div class="tm-field">
+          <label for="tmPax">Travellers</label>
+          <select id="tmPax">
+            <option>1-2</option><option selected>3-4</option>
+            <option>5-7</option><option>8-12</option><option>12+</option>
+          </select>
+        </div>
+      </div>
+      <div class="tm-field">
+        <label for="tmMsg">Anything else? <span style="text-transform:none;font-weight:400;">(optional)</span></label>
+        <textarea id="tmMsg" placeholder="Pickup city, hotel preference, special requests..."></textarea>
+      </div>
+      <button class="tm-send" id="tmSend" type="button" onclick="submitTourEnquiry()">
+        <i class="fab fa-whatsapp"></i> Send Enquiry
+      </button>
+      <div class="tm-status" id="tmStatus"></div>
     </div>
   </div>
 </div>
@@ -1154,6 +1292,161 @@
       menu.classList.remove('open');
     }
   });
+
+  /* ---------------- TOUR DETAIL + ENQUIRY ---------------- */
+  var TOURS = {
+    'Goa Tour': { img: 'images/goa-tour.jpg', dur: '3 Nights / 4 Days', blurb: 'Goa pairs long stretches of coastline with Portuguese-era churches, spice plantations and busy night markets. North Goa leans towards beach shacks and nightlife; the south is quieter and better for families.', hi: ['Beaches &amp; shacks', 'Water sports', 'Old Goa churches', 'Night markets'] },
+    'Mahabaleshwar Tour': { img: 'images/mahableshwar-tour.jpg', dur: '2 Nights / 3 Days', blurb: 'A hill station in the Sahyadris known for its viewpoints, boating at Venna Lake and strawberry farms. Cool through most of the year and an easy drive from Mumbai or Pune.', hi: ['Viewpoints', 'Venna Lake', 'Strawberry farms', 'Pratapgad Fort'] },
+    'Lonavala Tour': { img: 'images/lonavla-tour.jpg', dur: '1 Night / 2 Days', blurb: 'The closest hill getaway to Mumbai, at its best in and just after the monsoon when the waterfalls are running. Good for a short weekend break without a long drive.', hi: ['Bhushi Dam', 'Tiger&rsquo;s Leap', 'Karla Caves', 'Monsoon waterfalls'] },
+    'Shirdi Tour': { img: 'images/shirdi-tour.jpg', dur: '1 Night / 2 Days', blurb: 'A pilgrimage trip to the Sai Baba temple at Shirdi, usually combined with Shani Shingnapur and Nashik. Most travellers prefer an overnight drive to reach for early-morning darshan.', hi: ['Sai Baba Mandir', 'Dwarkamai', 'Shani Shingnapur', 'Early darshan'] },
+    'Rajasthan Tour': { img: 'images/rajesthan-tour.jpg', dur: '4 Nights / 5 Days', blurb: 'Forts, palaces and desert towns across Jaipur, Jodhpur and Udaipur. Distances between cities are long, so a comfortable vehicle and an experienced driver make a real difference.', hi: ['Amber Fort', 'City Palace', 'Mehrangarh', 'Desert &amp; culture'] },
+    'Kerala Tour': { img: 'images/kerla-tour.jpg', dur: '3 Nights / 4 Days', blurb: 'Backwaters, tea country and beaches. Typically Munnar and Alleppey with a houseboat night, and Kochi for its colonial quarter and Chinese fishing nets.', hi: ['Alleppey backwaters', 'Munnar tea estates', 'Houseboat stay', 'Fort Kochi'] }
+  };
+
+  var tmCurrent = null;
+
+  function openTour(name) {
+    var t = TOURS[name];
+    if (!t) return;
+    tmCurrent = name;
+    document.getElementById('tmTitle').textContent = name;
+    document.getElementById('tmDur').textContent = t.dur;
+    document.getElementById('tmBlurb').innerHTML = t.blurb;
+    var img = document.getElementById('tmImg');
+    img.src = t.img; img.alt = name;
+    document.getElementById('tmHi').innerHTML =
+      t.hi.map(function (h) { return '<span>' + h + '</span>'; }).join('');
+    var s = document.getElementById('tmStatus');
+    s.className = 'tm-status'; s.textContent = '';
+    document.getElementById('tmSend').disabled = false;
+    document.getElementById('tourModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeTour() {
+    document.getElementById('tourModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('click', function (e) {
+    if (e.target && e.target.id === 'tourModal') closeTour();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeTour();
+  });
+
+  function submitTourEnquiry() {
+    var val = function (id) {
+      var el = document.getElementById(id);
+      return el ? el.value.trim() : '';
+    };
+    var status = document.getElementById('tmStatus');
+    var show = function (kind, text) {
+      status.className = 'tm-status show ' + kind;
+      status.textContent = text;
+    };
+
+    var name = val('tmName');
+    if (!name) { show('err', 'Please enter your name.'); document.getElementById('tmName').focus(); return; }
+    var phone = val('tmPhone');
+    if (!/^[0-9+\-\s]{8,15}$/.test(phone)) {
+      show('err', 'Please enter a valid phone number.');
+      document.getElementById('tmPhone').focus(); return;
+    }
+
+    var data = {
+      tour: tmCurrent,
+      name: name,
+      phone: phone,
+      email: val('tmEmail'),
+      startDate: val('tmDate'),
+      travellers: val('tmPax'),
+      message: val('tmMsg'),
+      page: 'tour-packages'
+    };
+
+    var lines = ['Hi ClickCabs, I would like to enquire about a TOUR PACKAGE.', ''];
+    lines.push('Tour: ' + data.tour);
+    lines.push('Name: ' + data.name);
+    lines.push('Phone: ' + data.phone);
+    if (data.email) lines.push('Email: ' + data.email);
+    if (data.startDate) lines.push('Start Date: ' + data.startDate);
+    lines.push('Travellers: ' + data.travellers);
+    if (data.message) lines.push('', 'Notes: ' + data.message);
+    lines.push('', 'Please share the itinerary and package price.');
+    var wa = 'https://wa.me/919702290804?text=' + encodeURIComponent(lines.join(String.fromCharCode(10)));
+
+    var btn = document.getElementById('tmSend');
+    btn.disabled = true;
+    show('ok', 'Sending\u2026');
+
+    /* Save to Firestore, then hand off to WhatsApp. The WhatsApp step runs
+       either way - a database write failing must not cost us the enquiry. */
+    var done = function (saved) {
+      window.open(wa, '_blank');
+      show('ok', saved
+        ? 'Enquiry saved. WhatsApp is opening \u2014 send the message to finish.'
+        : 'WhatsApp is opening \u2014 send the message to finish.');
+      btn.disabled = false;
+    };
+
+    if (typeof window.ccSaveTourEnquiry === 'function') {
+      window.ccSaveTourEnquiry(data)
+        .then(function () { done(true); })
+        .catch(function (err) {
+          console.warn('[ClickCab] tour enquiry not saved:', err && err.message);
+          done(false);
+        });
+    } else {
+      done(false);
+    }
+  }
+
+  /* default the tour start date to today */
+  (function () {
+    var d = document.getElementById('tmDate');
+    if (d && !d.value) {
+      var t = new Date().toISOString().split('T')[0];
+      d.value = t; d.min = t;
+    }
+  })();
+</script>
+
+
+<script type="module">
+  /* Tour enquiries -> Firestore collection "tourEnquiries".
+     Same web app config as index.html. This is the PUBLIC web config, which is
+     safe to ship; the Admin SDK service-account JSON must never appear here.
+     Writes are guarded by the Firestore rule in PLACEHOLDER-CONTENT.md. */
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCoITUbvm1c0-Ud9VN_jVOZg99dg42jPgY",
+    authDomain: "clickcabs-772bd.firebaseapp.com",
+    projectId: "clickcabs-772bd",
+    storageBucket: "clickcabs-772bd.firebasestorage.app",
+    messagingSenderId: "861153834886",
+    appId: "1:861153834886:web:eae295a297c47120c31e07"
+  };
+
+  const db = getFirestore(initializeApp(firebaseConfig));
+
+  window.ccSaveTourEnquiry = function (data) {
+    return addDoc(collection(db, "tourEnquiries"), {
+      tour:       String(data.tour || '').slice(0, 120),
+      name:       String(data.name || '').slice(0, 120),
+      phone:      String(data.phone || '').slice(0, 20),
+      email:      String(data.email || '').slice(0, 160),
+      startDate:  String(data.startDate || '').slice(0, 20),
+      travellers: String(data.travellers || '').slice(0, 20),
+      message:    String(data.message || '').slice(0, 1000),
+      source:     "website",
+      status:     "new",
+      createdAt:  serverTimestamp()
+    });
+  };
 </script>
 
 </body>
