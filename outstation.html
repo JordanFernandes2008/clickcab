@@ -423,6 +423,7 @@
     border: none; outline: none; flex: 1; background: transparent;
     font-family: 'Inter', sans-serif; font-size: 0.83rem; color: #333; min-width: 0;
   }
+  .cc-opt { text-transform: none; letter-spacing: 0; font-weight: 500; color: #bbb; }
   .cc-go {
     background: #f5a200; color: #000; border: none; border-radius: 8px;
     font-family: 'Inter', sans-serif; font-size: 0.87rem; font-weight: 800;
@@ -567,6 +568,7 @@
     .app-call-label { font-size: 0.65rem; color: #aaa; margin-bottom: 0.15rem; }
     @media (max-width: 767px) { .app-call-label { font-size: 13px; } }
 </style>
+  <script type="module" src="js/cc-booking.js"></script>
 </head>
 <body>
 
@@ -646,6 +648,28 @@
         <input type="date" data-role="date" />
       </div>
     </div>
+    <div class="cc-field">
+      <label>Your Name</label>
+      <div class="cc-input">
+        <i class="fas fa-user"></i>
+        <input type="text" data-role="name" placeholder="Full name" autocomplete="name" />
+      </div>
+    </div>
+    <div class="cc-field">
+      <label>Mobile Number</label>
+      <div class="cc-input">
+        <i class="fas fa-phone"></i>
+        <input type="tel" data-role="phone" inputmode="numeric" placeholder="10-digit mobile" autocomplete="tel" />
+      </div>
+    </div>
+    <div class="cc-field">
+      <label>Email <span class="cc-opt">(optional)</span></label>
+      <div class="cc-input">
+        <i class="fas fa-envelope"></i>
+        <input type="email" data-role="email" placeholder="For your confirmation" autocomplete="email" />
+      </div>
+    </div>
+    <input type="text" class="cc-hp" data-role="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
     <button class="cc-go" type="button" onclick="sendOutstationEnquiry()">
       <i class="fab fa-whatsapp"></i> Book Outstation Cab
     </button>
@@ -890,7 +914,7 @@
       <ul>
         <li><a href="#">Help Center</a></li>
         <li><a href="#">Terms &amp; Conditions</a></li>
-        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="privacy.html">Privacy Policy</a></li>
         <li><a href="#">Cancellation Policy</a></li>
         <li><a href="#">FAQ</a></li>
       </ul>
@@ -1325,32 +1349,68 @@
   /* Outstation Cab enquiries go to WhatsApp. Only the homepage still embeds the
      QuickCab booking form. */
   function sendOutstationEnquiry() {
+    var box  = document.querySelector('.cc-box');
+    var q    = function (role) { return box.querySelector('[data-role="' + role + '"]'); };
     var read = function (role) {
-      var el = document.querySelector('.cc-box [data-role="' + role + '"]');
+      var el = q(role);
       if (!el) return '';
       return (el.dataset.formatted || el.value || '').trim();
     };
+
     var pickup = read('pickup');
     if (!pickup) {
-      ccNotice('Please enter your pickup location.',
-               document.querySelector('.cc-box [data-role="pickup"]'));
+      ccNotice('Please enter your pickup location.', q('pickup'));
       return;
     }
     var drop = read('drop');
     if (!drop) {
-      ccNotice('Please enter your drop city.',
-               document.querySelector('.cc-box [data-role="drop"]'));
+      ccNotice('Please enter your drop city.', q('drop'));
       return;
     }
+    var name = read('name');
+    if (name.length < 2) {
+      ccNotice('Please enter your name.', q('name'));
+      return;
+    }
+    var phone = window.ccBooking
+              ? window.ccBooking.normalisePhone(read('phone'))
+              : read('phone');
+    if (!phone) {
+      ccNotice('Please enter a valid 10-digit mobile number.', q('phone'));
+      return;
+    }
+    var email = read('email');
+    if (window.ccBooking && !window.ccBooking.looksLikeEmail(email)) {
+      ccNotice('That email address does not look right.', q('email'));
+      return;
+    }
+    var message = function (ref) {
+      return 'Hi ClickCabs, I would like to book an OUTSTATION CAB.\n\n'
+           + 'Booking Ref: ' + ref + '\n'
+           + 'Name: ' + name + '\n'
+           + 'Mobile: ' + phone + '\n\n'
+           + 'Pickup City: ' + pickup + '\n'
+           + 'Drop City: ' + drop + '\n'
+           + 'Journey Date: ' + read('date') + '\n'
+           + '\nPlease confirm availability and fare.';
+    };
 
-    var msg = 'Hi ClickCabs, I would like to book an OUTSTATION CAB.\n\n'
-            + 'Pickup City: ' + read('pickup') + '\n'
-            + 'Drop City: ' + read('drop') + '\n'
-            + 'Journey Date: ' + read('date') + '\n'
-            + '\nPlease confirm availability and fare.';
-
-    window.open('https://wa.me/919702290804?text=' +
-                encodeURIComponent(msg), '_blank');
+    /* ccBooking records the booking first, then opens WhatsApp. If the
+       shared script failed to load we hand off anyway — a missing database
+       row must never cost the customer their ride. */
+    if (window.ccBooking) {
+      window.ccBooking.send({
+        service: 'outstation',
+        source: 'outstation.html',
+        host: box,
+        fields: { name: name, phone: phone, email: email,
+                  pickup: pickup, drop: drop, date: read('date') },
+        message: message
+      });
+    } else {
+      window.open('https://wa.me/919702290804?text=' +
+                  encodeURIComponent(message('not assigned')), '_blank');
+    }
   }
 
 

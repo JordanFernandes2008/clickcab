@@ -502,6 +502,7 @@
       .tm-blurb, .tm-note, .tm-right > p { font-size: 13px; }
     }
 </style>
+  <script type="module" src="js/cc-booking.js"></script>
 </head>
 <body>
 
@@ -775,6 +776,7 @@
         <label for="tmMsg">Anything else? <span style="text-transform:none;font-weight:400;">(optional)</span></label>
         <textarea id="tmMsg" placeholder="Pickup city, hotel preference, special requests..."></textarea>
       </div>
+      <input type="text" class="cc-hp" data-role="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
       <button class="tm-send" id="tmSend" type="button" onclick="submitTourEnquiry()">
         <i class="fab fa-whatsapp"></i> Send Enquiry
       </button>
@@ -816,7 +818,7 @@
       <ul>
         <li><a href="#">Help Center</a></li>
         <li><a href="#">Terms &amp; Conditions</a></li>
-        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="privacy.html">Privacy Policy</a></li>
         <li><a href="#">FAQ</a></li>
       </ul>
     </div>
@@ -1348,58 +1350,57 @@
     };
 
     var name = val('tmName');
-    if (!name) { show('err', 'Please enter your name.'); document.getElementById('tmName').focus(); return; }
-    var phone = val('tmPhone');
-    if (!/^[0-9+\-\s]{8,15}$/.test(phone)) {
-      show('err', 'Please enter a valid phone number.');
+    if (name.length < 2) {
+      show('err', 'Please enter your name.');
+      document.getElementById('tmName').focus(); return;
+    }
+    var phone = window.ccBooking
+              ? window.ccBooking.normalisePhone(val('tmPhone'))
+              : val('tmPhone');
+    if (!phone) {
+      show('err', 'Please enter a valid 10-digit mobile number.');
       document.getElementById('tmPhone').focus(); return;
     }
+    var email = val('tmEmail');
+    if (window.ccBooking && !window.ccBooking.looksLikeEmail(email)) {
+      show('err', 'That email address does not look right.');
+      document.getElementById('tmEmail').focus(); return;
+    }
 
-    var data = {
-      tour: tmCurrent,
-      name: name,
-      phone: phone,
-      email: val('tmEmail'),
-      startDate: val('tmDate'),
-      travellers: val('tmPax'),
-      message: val('tmMsg'),
-      page: 'tour-packages'
+    var start = val('tmDate');
+    var pax   = val('tmPax');
+    var note  = val('tmMsg');
+
+    var message = function (ref) {
+      var lines = ['Hi ClickCabs, I would like to enquire about a TOUR PACKAGE.', ''];
+      lines.push('Booking Ref: ' + ref);
+      lines.push('Tour: ' + tmCurrent);
+      lines.push('Name: ' + name);
+      lines.push('Mobile: ' + phone);
+      if (email) lines.push('Email: ' + email);
+      if (start) lines.push('Start Date: ' + start);
+      lines.push('Travellers: ' + pax);
+      if (note) lines.push('', 'Notes: ' + note);
+      lines.push('', 'Please share the itinerary and package price.');
+      return lines.join(String.fromCharCode(10));
     };
 
-    var lines = ['Hi ClickCabs, I would like to enquire about a TOUR PACKAGE.', ''];
-    lines.push('Tour: ' + data.tour);
-    lines.push('Name: ' + data.name);
-    lines.push('Phone: ' + data.phone);
-    if (data.email) lines.push('Email: ' + data.email);
-    if (data.startDate) lines.push('Start Date: ' + data.startDate);
-    lines.push('Travellers: ' + data.travellers);
-    if (data.message) lines.push('', 'Notes: ' + data.message);
-    lines.push('', 'Please share the itinerary and package price.');
-    var wa = 'https://wa.me/919702290804?text=' + encodeURIComponent(lines.join(String.fromCharCode(10)));
-
-    var btn = document.getElementById('tmSend');
-    btn.disabled = true;
-    show('ok', 'Sending\u2026');
-
-    /* Save to Firestore, then hand off to WhatsApp. The WhatsApp step runs
-       either way - a database write failing must not cost us the enquiry. */
-    var done = function (saved) {
-      window.open(wa, '_blank');
-      show('ok', saved
-        ? 'Enquiry saved. WhatsApp is opening \u2014 send the message to finish.'
-        : 'WhatsApp is opening \u2014 send the message to finish.');
-      btn.disabled = false;
-    };
-
-    if (typeof window.ccSaveTourEnquiry === 'function') {
-      window.ccSaveTourEnquiry(data)
-        .then(function () { done(true); })
-        .catch(function (err) {
-          console.warn('[ClickCab] tour enquiry not saved:', err && err.message);
-          done(false);
-        });
+    /* Tours are recorded in the same bookings collection as every other
+       service, so the dashboard shows one list. WhatsApp opens either way. */
+    if (window.ccBooking) {
+      var ref = window.ccBooking.send({
+        service: 'tour',
+        source: 'tour-packages.html',
+        host: document.querySelector('.tm-right'),
+        fields: { name: name, phone: phone, email: email, tour: tmCurrent,
+                  date: start, passengers: pax, message: note },
+        message: message
+      });
+      show('ok', 'Reference ' + ref + ' \u2014 WhatsApp is opening, send the message to finish.');
     } else {
-      done(false);
+      window.open('https://wa.me/919702290804?text=' +
+                  encodeURIComponent(message('not assigned')), '_blank');
+      show('ok', 'WhatsApp is opening \u2014 send the message to finish.');
     }
   }
 
@@ -1412,43 +1413,5 @@
     }
   })();
 </script>
-
-
-<script type="module">
-  /* Tour enquiries -> Firestore collection "tourEnquiries".
-     Same web app config as index.html. This is the PUBLIC web config, which is
-     safe to ship; the Admin SDK service-account JSON must never appear here.
-     Writes are guarded by the Firestore rule in PLACEHOLDER-CONTENT.md. */
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, serverTimestamp }
-    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyCoITUbvm1c0-Ud9VN_jVOZg99dg42jPgY",
-    authDomain: "clickcabs-772bd.firebaseapp.com",
-    projectId: "clickcabs-772bd",
-    storageBucket: "clickcabs-772bd.firebasestorage.app",
-    messagingSenderId: "861153834886",
-    appId: "1:861153834886:web:eae295a297c47120c31e07"
-  };
-
-  const db = getFirestore(initializeApp(firebaseConfig));
-
-  window.ccSaveTourEnquiry = function (data) {
-    return addDoc(collection(db, "tourEnquiries"), {
-      tour:       String(data.tour || '').slice(0, 120),
-      name:       String(data.name || '').slice(0, 120),
-      phone:      String(data.phone || '').slice(0, 20),
-      email:      String(data.email || '').slice(0, 160),
-      startDate:  String(data.startDate || '').slice(0, 20),
-      travellers: String(data.travellers || '').slice(0, 20),
-      message:    String(data.message || '').slice(0, 1000),
-      source:     "website",
-      status:     "new",
-      createdAt:  serverTimestamp()
-    });
-  };
-</script>
-
 </body>
 </html>

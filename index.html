@@ -212,6 +212,7 @@
     .widget-title { font-size: 0.95rem; font-weight: 800; margin-bottom: 0.3rem; }
     .widget-sub { font-size: 0.72rem; color: var(--gray); margin-bottom: 1.2rem; }
 
+    .cc-opt { text-transform: none; letter-spacing: 0; font-weight: 500; color: #bbb; }
     .wfield { display: flex; flex-direction: column; gap: 0.25rem; margin-bottom: 0.9rem; }
     .wfield label { font-size: 0.62rem; font-weight: 700; color: #999; text-transform: uppercase; letter-spacing: 0.08em; }
     .wfield-row {
@@ -783,6 +784,7 @@
       .app-badge-soon { font-size: 11px; }
     }
 </style>
+  <script type="module" src="js/cc-booking.js"></script>
 </head>
 <body>
 
@@ -862,6 +864,7 @@
           <button class="widget-tab" onclick="switchTab(this,'local')">Local</button>
           <button class="widget-tab" onclick="switchTab(this,'oneway')">One Way</button>
         </div>
+        <input type="text" class="cc-hp" data-role="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
         <!-- Outstation tab -->
         <div id="tab-outstation">
@@ -912,6 +915,29 @@
                 <option>4</option><option>5</option><option>6</option>
                 <option>7</option><option>8</option>
               </select>
+            </div>
+          </div>
+          <div class="wfield">
+            <label>Your Name</label>
+            <div class="wfield-row">
+              <i class="fas fa-user"></i>
+              <input type="text" data-role="name" placeholder="Full name" autocomplete="name" />
+            </div>
+          </div>
+          <div class="wrow2">
+            <div class="wfield">
+              <label>Mobile</label>
+              <div class="wfield-row">
+                <i class="fas fa-phone"></i>
+                <input type="tel" data-role="phone" inputmode="numeric" placeholder="10-digit" autocomplete="tel" />
+              </div>
+            </div>
+            <div class="wfield">
+              <label>Email <span class="cc-opt">(optional)</span></label>
+              <div class="wfield-row">
+                <i class="fas fa-envelope"></i>
+                <input type="email" data-role="email" placeholder="Optional" autocomplete="email" />
+              </div>
             </div>
           </div>
           <button class="search-btn" type="button" onclick="sendTripEnquiry()"><i class="fab fa-whatsapp"></i> Book Outstation</button>
@@ -986,6 +1012,29 @@
               </select>
             </div>
           </div>
+          <div class="wfield">
+            <label>Your Name</label>
+            <div class="wfield-row">
+              <i class="fas fa-user"></i>
+              <input type="text" data-role="name" placeholder="Full name" autocomplete="name" />
+            </div>
+          </div>
+          <div class="wrow2">
+            <div class="wfield">
+              <label>Mobile</label>
+              <div class="wfield-row">
+                <i class="fas fa-phone"></i>
+                <input type="tel" data-role="phone" inputmode="numeric" placeholder="10-digit" autocomplete="tel" />
+              </div>
+            </div>
+            <div class="wfield">
+              <label>Email <span class="cc-opt">(optional)</span></label>
+              <div class="wfield-row">
+                <i class="fas fa-envelope"></i>
+                <input type="email" data-role="email" placeholder="Optional" autocomplete="email" />
+              </div>
+            </div>
+          </div>
           <button class="search-btn" type="button" onclick="sendTripEnquiry()"><i class="fab fa-whatsapp"></i> Book Airport Transfer</button>
         </div>
 
@@ -1046,6 +1095,29 @@
               </div>
             </div>
           </div>
+          <div class="wfield">
+            <label>Your Name</label>
+            <div class="wfield-row">
+              <i class="fas fa-user"></i>
+              <input type="text" data-role="name" placeholder="Full name" autocomplete="name" />
+            </div>
+          </div>
+          <div class="wrow2">
+            <div class="wfield">
+              <label>Mobile</label>
+              <div class="wfield-row">
+                <i class="fas fa-phone"></i>
+                <input type="tel" data-role="phone" inputmode="numeric" placeholder="10-digit" autocomplete="tel" />
+              </div>
+            </div>
+            <div class="wfield">
+              <label>Email <span class="cc-opt">(optional)</span></label>
+              <div class="wfield-row">
+                <i class="fas fa-envelope"></i>
+                <input type="email" data-role="email" placeholder="Optional" autocomplete="email" />
+              </div>
+            </div>
+          </div>
           <button class="search-btn" type="button" onclick="sendRentalEnquiry()"><i class="fab fa-whatsapp"></i> Book Rental</button>
         </div>
 
@@ -1098,6 +1170,29 @@
                 <option>4</option><option>5</option><option>6</option>
                 <option>7</option><option>8</option>
               </select>
+            </div>
+          </div>
+          <div class="wfield">
+            <label>Your Name</label>
+            <div class="wfield-row">
+              <i class="fas fa-user"></i>
+              <input type="text" data-role="name" placeholder="Full name" autocomplete="name" />
+            </div>
+          </div>
+          <div class="wrow2">
+            <div class="wfield">
+              <label>Mobile</label>
+              <div class="wfield-row">
+                <i class="fas fa-phone"></i>
+                <input type="tel" data-role="phone" inputmode="numeric" placeholder="10-digit" autocomplete="tel" />
+              </div>
+            </div>
+            <div class="wfield">
+              <label>Email <span class="cc-opt">(optional)</span></label>
+              <div class="wfield-row">
+                <i class="fas fa-envelope"></i>
+                <input type="email" data-role="email" placeholder="Optional" autocomplete="email" />
+              </div>
             </div>
           </div>
           <button class="search-btn" type="button" onclick="sendTripEnquiry()"><i class="fab fa-whatsapp"></i> Book One Way</button>
@@ -1584,7 +1679,7 @@
       <ul>
         <li><a href="#">Help Center</a></li>
         <li><a href="#">Terms &amp; Conditions</a></li>
-        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="privacy.html">Privacy Policy</a></li>
         <li><a href="#">Cancellation Policy</a></li>
         <li><a href="#">FAQ</a></li>
       </ul>
@@ -2043,25 +2138,67 @@
   function sendRentalEnquiry() {
     var pane = document.getElementById('tab-local');
     if (!pane) return;
-    var val = function (role) {
-      var el = pane.querySelector('[data-role="' + role + '"]');
+    var widget = document.querySelector('.booking-widget');
+    var q = function (role) { return pane.querySelector('[data-role="' + role + '"]'); };
+    var read = function (role) {
+      var el = q(role);
       if (!el) return '';
       return (el.dataset.formatted || el.value || '').trim();
     };
-    var pickup = val('pickup');
+
+    var pickup = read('pickup');
     if (!pickup) {
-      ccNotice('Please enter your pickup location.',
-               pane.querySelector('[data-role="pickup"]'));
+      ccNotice('Please enter your pickup location.', q('pickup'));
       return;
     }
-    var msg = 'Hi ClickCabs, I would like to book a LOCAL RENTAL.\n\n'
-            + 'Pickup: ' + pickup + '\n'
-            + 'Package: ' + val('package') + '\n'
-            + 'Vehicle: ' + val('vehicle') + '\n'
-            + 'Date: ' + val('date') + '\n'
-            + 'Time: ' + val('time') + '\n\n'
-            + 'Please confirm availability and fare.';
-    window.open('https://wa.me/919702290804?text=' + encodeURIComponent(msg), '_blank');
+    if (!read('date')) {
+      ccNotice('Please choose your rental date.', q('date'));
+      return;
+    }
+    var name = read('name');
+    if (name.length < 2) {
+      ccNotice('Please enter your name.', q('name'));
+      return;
+    }
+    var phone = window.ccBooking
+              ? window.ccBooking.normalisePhone(read('phone'))
+              : read('phone');
+    if (!phone) {
+      ccNotice('Please enter a valid 10-digit mobile number.', q('phone'));
+      return;
+    }
+    var email = read('email');
+    if (window.ccBooking && !window.ccBooking.looksLikeEmail(email)) {
+      ccNotice('That email address does not look right.', q('email'));
+      return;
+    }
+    var message = function (ref) {
+      return 'Hi ClickCabs, I would like to book a LOCAL RENTAL.\n\n'
+           + 'Booking Ref: ' + ref + '\n'
+           + 'Name: ' + name + '\n'
+           + 'Mobile: ' + phone + '\n\n'
+           + 'Pickup: ' + pickup + '\n'
+           + 'Package: ' + read('package') + '\n'
+           + 'Vehicle: ' + read('vehicle') + '\n'
+           + 'Date: ' + read('date') + '\n'
+           + 'Time: ' + read('time') + '\n\n'
+           + 'Please confirm availability and fare.';
+    };
+
+    if (window.ccBooking) {
+      window.ccBooking.send({
+        service: 'local',
+        source: 'index.html',
+        host: widget,
+        fields: { name: name, phone: phone, email: email, pickup: pickup,
+                  package: read('package'), vehicle: read('vehicle'),
+                  date: read('date'), time: read('time') },
+        message: message
+      });
+    } else {
+      window.open('https://wa.me/919702290804?text=' +
+                  encodeURIComponent(message('not assigned')), '_blank');
+    }
   }
 
   /* Every tab hands the trip to WhatsApp. Validation first, so an agent
@@ -2074,8 +2211,10 @@
     });
     if (!pane) return;
 
+    var widget = document.querySelector('.booking-widget');
+    var q = function (role) { return pane.querySelector('[data-role="' + role + '"]'); };
     var read = function (role) {
-      var el = pane.querySelector('[data-role="' + role + '"]');
+      var el = q(role);
       if (!el) return '';
       /* Prefer the full address the user picked from suggestions. */
       return (el.dataset.formatted || el.value || '').trim();
@@ -2083,37 +2222,76 @@
 
     var pickup = read('pickup');
     if (!pickup) {
-      ccNotice('Please enter your pickup location.',
-               pane.querySelector('[data-role="pickup"]'));
+      ccNotice('Please enter your pickup location.', q('pickup'));
       return;
     }
-    var dropEl = pane.querySelector('[data-role="drop"]');
+    var dropEl = q('drop');
     if (dropEl && !read('drop')) {
       ccNotice('Please enter your drop location.', dropEl);
       return;
     }
     if (!read('date')) {
-      ccNotice('Please choose your journey date.',
-               pane.querySelector('[data-role="date"]'));
+      ccNotice('Please choose your journey date.', q('date'));
       return;
     }
-
+    var name = read('name');
+    if (name.length < 2) {
+      ccNotice('Please enter your name.', q('name'));
+      return;
+    }
+    var phone = window.ccBooking
+              ? window.ccBooking.normalisePhone(read('phone'))
+              : read('phone');
+    if (!phone) {
+      ccNotice('Please enter a valid 10-digit mobile number.', q('phone'));
+      return;
+    }
+    var email = read('email');
+    if (window.ccBooking && !window.ccBooking.looksLikeEmail(email)) {
+      ccNotice('That email address does not look right.', q('email'));
+      return;
+    }
     var LABEL = {
       'tab-outstation': 'an OUTSTATION CAB',
       'tab-airport':    'an AIRPORT TRANSFER',
       'tab-oneway':     'a ONE WAY CAB'
     };
+    var SERVICE = {
+      'tab-outstation': 'outstation',
+      'tab-airport':    'airport',
+      'tab-oneway':     'oneway'
+    };
     /* The airport tab names its destination differently. */
     var dropLabel = (pane.id === 'tab-airport') ? 'Airport' : 'Drop';
+    var dest = read('drop') || read('airport');
 
-    var msg = 'Hi ClickCabs, I would like to book ' + LABEL[pane.id] + '.\n\n'
-            + 'Pickup: ' + pickup + '\n'
-            + dropLabel + ': ' + (read('drop') || read('airport')) + '\n'
-            + 'Date: ' + read('date') + '\n'
-            + 'Time: ' + read('time') + '\n'
-            + 'Passengers: ' + read('passengers') + '\n\n'
-            + 'Please confirm availability and fare.';
-    window.open('https://wa.me/919702290804?text=' + encodeURIComponent(msg), '_blank');
+    var message = function (ref) {
+      return 'Hi ClickCabs, I would like to book ' + LABEL[pane.id] + '.\n\n'
+           + 'Booking Ref: ' + ref + '\n'
+           + 'Name: ' + name + '\n'
+           + 'Mobile: ' + phone + '\n\n'
+           + 'Pickup: ' + pickup + '\n'
+           + dropLabel + ': ' + dest + '\n'
+           + 'Date: ' + read('date') + '\n'
+           + 'Time: ' + read('time') + '\n'
+           + 'Passengers: ' + read('passengers') + '\n\n'
+           + 'Please confirm availability and fare.';
+    };
+
+    if (window.ccBooking) {
+      window.ccBooking.send({
+        service: SERVICE[pane.id] || 'other',
+        source: 'index.html',
+        host: widget,
+        fields: { name: name, phone: phone, email: email,
+                  pickup: pickup, drop: dest, date: read('date'),
+                  time: read('time'), passengers: read('passengers') },
+        message: message
+      });
+    } else {
+      window.open('https://wa.me/919702290804?text=' +
+                  encodeURIComponent(message('not assigned')), '_blank');
+    }
   }
   // Set today's date as default in all date inputs
   (function() {
