@@ -304,6 +304,37 @@
     .services-row2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.4rem; max-width: 800px; margin: 1.4rem auto 0; }
 
     /* ── HOW IT WORKS ── */
+    /* ── PROMOTIONS ──
+       The client's campaign posters, shown as supplied. On wide screens both
+       are set to one height so their captions line up, even though the two
+       posters have different shapes (0.76 and 0.67 wide-to-tall). */
+    .promo-section { background: var(--offwhite); }
+    .promo-grid { display: flex; justify-content: center; align-items: flex-start; gap: 1.8rem; }
+    .promo-card {
+      display: flex; flex-direction: column; padding: 0; margin: 0; border: none;
+      font: inherit; text-align: left; text-decoration: none; cursor: pointer;
+      background: #fff; border-radius: 14px; overflow: hidden;
+      box-shadow: 0 10px 34px rgba(1,69,108,0.14);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .promo-card:hover { transform: translateY(-4px); box-shadow: 0 16px 42px rgba(1,69,108,0.22); }
+    .promo-card:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
+    .promo-card img { display: block; height: clamp(420px, 44vw, 540px); width: auto; }
+    .promo-cta {
+      display: flex; align-items: center; justify-content: space-between; gap: 0.6rem;
+      padding: 0.9rem 1.1rem; font-size: 0.88rem; font-weight: 700; color: var(--blue);
+    }
+    .promo-card:hover .promo-cta { color: var(--yellow-hover); }
+    @media (max-width: 720px) {
+      .promo-grid { flex-direction: column; align-items: center; }
+      .promo-card { width: 100%; max-width: 440px; }
+      .promo-card img { width: 100%; height: auto; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .promo-card { transition: none; }
+      .promo-card:hover { transform: none; }
+    }
+
     .how-section { background: var(--blue); }
     .how-section .sec-head h2 { color: #fff; }
     .how-section .sec-label { color: rgba(255,255,255,0.6); }
@@ -402,6 +433,7 @@
     .app-badge span { color: #fff; font-size: 0.75rem; font-weight: 600; }
     .app-right { display: flex; justify-content: center; }
     .app-right img { max-height: 300px; object-fit: contain; border-radius: 12px; }
+    .app-right img.app-logo { width: 320px; max-width: 100%; height: auto; max-height: none; border-radius: 0; }
 
     /* ── TRUST STRIP ── */
     .trust-strip { background: #fff; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 1.5rem 2rem; }
@@ -1066,7 +1098,7 @@
             <div class="wfield-row">
               <i class="fas fa-car"></i>
               <select data-role="vehicle">
-                <option>Maruti Swift</option>
+                <option>Dzire</option>
                 <option>WagonR</option>
                 <option>Ertiga</option>
                 <option>Innova Crysta</option>
@@ -1364,6 +1396,30 @@
   </div>
 </section>
 
+<!-- PROMOTIONS — the client's own campaign posters, shipped as supplied.
+     To change a promotion, replace the image file and its alt text. -->
+<section class="section promo-section">
+  <div class="section-inner">
+    <div class="sec-head">
+      <div class="sec-label">Promotions</div>
+      <h2>Click Karo, Book Karo</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="promo-grid">
+      <a class="promo-card" href="outstation.html">
+        <img src="images/promo-airport-voucher.webp" width="1024" height="1536" loading="lazy" decoding="async"
+             alt="Get a free airport drop voucher on each outstation trip with Click Cabs. Book your ride on 97022 90804." />
+        <span class="promo-cta">Book an Outstation Trip <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+      </a>
+      <button type="button" class="promo-card" onclick="scrollToBooking()">
+        <img src="images/promo-clickkaro.webp" width="970" height="1280" loading="lazy" decoding="async"
+             alt="#ClickKaro BookKaro. Click Cabs, Mumbai's trusted chauffeur-driven car rental service: Dzire, Ertiga, Innova Crysta, Innova Hycross, Fortuner and Tempo Traveller, for airport transfers, corporate travel, local sightseeing, outstation trips, monthly contracts, events and one-way trips. Call 90826 47778 or 97022 90804." />
+        <span class="promo-cta">Book Now <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+      </button>
+    </div>
+  </div>
+</section>
+
 <!-- HOW IT WORKS -->
 <section class="section how-section">
   <div class="section-inner">
@@ -1407,9 +1463,9 @@
     </div>
     <div class="fleet-grid">
       <button type="button" class="fleet-card" onclick="scrollToBooking()">
-        <img src="images/swift.jpg" alt="Maruti Swift" />
-        <h3>Maruti Swift</h3>
-        <p>Economical &amp; Reliable</p>
+        <img src="images/innova-crysta.jpg" alt="Innova Crysta" />
+        <h3>Innova Crysta</h3>
+        <p>Luxury &amp; Space</p>
       </button>
       <button type="button" class="fleet-card" onclick="scrollToBooking()">
         <img src="images/ertiga.jpg" alt="Ertiga" />
@@ -1417,19 +1473,19 @@
         <p>Spacious &amp; Comfortable</p>
       </button>
       <button type="button" class="fleet-card" onclick="scrollToBooking()">
-        <img src="images/tempo-local.jpg" alt="Tempo Traveller" />
-        <h3>Tempo Traveller</h3>
-        <p>Group &amp; Family Travel</p>
-      </button>
-      <button type="button" class="fleet-card" onclick="scrollToBooking()">
-        <img src="images/innova-crysta.jpg" alt="Innova Crysta" />
-        <h3>Innova Crysta</h3>
-        <p>Luxury &amp; Space</p>
+        <img src="images/dzire.jpg" alt="Dzire" />
+        <h3>Dzire</h3>
+        <p>Economical &amp; Reliable</p>
       </button>
       <button type="button" class="fleet-card" onclick="scrollToBooking()">
         <img src="images/wagonr.jpg" alt="WagonR" />
         <h3>WagonR</h3>
         <p>Perfect City Ride</p>
+      </button>
+      <button type="button" class="fleet-card" onclick="scrollToBooking()">
+        <img src="images/tempo-local.jpg" alt="Tempo Traveller" />
+        <h3>Tempo Traveller</h3>
+        <p>Group &amp; Family Travel</p>
       </button>
     </div>
   </div>
@@ -1580,7 +1636,7 @@
       </div>
     </div>
     <div class="app-right">
-      <img src="images/app-strip.jpg" alt="Click Cabs mobile app preview" />
+      <img class="app-logo" src="images/logo-light.png" alt="Click Cabs — Your City, Your Ride" width="623" height="200" />
     </div>
   </div>
 </section>
