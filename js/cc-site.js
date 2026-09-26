@@ -266,4 +266,157 @@
     var s = open.querySelector('summary');
     if (s) s.focus();
   });
+
+  /* ================= "Log in" becomes "Log out" when signed in =========
+     Logging in happens on the account pages, which are the portals served
+     through this same address at /account/ (a Vercel rewrite; a folder on
+     Hostinger). Same address means the same browser storage, so a login
+     there is visible here. On a different address it never could be —
+     which is why the old homepage-only Logout button never appeared.
+
+     COST: most visitors are never signed in, so they should not download
+     Firebase's login code just to find that out. The account pages leave a
+     small marker (cc_auth_hint = the user's initial) when someone signs in
+     and clear it when they sign out. Only if the marker is there — or the
+     visitor has just come from a login page — is Firebase loaded to confirm.
+  ===================================================================== */
+
+  var HINT = 'cc_auth_hint';
+  var FB = 'https://www.gstatic.com/firebasejs/10.12.0/';
+  var FIREBASE = {
+    apiKey: 'AIzaSyCoITUbvm1c0-Ud9VN_jVOZg99dg42jPgY',
+    authDomain: 'clickcabs-772bd.firebaseapp.com',
+    projectId: 'clickcabs-772bd',
+    storageBucket: 'clickcabs-772bd.firebasestorage.app',
+    messagingSenderId: '861153834886',
+    appId: '1:861153834886:web:eae295a297c47120c31e07'
+  };
+  var authReady = null;      // Promise of { auth, signOut } once Firebase is loaded
+
+  function readHint() { try { return localStorage.getItem(HINT) || ''; } catch (e) { return ''; } }
+  function writeHint(v) {
+    try { if (v) localStorage.setItem(HINT, v); else localStorage.removeItem(HINT); } catch (e) {}
+  }
+  function initialOf(user) {
+    var s = String((user && (user.displayName || user.email)) || '?').trim();
+    return (s.charAt(0) || '?').toUpperCase();
+  }
+
+  function loadAuth() {
+    if (!authReady) {
+      authReady = Promise.all([import(FB + 'firebase-app.js'), import(FB + 'firebase-auth.js')])
+        .then(function (m) {
+          var appMod = m[0], authMod = m[1];
+          // js/cc-booking.js may already have started the app on this page
+          var app = appMod.getApps().length ? appMod.getApp() : appMod.initializeApp(FIREBASE);
+          var auth = authMod.getAuth(app);
+          authMod.onAuthStateChanged(auth, function (user) {
+            writeHint(user ? initialOf(user) : '');
+            render(user ? { initial: initialOf(user), email: user.email || '' } : null);
+          });
+          return { auth: auth, signOut: authMod.signOut };
+        });
+      authReady.catch(function (e) {
+        // Offline or blocked: fall back to "Log in", never a broken header.
+        console.warn('Could not check sign-in state:', e);
+        render(null);
+      });
+    }
+    return authReady;
+  }
+
+  var OUT_CSS = '.nav-account-out{font-family:inherit;-webkit-appearance:none;appearance:none}' +
+                '.nav-account-out .nav-account-avatar{font-size:.72rem;font-weight:800;font-style:normal}' +
+                '.nav-account-out[disabled]{opacity:.7;cursor:wait}';
+
+  function render(user) {
+    var menu = document.querySelector('details.nav-account');
+    var existing = document.querySelector('.nav-account--in');
+    var mobile = document.getElementById('mobileMenu');
+
+    if (!user) {
+      if (existing) existing.parentNode.removeChild(existing);
+      if (menu) menu.style.display = '';
+      if (mobile) {
+        Array.prototype.forEach.call(mobile.querySelectorAll('[data-cc-signedout]'), function (el) {
+          el.style.display = ''; el.removeAttribute('data-cc-signedout');
+        });
+        var ml = mobile.querySelector('.mobile-logout');
+        if (ml) ml.parentNode.removeChild(ml);
+      }
+      return;
+    }
+
+    if (!document.getElementById('cc-account-css')) {
+      var st = document.createElement('style');
+      st.id = 'cc-account-css';
+      st.textContent = OUT_CSS;
+      document.head.appendChild(st);
+    }
+
+    // Desktop: swap the "Log in" menu for a "Log out" chip in the same spot.
+    // It keeps the nav-account class, so it hides at 1200px like the menu.
+    if (menu) {
+      menu.style.display = 'none';
+      menu.removeAttribute('open');
+      if (!existing) {
+        existing = document.createElement('div');
+        existing.className = 'nav-account nav-account--in';
+        existing.innerHTML =
+          '<button type="button" class="nav-account-btn nav-account-out">' +
+            '<span class="nav-account-avatar" aria-hidden="true"></span>' +
+            '<span class="nav-account-label">Log out</span>' +
+            '<i class="fas fa-sign-out-alt nav-account-caret" aria-hidden="true"></i>' +
+          '</button>';
+        menu.parentNode.insertBefore(existing, menu.nextSibling);
+        existing.querySelector('button').addEventListener('click', logOut);
+      }
+      var b = existing.querySelector('button');
+      b.querySelector('.nav-account-avatar').textContent = user.initial || '?';
+      var who = user.email ? 'Signed in as ' + user.email + '. ' : '';
+      b.setAttribute('title', who + 'Log out');
+      b.setAttribute('aria-label', who + 'Log out');
+    }
+
+    // Phone menu: hide the four login/sign-up links, show one "Log Out".
+    if (mobile) {
+      Array.prototype.forEach.call(
+        mobile.querySelectorAll('.mobile-menu-label, a[href*="/account/"]'),
+        function (el) { el.style.display = 'none'; el.setAttribute('data-cc-signedout', ''); });
+      if (!mobile.querySelector('.mobile-logout')) {
+        var a = document.createElement('a');
+        a.href = '#';
+        a.className = 'mobile-logout';
+        a.innerHTML = '<i class="fas fa-sign-out-alt" aria-hidden="true"></i>&nbsp; Log Out';
+        a.addEventListener('click', function (e) { e.preventDefault(); logOut(); });
+        mobile.appendChild(a);
+      }
+    }
+  }
+
+  function logOut() {
+    var b = document.querySelector('.nav-account-out');
+    if (b) { b.disabled = true; b.querySelector('.nav-account-label').textContent = 'Logging out…'; }
+    loadAuth()
+      .then(function (fb) { return fb.signOut(fb.auth); })
+      .then(function () { writeHint(''); render(null); })
+      .catch(function (e) {
+        console.warn('Log out failed:', e);
+        if (b) { b.disabled = false; b.querySelector('.nav-account-label').textContent = 'Log out'; }
+      });
+  }
+
+  function startAccount() {
+    var hint = readHint();
+    var fromLogin = /\/account\/[a-z-]*(login|signup)\.html/.test(document.referrer || '');
+    if (!hint && !fromLogin) return;             // never signed in: no Firebase at all
+    if (hint) render({ initial: hint, email: '' });   // show it straight away...
+    loadAuth();                                       // ...then let Firebase confirm or correct
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', startAccount);
+  else startAccount();
+
+  // For checking the two states by hand from the browser console.
+  window.ccAccount = { render: render };
 })();

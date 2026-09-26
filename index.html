@@ -925,28 +925,19 @@
     <li><a href="news.html">News</a></li>
     <li><a href="contact-us.html">Contact Us</a></li>
   </ul>
-  <button id="userLogoutBtn"  style="display:none;background:rgba(255,255,255,0.15);
-    color:#fff;
-    border:1.5px solid rgba(255,255,255,0.3);
-    border-radius:6px;padding:8px 16px;
-    font-size:0.85rem;font-weight:700;
-    cursor:pointer;margin-right:10px;
-    font-family:inherit;">
-  <i class="fas fa-sign-out-alt" style="margin-right:6px;"></i>Logout
-  </button>
   <details class="nav-account">
     <summary class="nav-account-btn"><span class="nav-account-avatar" aria-hidden="true"><i class="fas fa-user"></i></span><span class="nav-account-label">Log in</span><i class="fas fa-chevron-down nav-account-caret" aria-hidden="true"></i></summary>
     <div class="nav-account-menu">
       <p class="nav-acct-head">Log in as</p>
-      <a class="nav-acct-role" href="https://clickcab-portals.vercel.app/user-login.html">
+      <a class="nav-acct-role" href="/account/user-login.html">
         <span class="nav-acct-icon"><i class="fas fa-user" aria-hidden="true"></i></span>
         <span class="nav-acct-text"><strong>Customer</strong><small>Book and manage your rides</small></span>
       </a>
-      <a class="nav-acct-role" href="https://clickcab-portals.vercel.app/vendor-login.html">
+      <a class="nav-acct-role" href="/account/vendor-login.html">
         <span class="nav-acct-icon nav-acct-icon--partner"><i class="fas fa-car" aria-hidden="true"></i></span>
         <span class="nav-acct-text"><strong>Cab Partner</strong><small>Drivers and cab owners</small></span>
       </a>
-      <div class="nav-acct-new"><span class="nav-acct-newlabel">New here?</span><a href="https://clickcab-portals.vercel.app/user-signup.html">Create an account</a> <span aria-hidden="true">&middot;</span> <a href="https://clickcab-portals.vercel.app/vendor-signup.html">Become a partner</a></div>
+      <div class="nav-acct-new"><span class="nav-acct-newlabel">New here?</span><a href="/account/user-signup.html">Create an account</a> <span aria-hidden="true">&middot;</span> <a href="/account/vendor-signup.html">Become a partner</a></div>
     </div>
   </details>
   <a href="tel:+919702290804" class="nav-phone">
@@ -969,12 +960,11 @@
   <a href="news.html">News</a>
   <a href="contact-us.html">Contact Us</a>
   <span class="mobile-menu-label">Customers</span>
-  <a href="https://clickcab-portals.vercel.app/user-login.html"><i class="fas fa-user" aria-hidden="true"></i>&nbsp; Customer Log In</a>
-  <a href="https://clickcab-portals.vercel.app/user-signup.html">Create an Account</a>
+  <a href="/account/user-login.html"><i class="fas fa-user" aria-hidden="true"></i>&nbsp; Customer Log In</a>
+  <a href="/account/user-signup.html">Create an Account</a>
   <span class="mobile-menu-label">Cab Partners</span>
-  <a href="https://clickcab-portals.vercel.app/vendor-login.html"><i class="fas fa-car" aria-hidden="true"></i>&nbsp; Partner Log In</a>
-  <a href="https://clickcab-portals.vercel.app/vendor-signup.html">Become a Partner</a>
-  <a href="#" id="mobileLogoutLink" style="display:none;"><i class="fas fa-sign-out-alt" style="margin-right:6px;"></i>Logout</a>
+  <a href="/account/vendor-login.html"><i class="fas fa-car" aria-hidden="true"></i>&nbsp; Partner Log In</a>
+  <a href="/account/vendor-signup.html">Become a Partner</a>
 </div>
 
 <!-- HERO -->
@@ -1625,8 +1615,8 @@
         <li><i class="fas fa-check-circle" aria-hidden="true"></i> Grow your fleet over time</li>
       </ul>
       <div class="partner-actions">
-        <a class="partner-cta" href="https://clickcab-portals.vercel.app/vendor-signup.html">Become a Partner <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
-        <a class="partner-login" href="https://clickcab-portals.vercel.app/vendor-login.html">Already a partner? <span>Log in</span></a>
+        <a class="partner-cta" href="/account/vendor-signup.html">Become a Partner <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+        <a class="partner-login" href="/account/vendor-login.html">Already a partner? <span>Log in</span></a>
       </div>
     </div>
   </div>
@@ -2633,49 +2623,6 @@
     } catch (e) {}
     if (hide) d.classList.add('gone');
   })();
-</script>
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyCoITUbvm1c0-Ud9VN_jVOZg99dg42jPgY",
-    authDomain: "clickcabs-772bd.firebaseapp.com",
-    projectId: "clickcabs-772bd",
-    storageBucket: "clickcabs-772bd.firebasestorage.app",
-    messagingSenderId: "861153834886",
-    appId: "1:861153834886:web:eae295a297c47120c31e07"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-
-  onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      const userDoc = await getDoc(doc(db, "users", user.uid));
-      if (userDoc.exists()) {
-        document.getElementById('userLogoutBtn').style.display = 'inline-flex';
-        const acct = document.querySelector('.nav-account');
-        if (acct) acct.style.display = 'none';
-        // the nav button is hidden below 1200px, so signed-in phone users
-        // log out from the mobile menu instead
-        const mobileLogout = document.getElementById('mobileLogoutLink');
-        if (mobileLogout) mobileLogout.style.display = 'block';
-      }
-    }
-  });
-
-  async function ccLogout(e) {
-    if (e) e.preventDefault();
-    await signOut(auth);
-    window.location.href = 'https://clickcab-portals.vercel.app/user-login.html';
-  }
-
-  document.getElementById('userLogoutBtn').addEventListener('click', ccLogout);
-  const mobileLogoutLink = document.getElementById('mobileLogoutLink');
-  if (mobileLogoutLink) mobileLogoutLink.addEventListener('click', ccLogout);
 </script>
 </body>
 </html>
