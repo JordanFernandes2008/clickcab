@@ -61,6 +61,43 @@
       padding: 0.45rem 1rem; border-radius: 6px; text-decoration: none;
       white-space: nowrap;
     }
+    /* ── "Log in" menu. Customers and cab partners get separate doors, the
+       way Uber separates riders from drivers. Staff (admin) log in at their
+       own address and are deliberately not listed here. It is a <details>
+       element, so it opens and works from the keyboard with no JavaScript;
+       js/cc-site.js only adds close-on-outside-click and close-on-Esc. ── */
+    .nav-account { position: relative; margin-right: 0.7rem; }
+    .nav-account-btn {
+      list-style: none; cursor: pointer; user-select: none;
+      display: flex; align-items: center; gap: 0.45rem;
+      color: #fff; font-size: 0.75rem; font-weight: 700; white-space: nowrap;
+      padding: 0.42rem 0.85rem; border-radius: 6px;
+      border: 1.5px solid rgba(255,255,255,0.35); background: rgba(255,255,255,0.08);
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .nav-account-btn::-webkit-details-marker { display: none; }
+    .nav-account-btn:hover, .nav-account[open] .nav-account-btn { background: rgba(255,255,255,0.16); border-color: rgba(255,255,255,0.6); }
+    .nav-account-btn:focus-visible { outline: 2px solid var(--yellow, #f5a200); outline-offset: 2px; }
+    .nav-account-caret { font-size: 0.6rem; transition: transform 0.2s; }
+    .nav-account[open] .nav-account-caret { transform: rotate(180deg); }
+    .nav-account-menu {
+      position: absolute; right: 0; top: calc(100% + 10px); width: 300px; z-index: 1001;
+      background: #fff; border-radius: 12px; padding: 0.6rem;
+      box-shadow: 0 18px 48px rgba(1,30,50,0.28);
+    }
+    .nav-acct-head { font-size: 0.66rem; font-weight: 700; color: #8a97a3; text-transform: uppercase; letter-spacing: 0.08em; margin: 0.35rem 0.6rem 0.4rem; }
+    .nav-acct-role { display: flex; align-items: center; gap: 0.75rem; padding: 0.65rem 0.6rem; border-radius: 9px; text-decoration: none; color: var(--text, #1a1a1a); }
+    .nav-acct-role:hover, .nav-acct-role:focus-visible { background: var(--offwhite, #f5f5f5); outline: none; }
+    .nav-acct-icon { width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: #e8f1f8; color: var(--blue, #01456c); font-size: 0.95rem; }
+    .nav-acct-icon--partner { background: #fff6e0; color: #b87800; }
+    .nav-acct-text { display: flex; flex-direction: column; line-height: 1.3; }
+    .nav-acct-text strong { font-size: 0.86rem; font-weight: 700; }
+    .nav-acct-text small { font-size: 0.74rem; color: var(--gray, #666); }
+    .nav-acct-new { border-top: 1px solid var(--border, #e0e0e0); margin-top: 0.4rem; padding: 0.7rem 0.6rem 0.35rem; font-size: 0.74rem; color: var(--gray, #666); line-height: 1.6; }
+    .nav-acct-new a { color: var(--blue, #01456c); font-weight: 700; text-decoration: none; }
+    .nav-acct-newlabel { display: block; margin-bottom: 0.1rem; }
+    .nav-acct-new a:hover { text-decoration: underline; }
+    .mobile-menu-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--yellow, #f5a200); margin-top: 0.8rem; padding-top: 0.9rem; border-top: 1px solid rgba(255,255,255,0.15); }
     .nav-phone:hover { background: var(--yellow-hover); }
 
     /* Mobile nav toggle */
@@ -448,6 +485,33 @@
 
     /* ── FLEET SECTION ── */
     .fleet-section { background: var(--offwhite); }
+    /* ── DRIVE WITH CLICK CABS (partner section) ── */
+    .partner-section { background: #fff; padding: 5rem 2rem; }
+    .partner-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.1fr 1fr; gap: 3.5rem; align-items: center; }
+    .partner-media img { display: block; width: 100%; height: auto; border-radius: 16px; box-shadow: 0 18px 50px rgba(1,69,108,0.18); }
+    .partner-copy h2 { font-size: clamp(1.6rem, 2.8vw, 2.4rem); font-weight: 900; letter-spacing: -0.02em; color: var(--text); margin: 0.4rem 0 0.9rem; line-height: 1.15; }
+    .partner-copy > p { font-size: 0.95rem; color: var(--gray); line-height: 1.75; margin-bottom: 1.3rem; max-width: 34rem; }
+    .partner-points { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem 1.2rem; margin: 0 0 2rem; padding: 0; }
+    .partner-points li { font-size: 0.86rem; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 0.5rem; }
+    .partner-points i { color: var(--yellow); }
+    .partner-actions { display: flex; align-items: center; gap: 1.4rem; flex-wrap: wrap; }
+    .partner-cta {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      background: var(--blue); color: #fff; font-weight: 700; font-size: 0.9rem;
+      padding: 0.85rem 1.5rem; border-radius: 8px; text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .partner-cta:hover { background: var(--blue-dark); transform: translateY(-2px); }
+    .partner-login { font-size: 0.88rem; color: var(--gray); text-decoration: none; }
+    .partner-login span { color: var(--blue); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+    .partner-login:hover span { color: var(--yellow-hover); }
+    .partner-cta:focus-visible, .partner-login:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
+    @media (max-width: 900px) {
+      .partner-section { padding: 3.5rem 1.25rem; }
+      .partner-inner { grid-template-columns: 1fr; gap: 2rem; }
+    }
+    @media (max-width: 480px) { .partner-points { grid-template-columns: 1fr; } }
+    @media (prefers-reduced-motion: reduce) { .partner-cta { transition: none; } .partner-cta:hover { transform: none; } }
     .fleet-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.2rem; }
     .fleet-card {
       background: #fff; border: 1.5px solid var(--border); border-radius: 12px;
@@ -624,8 +688,9 @@
   
     /* The 9-item nav needs ~1044px; below that it wraps to two lines,
        so hand over to the mobile menu earlier than the old 960px. */
-    @media (max-width: 1100px) {
+    @media (max-width: 1200px) {
       .nav-links { display: none; }
+      .nav-account { display: none; }
       .nav-hamburger { display: flex; }
     }
 
@@ -819,6 +884,7 @@
   <script type="module" src="js/cc-booking.js"></script>
 </head>
 <body>
+<script src="js/cc-site.js"></script>
 
 <!-- NAV -->
 <nav>
@@ -845,6 +911,21 @@
     font-family:inherit;">
   <i class="fas fa-sign-out-alt" style="margin-right:6px;"></i>Logout
   </button>
+  <details class="nav-account">
+    <summary class="nav-account-btn"><i class="fas fa-user-circle" aria-hidden="true"></i> Log in <i class="fas fa-chevron-down nav-account-caret" aria-hidden="true"></i></summary>
+    <div class="nav-account-menu">
+      <p class="nav-acct-head">Log in as</p>
+      <a class="nav-acct-role" href="https://clickcab-portals.vercel.app/user-login.html">
+        <span class="nav-acct-icon"><i class="fas fa-user" aria-hidden="true"></i></span>
+        <span class="nav-acct-text"><strong>Customer</strong><small>Book and manage your rides</small></span>
+      </a>
+      <a class="nav-acct-role" href="https://clickcab-portals.vercel.app/vendor-login.html">
+        <span class="nav-acct-icon nav-acct-icon--partner"><i class="fas fa-car" aria-hidden="true"></i></span>
+        <span class="nav-acct-text"><strong>Cab Partner</strong><small>Drivers and cab owners</small></span>
+      </a>
+      <div class="nav-acct-new"><span class="nav-acct-newlabel">New here?</span><a href="https://clickcab-portals.vercel.app/user-signup.html">Create an account</a> <span aria-hidden="true">&middot;</span> <a href="https://clickcab-portals.vercel.app/vendor-signup.html">Become a partner</a></div>
+    </div>
+  </details>
   <a href="tel:+919702290804" class="nav-phone">
     <i class="fas fa-phone"></i>&nbsp; +91 97022 90804
   </a>
@@ -864,6 +945,12 @@
   <a href="blog.html">Blog</a>
   <a href="news.html">News</a>
   <a href="contact-us.html">Contact Us</a>
+  <span class="mobile-menu-label">Customers</span>
+  <a href="https://clickcab-portals.vercel.app/user-login.html"><i class="fas fa-user" aria-hidden="true"></i>&nbsp; Customer Log In</a>
+  <a href="https://clickcab-portals.vercel.app/user-signup.html">Create an Account</a>
+  <span class="mobile-menu-label">Cab Partners</span>
+  <a href="https://clickcab-portals.vercel.app/vendor-login.html"><i class="fas fa-car" aria-hidden="true"></i>&nbsp; Partner Log In</a>
+  <a href="https://clickcab-portals.vercel.app/vendor-signup.html">Become a Partner</a>
   <a href="#" id="mobileLogoutLink" style="display:none;"><i class="fas fa-sign-out-alt" style="margin-right:6px;"></i>Logout</a>
 </div>
 
@@ -906,14 +993,14 @@
             <label><i class="fas fa-circle" style="color:#1565C0;font-size:0.5rem;"></i> Pickup Location</label>
             <div class="wfield-row">
               <i class="fas fa-map-marker-alt"></i>
-              <input type="text" data-role="pickup" placeholder="Enter pickup city" />
+              <input aria-label="Pickup Location" type="text" data-role="pickup" placeholder="Enter pickup city" />
             </div>
           </div>
           <div class="wfield">
             <label><i class="fas fa-circle" style="color:#c62828;font-size:0.5rem;"></i> Drop Location</label>
             <div class="wfield-row">
               <i class="fas fa-map-marker-alt" style="color:#c62828;"></i>
-              <input type="text" data-role="drop" placeholder="Enter drop city" />
+              <input aria-label="Drop Location" type="text" data-role="drop" placeholder="Enter drop city" />
             </div>
           </div>
           <div class="wrow2">
@@ -921,14 +1008,14 @@
               <label>Journey Date</label>
               <div class="wfield-row">
                 <i class="fas fa-calendar"></i>
-                <input type="date" data-role="date" />
+                <input aria-label="Journey Date" type="date" data-role="date" />
               </div>
             </div>
             <div class="wfield">
               <label>Time</label>
               <div class="wfield-row">
                 <i class="fas fa-clock"></i>
-                <select data-role="time">
+                <select aria-label="Time" data-role="time">
                   <option>10:00 AM</option>
                   <option>12:00 PM</option>
                   <option>02:00 PM</option>
@@ -942,7 +1029,7 @@
             <label>Passengers</label>
             <div class="wfield-row">
               <i class="fas fa-user-group"></i>
-              <select data-role="passengers">
+              <select aria-label="Passengers" data-role="passengers">
                 <option>1</option><option>2</option><option selected>3</option>
                 <option>4</option><option>5</option><option>6</option>
                 <option>7</option><option>8</option>
@@ -953,7 +1040,7 @@
             <label>Your Name</label>
             <div class="wfield-row">
               <i class="fas fa-user"></i>
-              <input type="text" data-role="name" placeholder="Full name" autocomplete="name" />
+              <input aria-label="Your Name" type="text" data-role="name" placeholder="Full name" autocomplete="name" />
             </div>
           </div>
           <div class="wrow2">
@@ -961,14 +1048,14 @@
               <label>Mobile</label>
               <div class="wfield-row">
                 <i class="fas fa-phone"></i>
-                <input type="tel" data-role="phone" inputmode="numeric" placeholder="10-digit" autocomplete="tel" />
+                <input aria-label="Mobile" type="tel" data-role="phone" inputmode="numeric" placeholder="10-digit" autocomplete="tel" />
               </div>
             </div>
             <div class="wfield">
               <label>Email <span class="cc-opt">(optional)</span></label>
               <div class="wfield-row">
                 <i class="fas fa-envelope"></i>
-                <input type="email" data-role="email" placeholder="Optional" autocomplete="email" />
+                <input aria-label="Email (optional)" type="email" data-role="email" placeholder="Optional" autocomplete="email" />
               </div>
             </div>
           </div>
@@ -983,14 +1070,14 @@
             <label>Pickup Location</label>
             <div class="wfield-row">
               <i class="fas fa-map-marker-alt"></i>
-              <input type="text" data-role="pickup" placeholder="Hotel / Home address" />
+              <input aria-label="Pickup Location" type="text" data-role="pickup" placeholder="Hotel / Home address" />
             </div>
           </div>
           <div class="wfield">
             <label>Airport</label>
             <div class="wfield-row">
               <i class="fas fa-plane"></i>
-              <select data-role="airport">
+              <select aria-label="Airport" data-role="airport">
                 <option>Mumbai Airport - Chhatrapati Shivaji Maharaj International (BOM)</option>
                 <option>Navi Mumbai Airport - Navi Mumbai International (NMI)</option>
                 <option>Pune Airport - Pune International (PNQ)</option>
@@ -1017,14 +1104,14 @@
               <label>Date</label>
               <div class="wfield-row">
                 <i class="fas fa-calendar"></i>
-                <input type="date" data-role="date" />
+                <input aria-label="Date" type="date" data-role="date" />
               </div>
             </div>
             <div class="wfield">
               <label>Time</label>
               <div class="wfield-row">
                 <i class="fas fa-clock"></i>
-                <select data-role="time">
+                <select aria-label="Time" data-role="time">
                   <option>10:00 AM</option>
                   <option>12:00 PM</option>
                   <option>02:00 PM</option>
@@ -1037,7 +1124,7 @@
             <label>Passengers</label>
             <div class="wfield-row">
               <i class="fas fa-user-group"></i>
-              <select data-role="passengers">
+              <select aria-label="Passengers" data-role="passengers">
                 <option>1</option><option>2</option><option selected>3</option>
                 <option>4</option><option>5</option><option>6</option>
                 <option>7</option><option>8</option>
@@ -1048,7 +1135,7 @@
             <label>Your Name</label>
             <div class="wfield-row">
               <i class="fas fa-user"></i>
-              <input type="text" data-role="name" placeholder="Full name" autocomplete="name" />
+              <input aria-label="Your Name" type="text" data-role="name" placeholder="Full name" autocomplete="name" />
             </div>
           </div>
           <div class="wrow2">
@@ -1056,14 +1143,14 @@
               <label>Mobile</label>
               <div class="wfield-row">
                 <i class="fas fa-phone"></i>
-                <input type="tel" data-role="phone" inputmode="numeric" placeholder="10-digit" autocomplete="tel" />
+                <input aria-label="Mobile" type="tel" data-role="phone" inputmode="numeric" placeholder="10-digit" autocomplete="tel" />
               </div>
             </div>
             <div class="wfield">
               <label>Email <span class="cc-opt">(optional)</span></label>
               <div class="wfield-row">
                 <i class="fas fa-envelope"></i>
-                <input type="email" data-role="email" placeholder="Optional" autocomplete="email" />
+                <input aria-label="Email (optional)" type="email" data-role="email" placeholder="Optional" autocomplete="email" />
               </div>
             </div>
           </div>
@@ -1078,14 +1165,14 @@
             <label>Pickup Location</label>
             <div class="wfield-row">
               <i class="fas fa-map-marker-alt"></i>
-              <input type="text" data-role="pickup" placeholder="Enter pickup location" />
+              <input aria-label="Pickup Location" type="text" data-role="pickup" placeholder="Enter pickup location" />
             </div>
           </div>
           <div class="wfield">
             <label>Rental Package</label>
             <div class="wfield-row">
               <i class="fas fa-clock"></i>
-              <select data-role="package">
+              <select aria-label="Rental Package" data-role="package">
                 <option>4 Hrs / 40 Km</option>
                 <option>8 Hrs / 80 Km</option>
                 <option>12 Hrs / 120 Km</option>
@@ -1097,7 +1184,7 @@
             <label>Vehicle</label>
             <div class="wfield-row">
               <i class="fas fa-car"></i>
-              <select data-role="vehicle">
+              <select aria-label="Vehicle" data-role="vehicle">
                 <option>Dzire</option>
                 <option>WagonR</option>
                 <option>Ertiga</option>
@@ -1111,14 +1198,14 @@
               <label>Date</label>
               <div class="wfield-row">
                 <i class="fas fa-calendar"></i>
-                <input type="date" data-role="date" />
+                <input aria-label="Date" type="date" data-role="date" />
               </div>
             </div>
             <div class="wfield">
               <label>Time</label>
               <div class="wfield-row">
                 <i class="fas fa-clock"></i>
-                <select data-role="time">
+                <select aria-label="Time" data-role="time">
                   <option>10:00 AM</option>
                   <option>12:00 PM</option>
                   <option>02:00 PM</option>
@@ -1131,7 +1218,7 @@
             <label>Your Name</label>
             <div class="wfield-row">
               <i class="fas fa-user"></i>
-              <input type="text" data-role="name" placeholder="Full name" autocomplete="name" />
+              <input aria-label="Your Name" type="text" data-role="name" placeholder="Full name" autocomplete="name" />
             </div>
           </div>
           <div class="wrow2">
@@ -1139,14 +1226,14 @@
               <label>Mobile</label>
               <div class="wfield-row">
                 <i class="fas fa-phone"></i>
-                <input type="tel" data-role="phone" inputmode="numeric" placeholder="10-digit" autocomplete="tel" />
+                <input aria-label="Mobile" type="tel" data-role="phone" inputmode="numeric" placeholder="10-digit" autocomplete="tel" />
               </div>
             </div>
             <div class="wfield">
               <label>Email <span class="cc-opt">(optional)</span></label>
               <div class="wfield-row">
                 <i class="fas fa-envelope"></i>
-                <input type="email" data-role="email" placeholder="Optional" autocomplete="email" />
+                <input aria-label="Email (optional)" type="email" data-role="email" placeholder="Optional" autocomplete="email" />
               </div>
             </div>
           </div>
@@ -1161,14 +1248,14 @@
             <label><i class="fas fa-circle" style="color:#1565C0;font-size:0.5rem;"></i> Pickup Location</label>
             <div class="wfield-row">
               <i class="fas fa-map-marker-alt"></i>
-              <input type="text" data-role="pickup" placeholder="Enter pickup city" />
+              <input aria-label="Pickup Location" type="text" data-role="pickup" placeholder="Enter pickup city" />
             </div>
           </div>
           <div class="wfield">
             <label><i class="fas fa-circle" style="color:#c62828;font-size:0.5rem;"></i> Drop Location</label>
             <div class="wfield-row">
               <i class="fas fa-map-marker-alt" style="color:#c62828;"></i>
-              <input type="text" data-role="drop" placeholder="Enter drop city" />
+              <input aria-label="Drop Location" type="text" data-role="drop" placeholder="Enter drop city" />
             </div>
           </div>
           <div class="wrow2">
@@ -1176,14 +1263,14 @@
               <label>Journey Date</label>
               <div class="wfield-row">
                 <i class="fas fa-calendar"></i>
-                <input type="date" data-role="date" />
+                <input aria-label="Journey Date" type="date" data-role="date" />
               </div>
             </div>
             <div class="wfield">
               <label>Time</label>
               <div class="wfield-row">
                 <i class="fas fa-clock"></i>
-                <select data-role="time">
+                <select aria-label="Time" data-role="time">
                   <option>10:00 AM</option>
                   <option>12:00 PM</option>
                   <option>02:00 PM</option>
@@ -1197,7 +1284,7 @@
             <label>Passengers</label>
             <div class="wfield-row">
               <i class="fas fa-user-group"></i>
-              <select data-role="passengers">
+              <select aria-label="Passengers" data-role="passengers">
                 <option>1</option><option>2</option><option selected>3</option>
                 <option>4</option><option>5</option><option>6</option>
                 <option>7</option><option>8</option>
@@ -1208,7 +1295,7 @@
             <label>Your Name</label>
             <div class="wfield-row">
               <i class="fas fa-user"></i>
-              <input type="text" data-role="name" placeholder="Full name" autocomplete="name" />
+              <input aria-label="Your Name" type="text" data-role="name" placeholder="Full name" autocomplete="name" />
             </div>
           </div>
           <div class="wrow2">
@@ -1216,14 +1303,14 @@
               <label>Mobile</label>
               <div class="wfield-row">
                 <i class="fas fa-phone"></i>
-                <input type="tel" data-role="phone" inputmode="numeric" placeholder="10-digit" autocomplete="tel" />
+                <input aria-label="Mobile" type="tel" data-role="phone" inputmode="numeric" placeholder="10-digit" autocomplete="tel" />
               </div>
             </div>
             <div class="wfield">
               <label>Email <span class="cc-opt">(optional)</span></label>
               <div class="wfield-row">
                 <i class="fas fa-envelope"></i>
-                <input type="email" data-role="email" placeholder="Optional" autocomplete="email" />
+                <input aria-label="Email (optional)" type="email" data-role="email" placeholder="Optional" autocomplete="email" />
               </div>
             </div>
           </div>
@@ -1454,7 +1541,7 @@
 </section>
 
 <!-- OUR FLEET -->
-<section class="section fleet-section">
+<section class="section fleet-section" id="fleet">
   <div class="section-inner">
     <div class="sec-head">
       <div class="sec-label">Our Fleet</div>
@@ -1490,6 +1577,38 @@
     </div>
   </div>
 </section>
+
+<!-- ============================================================
+     DRIVE WITH CLICK CABS — the partner pitch.
+     Modelled on Uber's "Drive when you want" band: one photo, one heading,
+     one primary button, and a quieter sign-in link for people who already
+     have an account. Customer and staff logins are not offered here; each
+     role has its own door.
+============================================================ -->
+<section class="partner-section" id="partners">
+  <div class="partner-inner">
+    <div class="partner-media">
+      <img src="images/hero-innova.jpg" width="1600" height="936" loading="lazy" decoding="async"
+           alt="A Click Cabs chauffeur beside a branded Toyota Innova at the airport" />
+    </div>
+    <div class="partner-copy">
+      <div class="sec-label">For Drivers &amp; Cab Owners</div>
+      <h2>Drive With Click Cabs</h2>
+      <p>Register your vehicle, earn on your schedule, and grow with Click Cabs. Attach your cab and take bookings for local rentals, airport transfers and outstation trips.</p>
+      <ul class="partner-points">
+        <li><i class="fas fa-check-circle" aria-hidden="true"></i> Earn with your own vehicle</li>
+        <li><i class="fas fa-check-circle" aria-hidden="true"></i> Flexible working hours</li>
+        <li><i class="fas fa-check-circle" aria-hidden="true"></i> Manage bookings easily</li>
+        <li><i class="fas fa-check-circle" aria-hidden="true"></i> Grow your fleet over time</li>
+      </ul>
+      <div class="partner-actions">
+        <a class="partner-cta" href="https://clickcab-portals.vercel.app/vendor-signup.html">Become a Partner <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+        <a class="partner-login" href="https://clickcab-portals.vercel.app/vendor-login.html">Already a partner? <span>Log in</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
 
 <!-- ============================================================
      REVIEWS — PLACEHOLDER CONTENT, NOT REAL CUSTOMER FEEDBACK.
@@ -1705,10 +1824,10 @@
       </a>
       <p>Reliable, comfortable and affordable cab services across India with professional drivers.</p>
       <div class="footer-socials">
-        <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
-        <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
-        <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
-        <a href="#" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#" class="social-btn" aria-label="Click Cabs on Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+        <a href="#" class="social-btn" aria-label="Click Cabs on Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+        <a href="#" class="social-btn" aria-label="Click Cabs on Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+        <a href="#" class="social-btn" aria-label="Click Cabs on LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
       </div>
     </div>
     <div class="footer-col">
@@ -1725,19 +1844,20 @@
       <h4>Company</h4>
       <ul>
         <li><a href="#">About Us</a></li>
-        <li><a href="#">Our Fleet</a></li>
+        <li><a href="index.html#fleet">Our Fleet</a></li>
         <li><a href="#">Careers</a></li>
         <li><a href="blog.html">Blog</a></li>
+        <li><a href="news.html">News</a></li>
       </ul>
     </div>
     <div class="footer-col">
       <h4>Support</h4>
       <ul>
-        <li><a href="#">Help Center</a></li>
+        <li><a href="contact-us.html">Help Center</a></li>
         <li><a href="#">Terms &amp; Conditions</a></li>
         <li><a href="privacy.html">Privacy Policy</a></li>
         <li><a href="#">Cancellation Policy</a></li>
-        <li><a href="#">FAQ</a></li>
+        <li><a href="contact-us.html#faq">FAQ</a></li>
       </ul>
     </div>
     <div class="footer-col">
@@ -2514,7 +2634,9 @@
       const userDoc = await getDoc(doc(db, "users", user.uid));
       if (userDoc.exists()) {
         document.getElementById('userLogoutBtn').style.display = 'inline-flex';
-        // the nav button is hidden below 960px, so signed-in phone users
+        const acct = document.querySelector('.nav-account');
+        if (acct) acct.style.display = 'none';
+        // the nav button is hidden below 1200px, so signed-in phone users
         // log out from the mobile menu instead
         const mobileLogout = document.getElementById('mobileLogoutLink');
         if (mobileLogout) mobileLogout.style.display = 'block';

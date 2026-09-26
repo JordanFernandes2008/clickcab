@@ -69,6 +69,43 @@
     .nav-links a.active { color: var(--yellow); border-bottom: 2px solid var(--yellow); }
 
     .nav-phone { display: flex; align-items: center; gap: 0.5rem; background: var(--yellow); color: #111; font-size: 0.78rem; font-weight: 700; padding: 0.45rem 1rem; border-radius: 7px; text-decoration: none; }
+    /* ── "Log in" menu. Customers and cab partners get separate doors, the
+       way Uber separates riders from drivers. Staff (admin) log in at their
+       own address and are deliberately not listed here. It is a <details>
+       element, so it opens and works from the keyboard with no JavaScript;
+       js/cc-site.js only adds close-on-outside-click and close-on-Esc. ── */
+    .nav-account { position: relative; margin-right: 0.7rem; }
+    .nav-account-btn {
+      list-style: none; cursor: pointer; user-select: none;
+      display: flex; align-items: center; gap: 0.45rem;
+      color: #fff; font-size: 0.75rem; font-weight: 700; white-space: nowrap;
+      padding: 0.42rem 0.85rem; border-radius: 6px;
+      border: 1.5px solid rgba(255,255,255,0.35); background: rgba(255,255,255,0.08);
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .nav-account-btn::-webkit-details-marker { display: none; }
+    .nav-account-btn:hover, .nav-account[open] .nav-account-btn { background: rgba(255,255,255,0.16); border-color: rgba(255,255,255,0.6); }
+    .nav-account-btn:focus-visible { outline: 2px solid var(--yellow, #f5a200); outline-offset: 2px; }
+    .nav-account-caret { font-size: 0.6rem; transition: transform 0.2s; }
+    .nav-account[open] .nav-account-caret { transform: rotate(180deg); }
+    .nav-account-menu {
+      position: absolute; right: 0; top: calc(100% + 10px); width: 300px; z-index: 1001;
+      background: #fff; border-radius: 12px; padding: 0.6rem;
+      box-shadow: 0 18px 48px rgba(1,30,50,0.28);
+    }
+    .nav-acct-head { font-size: 0.66rem; font-weight: 700; color: #8a97a3; text-transform: uppercase; letter-spacing: 0.08em; margin: 0.35rem 0.6rem 0.4rem; }
+    .nav-acct-role { display: flex; align-items: center; gap: 0.75rem; padding: 0.65rem 0.6rem; border-radius: 9px; text-decoration: none; color: var(--text, #1a1a1a); }
+    .nav-acct-role:hover, .nav-acct-role:focus-visible { background: var(--offwhite, #f5f5f5); outline: none; }
+    .nav-acct-icon { width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: #e8f1f8; color: var(--blue, #01456c); font-size: 0.95rem; }
+    .nav-acct-icon--partner { background: #fff6e0; color: #b87800; }
+    .nav-acct-text { display: flex; flex-direction: column; line-height: 1.3; }
+    .nav-acct-text strong { font-size: 0.86rem; font-weight: 700; }
+    .nav-acct-text small { font-size: 0.74rem; color: var(--gray, #666); }
+    .nav-acct-new { border-top: 1px solid var(--border, #e0e0e0); margin-top: 0.4rem; padding: 0.7rem 0.6rem 0.35rem; font-size: 0.74rem; color: var(--gray, #666); line-height: 1.6; }
+    .nav-acct-new a { color: var(--blue, #01456c); font-weight: 700; text-decoration: none; }
+    .nav-acct-newlabel { display: block; margin-bottom: 0.1rem; }
+    .nav-acct-new a:hover { text-decoration: underline; }
+    .mobile-menu-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--yellow, #f5a200); margin-top: 0.8rem; padding-top: 0.9rem; border-top: 1px solid rgba(255,255,255,0.15); }
 
     /* ── HERO (image bg, same shape as homepage's gradient hero) ── */
     .hero {
@@ -365,8 +402,9 @@
 
     /* The 9-item nav needs ~1044px; below that it wraps to two lines,
        so hand over to the mobile menu earlier than the old 960px. */
-    @media (max-width: 1100px) {
+    @media (max-width: 1200px) {
       .nav-links { display: none; }
+      .nav-account { display: none; }
       .nav-hamburger { display: flex; }
     }
 
@@ -505,6 +543,7 @@
   <script type="module" src="js/cc-booking.js"></script>
 </head>
 <body>
+<script src="js/cc-site.js"></script>
 
 <nav>
   <a href="/" class="logo">
@@ -521,6 +560,21 @@
     <li><a href="news.html">News</a></li>
     <li><a href="contact-us.html">Contact Us</a></li>
   </ul>
+  <details class="nav-account">
+    <summary class="nav-account-btn"><i class="fas fa-user-circle" aria-hidden="true"></i> Log in <i class="fas fa-chevron-down nav-account-caret" aria-hidden="true"></i></summary>
+    <div class="nav-account-menu">
+      <p class="nav-acct-head">Log in as</p>
+      <a class="nav-acct-role" href="https://clickcab-portals.vercel.app/user-login.html">
+        <span class="nav-acct-icon"><i class="fas fa-user" aria-hidden="true"></i></span>
+        <span class="nav-acct-text"><strong>Customer</strong><small>Book and manage your rides</small></span>
+      </a>
+      <a class="nav-acct-role" href="https://clickcab-portals.vercel.app/vendor-login.html">
+        <span class="nav-acct-icon nav-acct-icon--partner"><i class="fas fa-car" aria-hidden="true"></i></span>
+        <span class="nav-acct-text"><strong>Cab Partner</strong><small>Drivers and cab owners</small></span>
+      </a>
+      <div class="nav-acct-new"><span class="nav-acct-newlabel">New here?</span><a href="https://clickcab-portals.vercel.app/user-signup.html">Create an account</a> <span aria-hidden="true">&middot;</span> <a href="https://clickcab-portals.vercel.app/vendor-signup.html">Become a partner</a></div>
+    </div>
+  </details>
   <a href="tel:+919702290804" class="nav-phone">
     <i class="fas fa-phone"></i>&nbsp; +91 97022 90804
   </a>
@@ -540,6 +594,12 @@
   <a href="blog.html">Blog</a>
   <a href="news.html">News</a>
   <a href="contact-us.html">Contact Us</a>
+  <span class="mobile-menu-label">Customers</span>
+  <a href="https://clickcab-portals.vercel.app/user-login.html"><i class="fas fa-user" aria-hidden="true"></i>&nbsp; Customer Log In</a>
+  <a href="https://clickcab-portals.vercel.app/user-signup.html">Create an Account</a>
+  <span class="mobile-menu-label">Cab Partners</span>
+  <a href="https://clickcab-portals.vercel.app/vendor-login.html"><i class="fas fa-car" aria-hidden="true"></i>&nbsp; Partner Log In</a>
+  <a href="https://clickcab-portals.vercel.app/vendor-signup.html">Become a Partner</a>
 </div>
 
 
@@ -557,14 +617,14 @@
 <div class="cc-box-wrap">
   <div class="cc-box">
     <div class="cc-field">
-      <label>Pickup City</label>
+      <label for="tpPickup">Pickup City</label>
       <div class="cc-input">
         <i class="fas fa-map-marker-alt"></i>
         <input type="text" data-role="pickup" id="tpPickup" placeholder="Where do we pick you up?" />
       </div>
     </div>
     <div class="cc-field">
-      <label>Destination</label>
+      <label for="tpDest">Destination</label>
       <div class="cc-input">
         <i class="fas fa-route"></i>
         <select id="tpDest">
@@ -579,14 +639,14 @@
       </div>
     </div>
     <div class="cc-field" style="max-width:165px;">
-      <label>Start Date</label>
+      <label for="tpDate">Start Date</label>
       <div class="cc-input">
         <i class="fas fa-calendar"></i>
         <input type="date" data-role="date" id="tpDate" />
       </div>
     </div>
     <div class="cc-field" style="max-width:130px;">
-      <label>Travellers</label>
+      <label for="tpPax">Travellers</label>
       <div class="cc-input">
         <i class="fas fa-users"></i>
         <select id="tpPax">
@@ -596,7 +656,7 @@
       </div>
     </div>
     <div class="cc-field" style="max-width:130px;">
-      <label>Nights</label>
+      <label for="tpNights">Nights</label>
       <div class="cc-input">
         <i class="fas fa-moon"></i>
         <select id="tpNights">
@@ -730,7 +790,7 @@
   <div class="tm">
     <button class="tm-close" onclick="closeTour()" aria-label="Close">&times;</button>
     <div class="tm-left">
-      <img id="tmImg" src="" alt="" />
+      <img id="tmImg" alt="" />
       <div class="tm-info">
         <h3 id="tmTitle"></h3>
         <div class="tm-dur"><i class="fas fa-clock"></i> <span id="tmDur"></span></div>
@@ -808,18 +868,19 @@
       <h4>Company</h4>
       <ul>
         <li><a href="#">About Us</a></li>
-        <li><a href="#">Our Fleet</a></li>
+        <li><a href="index.html#fleet">Our Fleet</a></li>
         <li><a href="#">Careers</a></li>
         <li><a href="blog.html">Blog</a></li>
+        <li><a href="news.html">News</a></li>
       </ul>
     </div>
     <div class="footer-col">
       <h4>Support</h4>
       <ul>
-        <li><a href="#">Help Center</a></li>
+        <li><a href="contact-us.html">Help Center</a></li>
         <li><a href="#">Terms &amp; Conditions</a></li>
         <li><a href="privacy.html">Privacy Policy</a></li>
-        <li><a href="#">FAQ</a></li>
+        <li><a href="contact-us.html#faq">FAQ</a></li>
       </ul>
     </div>
     <div class="footer-col">
