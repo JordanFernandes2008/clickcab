@@ -370,7 +370,7 @@
        are set to one height so their captions line up, even though the two
        posters have different shapes (0.76 and 0.67 wide-to-tall). */
     .promo-section { background: var(--offwhite); }
-    .promo-grid { display: flex; justify-content: center; align-items: flex-start; gap: 1.8rem; }
+    .promo-grid { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 1.8rem; }
     .promo-card {
       display: flex; flex-direction: column; padding: 0; margin: 0; border: none;
       font: inherit; text-align: left; text-decoration: none; cursor: pointer;
@@ -380,7 +380,7 @@
     }
     .promo-card:hover { transform: translateY(-4px); box-shadow: 0 16px 42px rgba(1,69,108,0.22); }
     .promo-card:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
-    .promo-card img { display: block; height: clamp(420px, 44vw, 540px); width: auto; }
+    .promo-card img { display: block; height: clamp(360px, 34vw, 480px); width: auto; }
     .promo-cta {
       display: flex; align-items: center; justify-content: space-between; gap: 0.6rem;
       padding: 0.9rem 1.1rem; font-size: 0.88rem; font-weight: 700; color: var(--blue);
@@ -930,15 +930,15 @@
     <summary class="nav-account-btn"><span class="nav-account-avatar" aria-hidden="true"><i class="fas fa-user"></i></span><span class="nav-account-label">Log in</span><i class="fas fa-chevron-down nav-account-caret" aria-hidden="true"></i></summary>
     <div class="nav-account-menu">
       <p class="nav-acct-head">Log in as</p>
-      <a class="nav-acct-role" href="/account/user-login.html">
+      <a class="nav-acct-role" href="https://portal.clickcabs.in/user-login.html">
         <span class="nav-acct-icon"><i class="fas fa-user" aria-hidden="true"></i></span>
         <span class="nav-acct-text"><strong>Customer</strong><small>Book and manage your rides</small></span>
       </a>
-      <a class="nav-acct-role" href="/account/vendor-login.html">
+      <a class="nav-acct-role" href="https://portal.clickcabs.in/vendor-login.html">
         <span class="nav-acct-icon nav-acct-icon--partner"><i class="fas fa-car" aria-hidden="true"></i></span>
         <span class="nav-acct-text"><strong>Cab Partner</strong><small>Drivers and cab owners</small></span>
       </a>
-      <div class="nav-acct-new"><span class="nav-acct-newlabel">New here?</span><a href="/account/user-signup.html">Create an account</a> <span aria-hidden="true">&middot;</span> <a href="/account/vendor-signup.html">Become a partner</a></div>
+      <div class="nav-acct-new"><span class="nav-acct-newlabel">New here?</span><a href="https://portal.clickcabs.in/user-signup.html">Create an account</a> <span aria-hidden="true">&middot;</span> <a href="https://portal.clickcabs.in/vendor-signup.html">Become a partner</a></div>
     </div>
   </details>
   <a href="tel:+919702290804" class="nav-phone">
@@ -961,11 +961,11 @@
   <a href="news.html">News</a>
   <a href="contact-us.html">Contact Us</a>
   <span class="mobile-menu-label">Customers</span>
-  <a href="/account/user-login.html"><i class="fas fa-user" aria-hidden="true"></i>&nbsp; Customer Log In</a>
-  <a href="/account/user-signup.html">Create an Account</a>
+  <a href="https://portal.clickcabs.in/user-login.html"><i class="fas fa-user" aria-hidden="true"></i>&nbsp; Customer Log In</a>
+  <a href="https://portal.clickcabs.in/user-signup.html">Create an Account</a>
   <span class="mobile-menu-label">Cab Partners</span>
-  <a href="/account/vendor-login.html"><i class="fas fa-car" aria-hidden="true"></i>&nbsp; Partner Log In</a>
-  <a href="/account/vendor-signup.html">Become a Partner</a>
+  <a href="https://portal.clickcabs.in/vendor-login.html"><i class="fas fa-car" aria-hidden="true"></i>&nbsp; Partner Log In</a>
+  <a href="https://portal.clickcabs.in/vendor-signup.html">Become a Partner</a>
 </div>
 
 <!-- HERO -->
@@ -1507,6 +1507,11 @@
       <div class="sec-line"></div>
     </div>
     <div class="promo-grid">
+      <a class="promo-card" href="local-rental.html">
+        <img src="images/promo-local-package.webp" width="1024" height="1536" loading="lazy" decoding="async"
+             alt="Local Package for all cars, 8 hours / 80 km: Dzire Rs 2,499, Ertiga Rs 2,599, Innova Crysta Rs 2,999, Innova Hycross Rs 4,499, Fortuner Rs 4,999, Tempo Traveller Rs 7,999. Airport transfers flat 10% off, round trips flat 15% off, outstation trips up to 20% off. Call +91 97022 90804." />
+        <span class="promo-cta">Book a Local Package <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+      </a>
       <a class="promo-card" href="outstation.html">
         <img src="images/promo-airport-voucher.webp" width="1024" height="1536" loading="lazy" decoding="async"
              alt="Get a free airport drop voucher on each outstation trip with Click Cabs. Book your ride on 97022 90804." />
@@ -1616,8 +1621,8 @@
         <li><i class="fas fa-check-circle" aria-hidden="true"></i> Grow your fleet over time</li>
       </ul>
       <div class="partner-actions">
-        <a class="partner-cta" href="/account/vendor-signup.html">Become a Partner <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
-        <a class="partner-login" href="/account/vendor-login.html">Already a partner? <span>Log in</span></a>
+        <a class="partner-cta" href="https://portal.clickcabs.in/vendor-signup.html">Become a Partner <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+        <a class="partner-login" href="https://portal.clickcabs.in/vendor-login.html">Already a partner? <span>Log in</span></a>
       </div>
     </div>
   </div>
@@ -1838,10 +1843,9 @@
       </a>
       <p>Reliable, comfortable and affordable cab services across India with professional drivers.</p>
       <div class="footer-socials">
-        <a href="#" class="social-btn" aria-label="Click Cabs on Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
-        <a href="#" class="social-btn" aria-label="Click Cabs on Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
-        <a href="#" class="social-btn" aria-label="Click Cabs on Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
-        <a href="#" class="social-btn" aria-label="Click Cabs on LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+        <a href="https://www.facebook.com/clickcabsofficial/" class="social-btn" target="_blank" rel="noopener" aria-label="Click Cabs on Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+        <a href="https://www.instagram.com/clickcabs/" class="social-btn" target="_blank" rel="noopener" aria-label="Click Cabs on Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+        <a href="https://www.linkedin.com/company/click-cabs/" class="social-btn" target="_blank" rel="noopener" aria-label="Click Cabs on LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
       </div>
     </div>
     <div class="footer-col">

@@ -268,61 +268,40 @@
   });
 
   /* ================= "Log in" becomes "Log out" when signed in =========
-     Logging in happens on the account pages, which are the portals served
-     through this same address at /account/ (a Vercel rewrite; a folder on
-     Hostinger). Same address means the same browser storage, so a login
-     there is visible here. On a different address it never could be —
-     which is why the old homepage-only Logout button never appeared.
+     Where the portals live:
+       production  https://portal.clickcabs.in/   (a Hostinger subdomain)
+       staging     /account/ on this same address (a Vercel rewrite)
+     Links in the HTML point at production. On any other host they are
+     pointed at /account/ below, so the Vercel copy behaves the same way.
 
-     COST: most visitors are never signed in, so they should not download
-     Firebase's login code just to find that out. The account pages leave a
-     small marker (cc_auth_hint = the user's initial) when someone signs in
-     and clear it when they sign out. Only if the marker is there — or the
-     visitor has just come from a login page — is Firebase loaded to confirm.
+     How this page knows someone is signed in: the portal's login pages set a
+     small cookie, cc_auth, holding only the user's initial. In production it
+     is set for the whole of .clickcabs.in. Browsers keep each address's own
+     storage separate — which is why a login on portal.clickcabs.in was
+     invisible here — but a cookie on the parent domain is shared by design.
+     No Firebase code runs on this page for any of it.
+
+     "Log out" goes to the portal's logout page, which signs out where the
+     login actually lives, clears the cookie, and brings the visitor back.
   ===================================================================== */
 
-  var HINT = 'cc_auth_hint';
-  var FB = 'https://www.gstatic.com/firebasejs/10.12.0/';
-  var FIREBASE = {
-    apiKey: 'AIzaSyCoITUbvm1c0-Ud9VN_jVOZg99dg42jPgY',
-    authDomain: 'clickcabs-772bd.firebaseapp.com',
-    projectId: 'clickcabs-772bd',
-    storageBucket: 'clickcabs-772bd.firebasestorage.app',
-    messagingSenderId: '861153834886',
-    appId: '1:861153834886:web:eae295a297c47120c31e07'
-  };
-  var authReady = null;      // Promise of { auth, signOut } once Firebase is loaded
+  var ON_PROD = /(^|\.)clickcabs\.in$/i.test(location.hostname);
+  var PROD_PORTAL = 'https://portal.clickcabs.in/';
+  var PORTAL = ON_PROD ? PROD_PORTAL : '/account/';
 
-  function readHint() { try { return localStorage.getItem(HINT) || ''; } catch (e) { return ''; } }
-  function writeHint(v) {
-    try { if (v) localStorage.setItem(HINT, v); else localStorage.removeItem(HINT); } catch (e) {}
-  }
-  function initialOf(user) {
-    var s = String((user && (user.displayName || user.email)) || '?').trim();
-    return (s.charAt(0) || '?').toUpperCase();
+  function retargetPortalLinks() {
+    if (ON_PROD) return;
+    Array.prototype.forEach.call(document.querySelectorAll('a[href^="' + PROD_PORTAL + '"]'), function (a) {
+      a.setAttribute('href', PORTAL + a.getAttribute('href').slice(PROD_PORTAL.length));
+    });
   }
 
-  function loadAuth() {
-    if (!authReady) {
-      authReady = Promise.all([import(FB + 'firebase-app.js'), import(FB + 'firebase-auth.js')])
-        .then(function (m) {
-          var appMod = m[0], authMod = m[1];
-          // js/cc-booking.js may already have started the app on this page
-          var app = appMod.getApps().length ? appMod.getApp() : appMod.initializeApp(FIREBASE);
-          var auth = authMod.getAuth(app);
-          authMod.onAuthStateChanged(auth, function (user) {
-            writeHint(user ? initialOf(user) : '');
-            render(user ? { initial: initialOf(user), email: user.email || '' } : null);
-          });
-          return { auth: auth, signOut: authMod.signOut };
-        });
-      authReady.catch(function (e) {
-        // Offline or blocked: fall back to "Log in", never a broken header.
-        console.warn('Could not check sign-in state:', e);
-        render(null);
-      });
-    }
-    return authReady;
+  function readAuthCookie() {
+    var m = document.cookie.match(/(?:^|;\s*)cc_auth=([^;]*)/);
+    if (!m) return '';
+    var v = '';
+    try { v = decodeURIComponent(m[1]); } catch (e) { return ''; }
+    return v.replace(/[^A-Za-z0-9]/g, '').charAt(0).toUpperCase();
   }
 
   var OUT_CSS = '.nav-account-out{font-family:inherit;-webkit-appearance:none;appearance:none}' +
@@ -381,7 +360,7 @@
     // Phone menu: hide the four login/sign-up links, show one "Log Out".
     if (mobile) {
       Array.prototype.forEach.call(
-        mobile.querySelectorAll('.mobile-menu-label, a[href*="/account/"]'),
+        mobile.querySelectorAll('.mobile-menu-label, a[href*="-login.html"], a[href*="-signup.html"]'),
         function (el) { el.style.display = 'none'; el.setAttribute('data-cc-signedout', ''); });
       if (!mobile.querySelector('.mobile-logout')) {
         var a = document.createElement('a');
@@ -396,22 +375,14 @@
 
   function logOut() {
     var b = document.querySelector('.nav-account-out');
-    if (b) { b.disabled = true; b.querySelector('.nav-account-label').textContent = 'Logging out…'; }
-    loadAuth()
-      .then(function (fb) { return fb.signOut(fb.auth); })
-      .then(function () { writeHint(''); render(null); })
-      .catch(function (e) {
-        console.warn('Log out failed:', e);
-        if (b) { b.disabled = false; b.querySelector('.nav-account-label').textContent = 'Log out'; }
-      });
+    if (b) { b.disabled = true; b.querySelector('.nav-account-label').textContent = 'Logging out\u2026'; }
+    location.href = PORTAL + 'logout.html?next=' + encodeURIComponent(location.href);
   }
 
   function startAccount() {
-    var hint = readHint();
-    var fromLogin = /\/account\/[a-z-]*(login|signup)\.html/.test(document.referrer || '');
-    if (!hint && !fromLogin) return;             // never signed in: no Firebase at all
-    if (hint) render({ initial: hint, email: '' });   // show it straight away...
-    loadAuth();                                       // ...then let Firebase confirm or correct
+    retargetPortalLinks();
+    var initial = readAuthCookie();
+    if (initial) render({ initial: initial, email: '' });
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', startAccount);
@@ -487,8 +458,8 @@
         '<button type="button" class="work-dock-close" aria-label="Close">&times;</button>' +
         '<div class="work-dock-head"><i class="fas fa-handshake" aria-hidden="true"></i> Want to work with us?</div>' +
         '<p>Drive with <strong>Click Cabs</strong> or attach your cab to our fleet, and take local, airport and outstation bookings.</p>' +
-        '<a class="work-dock-btn" href="/account/vendor-signup.html">Become a Partner <i class="fas fa-arrow-right" aria-hidden="true"></i></a>' +
-        '<a class="work-dock-login" href="/account/vendor-login.html">Already a partner? <span>Log in</span></a>' +
+        '<a class="work-dock-btn" href="' + PORTAL + 'vendor-signup.html">Become a Partner <i class="fas fa-arrow-right" aria-hidden="true"></i></a>' +
+        '<a class="work-dock-login" href="' + PORTAL + 'vendor-login.html">Already a partner? <span>Log in</span></a>' +
       '</div>';
     document.body.appendChild(dock);
 
