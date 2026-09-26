@@ -23,8 +23,19 @@
   ],
   "rewrites": [
     {
+      "source": "/account/",
+      "destination": "https://clickcab-portals.vercel.app/index.html"
+    },
+    {
       "source": "/account/:path*",
       "destination": "https://clickcab-portals.vercel.app/:path*"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/account",
+      "destination": "/account/",
+      "permanent": true
     }
   ]
 }
