@@ -284,12 +284,13 @@
     .wfield-row i { color: #bbb; font-size: 0.8rem; flex-shrink: 0; }
     .wfield-row input,
     .wfield-row select {
-      border: none; outline: none; flex: 1;
+      border: none; outline: none; flex: 1; min-width: 0; width: 100%;
       font-family: 'Inter', sans-serif; font-size: 0.82rem; color: #333;
       background: transparent; appearance: none;
     }
     .wfield-row input::placeholder { color: #bbb; }
-    .wrow2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; }
+    .wrow2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0.7rem; }
+    .wrow2 > .wfield { min-width: 0; }
     .search-btn {
       width: 100%; padding: 0.85rem;
       background: var(--yellow); color: #000; border: none; border-radius: 8px;
@@ -598,7 +599,7 @@
 
     /* ── RESPONSIVE ── */
     @media (max-width: 960px) {
-      .hero-inner { grid-template-columns: 1fr; }
+      .hero-inner { grid-template-columns: minmax(0, 1fr); }
       /* The booking box is the only way to book - it must stay
          visible on phones. Stack it under the hero text instead. */
       .hero-right { margin-top: 1.5rem; }

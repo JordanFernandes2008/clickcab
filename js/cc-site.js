@@ -419,4 +419,100 @@
 
   // For checking the two states by hand from the browser console.
   window.ccAccount = { render: render };
+
+  /* ================= "Want to work with us?" side tab ================
+     Built like the homepage's Offers tab — a tab on the right edge that
+     slides out a panel — but PERMANENT: its × only closes the panel (the
+     Offers × snoozes for 7 days), it never auto-opens, and it is on every
+     page rather than just the homepage. Navy rather than yellow so it is
+     never mistaken for an offer.
+
+     It sits 12px under the Offers tab (measured: that tab is 98px tall,
+     centred, so it ends at 50% + 49px). Opening either one closes the
+     other so the two panels can never overlap. Hidden below 700px, exactly
+     like the Offers tab: on phones the partner links are in the menu.
+  ===================================================================== */
+
+  var WORK_CSS = [
+    '.work-dock{position:fixed;right:0;top:calc(50% + 61px);z-index:900;display:flex;align-items:flex-start;',
+      'transform:translateX(260px);transition:transform .28s ease}',
+    '.work-dock.open{transform:translateX(0)}',
+    '.work-dock-tab{background:#01456c;color:#fff;border:none;cursor:pointer;font-family:Inter,system-ui,sans-serif;',
+      'font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:.9rem .5rem;',
+      'border-radius:8px 0 0 8px;display:flex;flex-direction:column;align-items:center;gap:.45rem;',
+      'box-shadow:-2px 2px 12px rgba(0,0,0,.22)}',
+    '.work-dock-tab:hover{background:#012f4a}',
+    '.work-dock-tab:focus-visible{outline:2px solid #f5a200;outline-offset:2px}',
+    '.work-dock-tab span{writing-mode:vertical-rl}',
+    '.work-dock-tab i{font-size:.85rem;color:#f5a200}',
+    /* hidden from keyboard and screen readers while closed, after the slide */
+    '.work-dock-panel{width:260px;flex-shrink:0;box-sizing:border-box;background:#fff;border-radius:10px 0 0 10px;',
+      'box-shadow:-4px 4px 24px rgba(0,0,0,.25);padding:1.1rem 1.2rem;position:relative;',
+      'font-family:Inter,system-ui,sans-serif;visibility:hidden;transition:visibility 0s linear .28s}',
+    '.work-dock.open .work-dock-panel{visibility:visible;transition-delay:0s}',
+    '.work-dock-close{position:absolute;top:6px;right:8px;background:none;border:none;font-size:1.1rem;',
+      'line-height:1;color:#999;cursor:pointer}',
+    '.work-dock-close:hover{color:#333}',
+    '.work-dock-head{font-size:.65rem;font-weight:800;color:#01456c;text-transform:uppercase;letter-spacing:.1em;',
+      'margin-bottom:.5rem;display:flex;align-items:center;gap:.35rem}',
+    '.work-dock-head i{color:#f5a200}',
+    '.work-dock-panel p{font-size:.78rem;color:#1a1a1a;line-height:1.6;margin:0 0 .85rem}',
+    '.work-dock-panel p strong{color:#01456c}',
+    '.work-dock-btn{display:inline-flex;align-items:center;gap:.4rem;background:#f5a200;color:#000;border-radius:6px;',
+      'font-size:.75rem;font-weight:800;padding:.55rem 1rem;text-decoration:none;white-space:nowrap}',
+    '.work-dock-btn:hover{background:#d48e00}',
+    '.work-dock-login{display:block;margin-top:.7rem;font-size:.74rem;color:#666;text-decoration:none}',
+    '.work-dock-login span{color:#01456c;font-weight:700;text-decoration:underline;text-underline-offset:2px}',
+    '@media (max-width:700px){.work-dock{display:none}}',
+    /* short windows: anchor to the bottom so the panel is never cut off */
+    '@media (max-height:600px){.work-dock{top:auto;bottom:14px;align-items:flex-end}}',
+    '@media (prefers-reduced-motion:reduce){.work-dock,.work-dock-panel{transition:none}}'
+  ].join('');
+
+  function buildWorkDock() {
+    if (document.getElementById('ccWorkDock')) return;
+    var st = document.createElement('style');
+    st.id = 'cc-work-css';
+    st.textContent = WORK_CSS;
+    document.head.appendChild(st);
+
+    var dock = document.createElement('div');
+    dock.className = 'work-dock';
+    dock.id = 'ccWorkDock';
+    dock.innerHTML =
+      '<button type="button" class="work-dock-tab" aria-expanded="false" aria-controls="ccWorkPanel">' +
+        '<i class="fas fa-handshake" aria-hidden="true"></i><span>Work With Us</span>' +
+      '</button>' +
+      '<div class="work-dock-panel" id="ccWorkPanel" role="region" aria-label="Work with Click Cabs">' +
+        '<button type="button" class="work-dock-close" aria-label="Close">&times;</button>' +
+        '<div class="work-dock-head"><i class="fas fa-handshake" aria-hidden="true"></i> Want to work with us?</div>' +
+        '<p>Drive with <strong>Click Cabs</strong> or attach your cab to our fleet, and take local, airport and outstation bookings.</p>' +
+        '<a class="work-dock-btn" href="/account/vendor-signup.html">Become a Partner <i class="fas fa-arrow-right" aria-hidden="true"></i></a>' +
+        '<a class="work-dock-login" href="/account/vendor-login.html">Already a partner? <span>Log in</span></a>' +
+      '</div>';
+    document.body.appendChild(dock);
+
+    var tab = dock.querySelector('.work-dock-tab');
+    function setOpen(open) {
+      dock.classList.toggle('open', open);
+      tab.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (open) {
+        var offers = document.getElementById('offerDock');   // homepage only
+        if (offers) offers.classList.remove('open');
+      }
+    }
+    tab.addEventListener('click', function () { setOpen(!dock.classList.contains('open')); });
+    dock.querySelector('.work-dock-close').addEventListener('click', function () {
+      setOpen(false);
+      tab.focus();
+    });
+    var offersTab = document.querySelector('.offer-dock-tab');
+    if (offersTab) offersTab.addEventListener('click', function () { setOpen(false); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && dock.classList.contains('open')) { setOpen(false); tab.focus(); }
+    });
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', buildWorkDock);
+  else buildWorkDock();
 })();
