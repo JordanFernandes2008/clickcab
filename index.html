@@ -291,6 +291,11 @@
     .wfield-row input::placeholder { color: #bbb; }
     .wrow2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0.7rem; }
     .wrow2 > .wfield { min-width: 0; }
+    /* Passengers needs one digit; the vehicle name needs the room
+       ("Tempo Traveller" was cut off in an even split, even on desktop) */
+    .wrow2--pv { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); }
+    /* phones: larger text, so each gets a full row rather than clipping */
+    @media (max-width: 600px) { .wrow2--pv { grid-template-columns: minmax(0, 1fr); } }
     .search-btn {
       width: 100%; padding: 0.85rem;
       background: var(--yellow); color: #000; border: none; border-radius: 8px;
@@ -543,7 +548,8 @@
       transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
     }
     .fleet-card:hover { border-color: var(--yellow); box-shadow: 0 6px 24px rgba(245,162,0,0.1); transform: translateY(-3px); }
-    .fleet-card img { width: 100%; height: 70px; object-fit: contain; margin-bottom: 0.7rem; }
+    /* 110px, not 70px: at 70px the angled shots lost their number plates entirely */
+    .fleet-card img { width: 100%; height: 110px; object-fit: contain; margin-bottom: 0.7rem; }
     .fleet-card h3 { font-size: 0.82rem; font-weight: 800; margin-bottom: 0.2rem; }
     .fleet-card p { font-size: 0.7rem; color: var(--gray); }
 
@@ -1039,15 +1045,30 @@
               </div>
             </div>
           </div>
-          <div class="wfield">
-            <label>Passengers</label>
-            <div class="wfield-row">
-              <i class="fas fa-user-group"></i>
-              <select aria-label="Passengers" data-role="passengers">
-                <option>1</option><option>2</option><option selected>3</option>
-                <option>4</option><option>5</option><option>6</option>
-                <option>7</option><option>8</option>
-              </select>
+          <div class="wrow2 wrow2--pv">
+            <div class="wfield">
+              <label>Passengers</label>
+              <div class="wfield-row">
+                <i class="fas fa-user-group"></i>
+                <select aria-label="Passengers" data-role="passengers">
+                  <option>1</option><option>2</option><option selected>3</option>
+                  <option>4</option><option>5</option><option>6</option>
+                  <option>7</option><option>8</option>
+                </select>
+              </div>
+            </div>
+            <div class="wfield">
+              <label>Vehicle</label>
+              <div class="wfield-row">
+                <i class="fas fa-car"></i>
+                <select aria-label="Vehicle" data-role="vehicle">
+                  <option>Dzire</option>
+                  <option>WagonR</option>
+                  <option>Ertiga</option>
+                  <option>Innova Crysta</option>
+                  <option>Tempo Traveller</option>
+                </select>
+              </div>
             </div>
           </div>
           <div class="wfield">
@@ -1134,15 +1155,30 @@
               </div>
             </div>
           </div>
-          <div class="wfield">
-            <label>Passengers</label>
-            <div class="wfield-row">
-              <i class="fas fa-user-group"></i>
-              <select aria-label="Passengers" data-role="passengers">
-                <option>1</option><option>2</option><option selected>3</option>
-                <option>4</option><option>5</option><option>6</option>
-                <option>7</option><option>8</option>
-              </select>
+          <div class="wrow2 wrow2--pv">
+            <div class="wfield">
+              <label>Passengers</label>
+              <div class="wfield-row">
+                <i class="fas fa-user-group"></i>
+                <select aria-label="Passengers" data-role="passengers">
+                  <option>1</option><option>2</option><option selected>3</option>
+                  <option>4</option><option>5</option><option>6</option>
+                  <option>7</option><option>8</option>
+                </select>
+              </div>
+            </div>
+            <div class="wfield">
+              <label>Vehicle</label>
+              <div class="wfield-row">
+                <i class="fas fa-car"></i>
+                <select aria-label="Vehicle" data-role="vehicle">
+                  <option>Dzire</option>
+                  <option>WagonR</option>
+                  <option>Ertiga</option>
+                  <option>Innova Crysta</option>
+                  <option>Tempo Traveller</option>
+                </select>
+              </div>
             </div>
           </div>
           <div class="wfield">
@@ -1294,15 +1330,30 @@
               </div>
             </div>
           </div>
-          <div class="wfield">
-            <label>Passengers</label>
-            <div class="wfield-row">
-              <i class="fas fa-user-group"></i>
-              <select aria-label="Passengers" data-role="passengers">
-                <option>1</option><option>2</option><option selected>3</option>
-                <option>4</option><option>5</option><option>6</option>
-                <option>7</option><option>8</option>
-              </select>
+          <div class="wrow2 wrow2--pv">
+            <div class="wfield">
+              <label>Passengers</label>
+              <div class="wfield-row">
+                <i class="fas fa-user-group"></i>
+                <select aria-label="Passengers" data-role="passengers">
+                  <option>1</option><option>2</option><option selected>3</option>
+                  <option>4</option><option>5</option><option>6</option>
+                  <option>7</option><option>8</option>
+                </select>
+              </div>
+            </div>
+            <div class="wfield">
+              <label>Vehicle</label>
+              <div class="wfield-row">
+                <i class="fas fa-car"></i>
+                <select aria-label="Vehicle" data-role="vehicle">
+                  <option>Dzire</option>
+                  <option>WagonR</option>
+                  <option>Ertiga</option>
+                  <option>Innova Crysta</option>
+                  <option>Tempo Traveller</option>
+                </select>
+              </div>
             </div>
           </div>
           <div class="wfield">
@@ -1872,9 +1923,9 @@
       <h4>Support</h4>
       <ul>
         <li><a href="contact-us.html">Help Center</a></li>
-        <li><a href="#">Terms &amp; Conditions</a></li>
+        <li><a href="terms.html">Terms &amp; Conditions</a></li>
         <li><a href="privacy.html">Privacy Policy</a></li>
-        <li><a href="#">Cancellation Policy</a></li>
+        <li><a href="terms.html#cancellation">Cancellation Policy</a></li>
         <li><a href="contact-us.html#faq">FAQ</a></li>
       </ul>
     </div>
@@ -1892,6 +1943,7 @@
         <li><a href="https://portal.clickcabs.in/vendor-signup.html">Driver Partner Registration</a></li>
         <li><a href="https://portal.clickcabs.in/vendor-signup.html">Fleet Owner Partnership</a></li>
         <li><a href="contact-us.html">Corporate Partnership Inquiry</a></li>
+        <li><a href="partner-terms.html">Partner Terms</a></li>
       </ul>
     </div>
   </div>
@@ -2468,7 +2520,8 @@
            + dropLabel + ': ' + dest + '\n'
            + 'Date: ' + read('date') + '\n'
            + 'Time: ' + read('time') + '\n'
-           + 'Passengers: ' + read('passengers') + '\n\n'
+           + 'Passengers: ' + read('passengers') + '\n'
+           + 'Vehicle: ' + read('vehicle') + '\n\n'
            + 'Please confirm availability and fare.';
     };
 
@@ -2479,7 +2532,8 @@
         host: widget,
         fields: { name: name, phone: phone, email: email,
                   pickup: pickup, drop: dest, date: read('date'),
-                  time: read('time'), passengers: read('passengers') },
+                  time: read('time'), passengers: read('passengers'),
+                  vehicle: read('vehicle') },
         message: message
       });
     } else {

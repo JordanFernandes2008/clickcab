@@ -688,6 +688,19 @@
         </select>
       </div>
     </div>
+    <div class="cc-field" style="max-width:190px;">
+      <label for="tpVehicle">Vehicle</label>
+      <div class="cc-input">
+        <i class="fas fa-car"></i>
+        <select id="tpVehicle" data-role="vehicle">
+          <option>Dzire</option>
+          <option>WagonR</option>
+          <option>Ertiga</option>
+          <option>Innova Crysta</option>
+          <option>Tempo Traveller</option>
+        </select>
+      </div>
+    </div>
     <button class="cc-go" type="button" onclick="sendTourEnquiry()">
       <i class="fab fa-whatsapp"></i> Plan My Tour
     </button>
@@ -856,6 +869,16 @@
         </div>
       </div>
       <div class="tm-field">
+        <label for="tmVehicle">Vehicle</label>
+        <select id="tmVehicle">
+          <option>Dzire</option>
+          <option>WagonR</option>
+          <option>Ertiga</option>
+          <option>Innova Crysta</option>
+          <option>Tempo Traveller</option>
+        </select>
+      </div>
+      <div class="tm-field">
         <label for="tmMsg">Anything else? <span style="text-transform:none;font-weight:400;">(optional)</span></label>
         <textarea id="tmMsg" placeholder="Pickup city, hotel preference, special requests..."></textarea>
       </div>
@@ -901,7 +924,7 @@
       <h4>Support</h4>
       <ul>
         <li><a href="contact-us.html">Help Center</a></li>
-        <li><a href="#">Terms &amp; Conditions</a></li>
+        <li><a href="terms.html">Terms &amp; Conditions</a></li>
         <li><a href="privacy.html">Privacy Policy</a></li>
         <li><a href="contact-us.html#faq">FAQ</a></li>
       </ul>
@@ -912,6 +935,7 @@
         <li><a href="https://portal.clickcabs.in/vendor-signup.html">Driver Partner Registration</a></li>
         <li><a href="https://portal.clickcabs.in/vendor-signup.html">Fleet Owner Partnership</a></li>
         <li><a href="contact-us.html">Corporate Partnership Inquiry</a></li>
+        <li><a href="partner-terms.html">Partner Terms</a></li>
       </ul>
     </div>
   </div>
@@ -1344,13 +1368,15 @@
     var date = document.getElementById('tpDate').value;
     var pax = document.getElementById('tpPax').value;
     var nights = document.getElementById('tpNights').value;
+    var vehicle = document.getElementById('tpVehicle').value;
 
     var msg = 'Hi ClickCabs, I would like to plan a TOUR PACKAGE.\n\n'
             + 'Pickup City: ' + pickup + '\n'
             + 'Destination: ' + dest + '\n'
             + 'Start Date: ' + date + '\n'
             + 'Travellers: ' + pax + '\n'
-            + 'Nights: ' + nights + '\n\n'
+            + 'Nights: ' + nights + '\n'
+            + 'Vehicle: ' + vehicle + '\n\n'
             + 'Please share the package details and price.';
 
     window.open('https://wa.me/919702290804?text=' + encodeURIComponent(msg), '_blank');
@@ -1453,6 +1479,7 @@
 
     var start = val('tmDate');
     var pax   = val('tmPax');
+    var vehicle = val('tmVehicle');
     var note  = val('tmMsg');
 
     var message = function (ref) {
@@ -1464,6 +1491,7 @@
       if (email) lines.push('Email: ' + email);
       if (start) lines.push('Start Date: ' + start);
       lines.push('Travellers: ' + pax);
+      lines.push('Vehicle: ' + vehicle);
       if (note) lines.push('', 'Notes: ' + note);
       lines.push('', 'Please share the itinerary and package price.');
       return lines.join(String.fromCharCode(10));
@@ -1477,7 +1505,7 @@
         source: 'tour-packages.html',
         host: document.querySelector('.tm-right'),
         fields: { name: name, phone: phone, email: email, tour: tmCurrent,
-                  date: start, passengers: pax, message: note },
+                  date: start, passengers: pax, vehicle: vehicle, message: note },
         message: message
       });
       show('ok', 'Reference ' + ref + ' \u2014 WhatsApp is opening, send the message to finish.');

@@ -480,10 +480,11 @@
   }
   .cc-input:focus-within { border-color: #01456c; }
   .cc-input i { color: #bbb; font-size: 0.8rem; flex-shrink: 0; }
-  .cc-input input {
+  .cc-input input, .cc-input select {
     border: none; outline: none; flex: 1; background: transparent;
     font-family: 'Inter', sans-serif; font-size: 0.83rem; color: #333; min-width: 0;
   }
+  .cc-input select { cursor: pointer; }
   .cc-opt { text-transform: none; letter-spacing: 0; font-weight: 500; color: #bbb; }
   .cc-go {
     background: #f5a200; color: #000; border: none; border-radius: 8px;
@@ -730,6 +731,19 @@
       <div class="cc-input">
         <i class="fas fa-calendar"></i>
         <input aria-label="Date" type="date" data-role="date" />
+      </div>
+    </div>
+    <div class="cc-field" style="max-width:190px;">
+      <label for="osVehicle">Vehicle</label>
+      <div class="cc-input">
+        <i class="fas fa-car"></i>
+        <select id="osVehicle" data-role="vehicle">
+          <option>Dzire</option>
+          <option>WagonR</option>
+          <option>Ertiga</option>
+          <option>Innova Crysta</option>
+          <option>Tempo Traveller</option>
+        </select>
       </div>
     </div>
     <div class="cc-field">
@@ -998,9 +1012,9 @@
       <h4>Support</h4>
       <ul>
         <li><a href="contact-us.html">Help Center</a></li>
-        <li><a href="#">Terms &amp; Conditions</a></li>
+        <li><a href="terms.html">Terms &amp; Conditions</a></li>
         <li><a href="privacy.html">Privacy Policy</a></li>
-        <li><a href="#">Cancellation Policy</a></li>
+        <li><a href="terms.html#cancellation">Cancellation Policy</a></li>
         <li><a href="contact-us.html#faq">FAQ</a></li>
       </ul>
     </div>
@@ -1010,6 +1024,7 @@
         <li><a href="https://portal.clickcabs.in/vendor-signup.html">Driver Partner Registration</a></li>
         <li><a href="https://portal.clickcabs.in/vendor-signup.html">Fleet Owner Partnership</a></li>
         <li><a href="contact-us.html">Corporate Partnership Inquiry</a></li>
+        <li><a href="partner-terms.html">Partner Terms</a></li>
       </ul>
     </div>
   </div>
@@ -1477,6 +1492,7 @@
            + 'Pickup City: ' + pickup + '\n'
            + 'Drop City: ' + drop + '\n'
            + 'Journey Date: ' + read('date') + '\n'
+           + 'Vehicle: ' + read('vehicle') + '\n'
            + '\nPlease confirm availability and fare.';
     };
 
@@ -1489,7 +1505,8 @@
         source: 'outstation.html',
         host: box,
         fields: { name: name, phone: phone, email: email,
-                  pickup: pickup, drop: drop, date: read('date') },
+                  pickup: pickup, drop: drop, date: read('date'),
+                  vehicle: read('vehicle') },
         message: message
       });
     } else {
