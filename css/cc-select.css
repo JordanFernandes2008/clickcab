@@ -1,0 +1,204 @@
+/* ── Booking dropdowns ────────────────────────────────────────────────────
+   Shared by every page with a booking form. Loaded after each page's own
+   <style>, so equal-specificity rules here win.
+
+   Before: selects had appearance:none and no arrow, so Time, Passengers and
+   Vehicle looked like text boxes, and only the text itself opened the list;
+   clicking the icon or the padding did nothing.
+
+   Every browser now gets:
+     - a chevron, which flips while the list is open;
+     - the whole box as the click target (the icon sits on top of the select,
+       not beside it);
+     - a hover tint and a soft focus ring.
+   Browsers with customisable selects (Chrome / Edge 135+) also get a styled
+   list: rounded panel, shadow, roomy rows, hover tint and a yellow tick on the
+   chosen option. Everything else keeps its native list, which on a phone is
+   the system picker, the right thing there. */
+
+:root {
+  --cc-sel-ink: #01456c;
+  --cc-sel-line: #dfe6ec;
+  --cc-sel-hover: #f2f7fb;
+  --cc-sel-chosen: #fff6e0;
+  --cc-sel-tick: #f5a200;
+  --cc-sel-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%237b93a6' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --cc-sel-chevron-on: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%2301456c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --cc-sel-chevron-up: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 6.5l5-5 5 5' fill='none' stroke='%2301456c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+/* ── the closed box ─────────────────────────────────────────────────────── */
+
+/* Icon-and-field boxes: the homepage widget (.wfield-row) and the booking
+   bars on the service pages (.cc-input). */
+.wfield-row > select,
+.cc-input > select {
+  min-width: 0;
+  padding-right: 0.4rem;
+  border-right: 1.6rem solid transparent;   /* the chevron's lane; text is clipped before it */
+  background-origin: border-box;
+  cursor: pointer;
+  text-overflow: ellipsis; white-space: nowrap; overflow: hidden;
+}
+
+/* Where :has() exists, the select fills the whole box and carries the box's
+   padding, and the icon floats over its left edge, so a click anywhere in the
+   box opens the list. Without :has() the old layout stays as it was. */
+@supports selector(:has(> select)) {
+.wfield-row:has(> select),
+.cc-input:has(> select) {
+  position: relative;
+  padding: 0;
+  cursor: pointer;
+  background-color: #fff;
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+.wfield-row:has(> select) > i,
+.cc-input:has(> select) > i {
+  position: absolute; left: 0.8rem; top: 50%; transform: translateY(-50%);
+  pointer-events: none; z-index: 1; transition: color 0.2s;
+}
+.wfield-row > select,
+.cc-input > select {
+  width: 100%;
+  padding: 0.6rem 0.4rem 0.6rem 2.15rem;
+}
+
+/* phones: the pages give fields 16px text and a 40px minimum there */
+@media (max-width: 767px) {
+  /* the select now carries the box padding, so its 40px minimum grows by that
+     padding to stay level with the text fields beside it */
+  .wfield-row > select,
+  .cc-input > select { padding-top: 0.3rem; padding-bottom: 0.3rem; min-height: calc(40px + 0.6rem); }
+}
+}
+
+/* Boxes that are the select itself: the tour enquiry form and the contact
+   form. They keep their own border and padding; only room for the chevron. */
+.tm-field > select,
+.form-group > select {
+  padding-right: 2rem;
+  cursor: pointer;
+  appearance: none; -webkit-appearance: none;
+}
+
+/* the chevron, on all of them */
+.wfield-row > select,
+.cc-input > select,
+.tm-field > select,
+.form-group > select {
+  background-image: var(--cc-sel-chevron);
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 11px 8px;
+}
+
+/* hover, focus, open */
+.wfield-row:has(> select):hover,
+.cc-input:has(> select):hover { border-color: #b8c8d5; background-color: #fbfdff; }
+.tm-field > select:hover,
+.form-group > select:hover { border-color: #b8c8d5; }
+
+.wfield-row:has(> select:focus-visible),
+.cc-input:has(> select:focus-visible),
+.tm-field > select:focus-visible,
+.form-group > select:focus-visible {
+  border-color: var(--cc-sel-ink);
+  box-shadow: 0 0 0 3px rgba(1, 69, 108, 0.14);
+}
+.wfield-row:has(> select:focus) > i,
+.cc-input:has(> select:focus) > i { color: var(--cc-sel-ink); }
+.wfield-row > select:focus,
+.cc-input > select:focus,
+.tm-field > select:focus,
+.form-group > select:focus { background-image: var(--cc-sel-chevron-on); }
+.wfield-row > select:open,
+.cc-input > select:open,
+.tm-field > select:open,
+.form-group > select:open { background-image: var(--cc-sel-chevron-up); }
+
+/* ── the open list, where the browser lets us style it ──────────────────── */
+@supports (appearance: base-select) {
+  .wfield-row > select,
+  .cc-input > select,
+  .tm-field > select,
+  .form-group > select {
+    appearance: base-select;
+  }
+  .wfield-row > select,
+  .cc-input > select { border-top: none; border-bottom: none; border-left: none; background-color: transparent; }
+  .tm-field > select,
+  .form-group > select { background-color: #fff; }
+  .wfield-row > select::picker-icon,
+  .cc-input > select::picker-icon,
+  .tm-field > select::picker-icon,
+  .form-group > select::picker-icon { display: none; }   /* the chevron above does this job */
+
+  .wfield-row > select::picker(select),
+  .cc-input > select::picker(select),
+  .tm-field > select::picker(select),
+  .form-group > select::picker(select) {
+    appearance: base-select;
+    font-family: 'Inter', sans-serif;
+    border: 1px solid var(--cc-sel-line);
+    border-radius: 12px;
+    padding: 6px;
+    margin-block: 6px;
+    background: #fff;
+    box-shadow: 0 14px 34px rgba(1, 40, 64, 0.16), 0 2px 6px rgba(1, 40, 64, 0.08);
+    max-inline-size: min(92vw, 440px);
+    max-inline-size: max(anchor-size(self-inline), 220px);
+    max-block-size: min(320px, 60vh);
+    overflow-y: auto;
+    opacity: 1;
+    translate: 0 0;
+    transition: opacity 0.16s ease, translate 0.16s ease, overlay 0.16s allow-discrete, display 0.16s allow-discrete;
+  }
+  @starting-style {
+    .wfield-row > select::picker(select),
+    .cc-input > select::picker(select),
+    .tm-field > select::picker(select),
+    .form-group > select::picker(select) { opacity: 0; translate: 0 -4px; }
+  }
+
+  .wfield-row > select option,
+  .cc-input > select option,
+  .tm-field > select option,
+  .form-group > select option {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    font-size: 0.86rem; line-height: 1.35;
+    color: #1a2b3c;
+    white-space: normal;       /* long airport names wrap instead of widening the list */
+    cursor: pointer;
+  }
+  .wfield-row > select option:hover,
+  .cc-input > select option:hover,
+  .tm-field > select option:hover,
+  .form-group > select option:hover,
+  .wfield-row > select option:focus-visible,
+  .cc-input > select option:focus-visible,
+  .tm-field > select option:focus-visible,
+  .form-group > select option:focus-visible { background: var(--cc-sel-hover); outline: none; }
+  .wfield-row > select option:checked,
+  .cc-input > select option:checked,
+  .tm-field > select option:checked,
+  .form-group > select option:checked { background: var(--cc-sel-chosen); color: var(--cc-sel-ink); font-weight: 600; }
+  .wfield-row > select option::checkmark,
+  .cc-input > select option::checkmark,
+  .tm-field > select option::checkmark,
+  .form-group > select option::checkmark { order: 1; margin-inline-start: auto; color: var(--cc-sel-tick); font-weight: 700; }
+  .wfield-row > select option:disabled,
+  .cc-input > select option:disabled,
+  .tm-field > select option:disabled,
+  .form-group > select option:disabled { color: #9aa7b2; cursor: default; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wfield-row:has(> select), .cc-input:has(> select) { transition: none; }
+  .wfield-row > select::picker(select),
+  .cc-input > select::picker(select),
+  .tm-field > select::picker(select),
+  .form-group > select::picker(select) { transition: none; }
+}
