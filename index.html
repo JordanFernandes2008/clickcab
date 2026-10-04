@@ -497,6 +497,30 @@
     .app-badge:hover { border-color: var(--yellow); }
     .app-badge i { font-size: 1.3rem; color: #fff; }
     .app-badge span { color: #fff; font-size: 0.75rem; font-weight: 600; }
+    /* WhatsApp booking message (replaced the "Download Our App" block) */
+    .app-left p.wa-points-label { color: #fff; font-weight: 700; font-size: 0.82rem; margin: -0.8rem 0 0.7rem; }
+    .wa-points { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem 1.4rem; margin: 0 0 1.6rem; padding: 0; }
+    .wa-points li { display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.8rem; line-height: 1.45; color: #d6dde3; }
+    .wa-points i { color: var(--yellow); font-size: 0.9rem; width: 1.1rem; text-align: center; flex-shrink: 0; margin-top: 0.12rem; }
+    .wa-tagline {
+      font-size: clamp(1.05rem, 1.6vw, 1.3rem); font-weight: 800; color: #fff; line-height: 1.35;
+      border-left: 3px solid var(--yellow); padding-left: 0.9rem; margin: 0 0 1.4rem;
+    }
+    .wa-tagline span { color: var(--yellow); }
+    .wa-cta-row { display: flex; align-items: center; flex-wrap: wrap; gap: 0.8rem 1.2rem; }
+    .wa-cta {
+      display: inline-flex; align-items: center; gap: 0.55rem;
+      background: var(--yellow); color: #000; font-weight: 800; font-size: 0.9rem;
+      padding: 0.8rem 1.5rem; border-radius: 8px; text-decoration: none;
+      transition: background-color 0.2s, transform 0.2s;
+    }
+    .wa-cta i { font-size: 1.15rem; }
+    .wa-cta:hover { background: var(--yellow-hover, #d48e00); transform: translateY(-1px); }
+    .wa-cta:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+    .wa-signoff { font-size: 0.78rem; color: #aab4bd; font-style: italic; }
+    @media (max-width: 640px) { .wa-points { grid-template-columns: 1fr; } }
+    @media (max-width: 767px) { .wa-points li, .wa-signoff { font-size: 13px; } }
+    @media (prefers-reduced-motion: reduce) { .wa-cta { transition: none; } .wa-cta:hover { transform: none; } }
     .app-right { display: flex; justify-content: center; }
     .app-right img { max-height: 300px; object-fit: contain; border-radius: 12px; }
     .app-right img.app-logo { width: 320px; max-width: 100%; height: auto; max-height: none; border-radius: 0; }
@@ -1793,36 +1817,27 @@
 </section>
 
 <!-- APP SECTION -->
-<section class="app-section">
+<section class="app-section" aria-labelledby="waBookTitle">
   <div class="app-inner">
     <div class="app-left">
-      <h2>Book On The Go!<br><span>Download Our App</span></h2>
-      <p>Quick bookings, exclusive offers, real-time tracking and secure payments — all in one place.</p>
-      <div class="app-features-grid">
-        <div class="app-feature">
-          <i class="fas fa-bolt"></i>
-          <h4>Quick Bookings</h4>
-          <p>Book a ride in under 60 seconds</p>
-        </div>
-        <div class="app-feature">
-          <i class="fas fa-tag"></i>
-          <h4>Exclusive Offers</h4>
-          <p>App-only deals &amp; discounts</p>
-        </div>
-        <div class="app-feature">
-          <i class="fas fa-map-marked-alt"></i>
-          <h4>Live Tracking</h4>
-          <p>Real-time driver location</p>
-        </div>
-        <div class="app-feature">
-          <i class="fas fa-lock"></i>
-          <h4>Secure Payments</h4>
-          <p>Multiple safe payment options</p>
-        </div>
-      </div>
-      <div class="app-badges">
-        <span class="app-badge" aria-disabled="true"><i class="fab fa-google-play"></i><span>Google Play<span class="app-badge-soon">Coming soon</span></span></span>
-        <span class="app-badge" aria-disabled="true"><i class="fab fa-apple"></i><span>App Store<span class="app-badge-soon">Coming soon</span></span></span>
+      <h2 id="waBookTitle">Why download an app when your cab can be booked <span>in seconds on WhatsApp?</span></h2>
+      <p>At Click Cabs, we believe booking a cab should be simple&mdash;not another app to download, register, update, and remember.</p>
+      <p class="wa-points-label">With WhatsApp, you can:</p>
+      <ul class="wa-points">
+        <li><i class="fas fa-mobile-screen-button" aria-hidden="true"></i> Book directly from your existing WhatsApp</li>
+        <li><i class="fas fa-bolt" aria-hidden="true"></i> Get quick responses from our booking team</li>
+        <li><i class="fas fa-car-side" aria-hidden="true"></i> Discuss vehicle, pickup, drop &amp; special requirements instantly</li>
+        <li><i class="fas fa-comment-dots" aria-hidden="true"></i> Receive booking confirmation and trip details in the same chat</li>
+        <li><i class="fas fa-location-dot" aria-hidden="true"></i> Share live locations and pickup details easily</li>
+        <li><i class="fas fa-handshake" aria-hidden="true"></i> Connect with a real person whenever assistance is required</li>
+        <li><i class="fas fa-rotate" aria-hidden="true"></i> Make changes or ask questions without navigating through an app</li>
+      </ul>
+      <p class="wa-tagline">&ldquo;No App. No Complication. <span>Just WhatsApp &amp; Ride.</span>&rdquo;</p>
+      <div class="wa-cta-row">
+        <a class="wa-cta" href="https://wa.me/919702290804?text=Hi%20Click%20Cabs%2C%20I%20would%20like%20to%20book%20a%20cab." target="_blank" rel="noopener">
+          <i class="fab fa-whatsapp" aria-hidden="true"></i> Book on WhatsApp
+        </a>
+        <span class="wa-signoff">Click Cabs &mdash; Your Journey Begins With A WhatsApp.</span>
       </div>
     </div>
     <div class="app-right">
